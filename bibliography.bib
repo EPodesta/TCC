@@ -1,21 +1,97 @@
-@article{pereira15,
-author = {Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
-journal = {Concurrency and Computation: Practice and Experience},
-number = {17},
-pages = {4938--4953},
-title = {{{\{}PSkel{\}}: A Stencil Programming Framework for CPU-GPU Systems}},
-volume = {27},
-year = {2015}
+@article{Murarasu2011,
+abstract = {Multi-core parallelism and accelerators are becoming common features of today's computer systems, as they allow for computational power without sacrificing energy efficiency. Due to heterogeneity, tuning for each type of compute unit and adequate load balancing is essential. This paper proposes static and dynamic solutions for load balancing in the context of an application for visualizing high-dimensional simulation data. The application relies on the sparse grid technique for data compression. Its performance critical part is the interpolation routine used for decompression. Results show that our load balancing scheme allows for an efficient acceleration of interpolation on heterogeneous systems containing multi-core CPUs and GPUs.},
+author = {Muraraşu, Alin and Weidendorfer, Josef and Bode, Arndt},
+doi = {10.1007/978-3-642-29740-3_39},
+journal = {Euro-Par'11 Proceedings of the 2011 international conference on Parallel Processing},
+pages = {345--354},
+title = {{Workload balancing on heterogeneous systems: a case study of sparse grid interpolation}},
+volume = {2},
+year = {2011}
 }
-@article{rocha17,
-author = {Rocha, Rodrigo C O and Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
-issn = {1532-0634},
-journal = {Concurrency and Computation: Practice and Experience},
-number = {8},
-pages = {e4053},
-title = {{{\{}TOAST{\}}: Automatic tiling for iterative stencil computations on {\{}GPUs{\}}}},
-volume = {29},
+@article{Murali2004,
+abstract = {We address the design of complex monolithic systems, where processing cores generate and consume a varying and large amount of data, thus bringing the communication links to the edge of congestion. Typical applications are in the area of multi-media processing. We consider a mesh-based networks on chip (NoC) architecture, and we explore the assignment of cores to mesh cross-points so that the traffic on links satisfies bandwidth constraints. A single-path deterministic routing between the cores places high bandwidth demands on the links. The bandwidth requirements can be significantly reduced by splitting the traffic between the cores across multiple paths. In this paper, we present NMAP, a fast algorithm that maps the cores onto a mesh NoC architecture under bandwidth constraints, minimizing the average communication delay. The NMAP algorithm is presented for both single minimum-path routing and split-traffic routing. The algorithm is applied to a benchmark DSP design and the resulting NoC is built and simulated at cycle accurate level in SystemC using macros from the /spl times/pipes library. Also, experiments with six video processing applications show significant savings in bandwidth and communication cost for NMAP algorithm when compared to existing algorithms.},
+author = {Murali, S. and Micheli, G. De},
+doi = {10.1109/DATE.2004.1269002},
+journal = {Design, Automation and Test in Europe Conference and Exhibition, 2004.},
+title = {{Bandwidth-constrained mapping of cores onto NoC architectures}},
+year = {2004}
+}
+@article{Michael2013,
+abstract = {Network-on-chip (NoC) promises better scalability and power efficiency compared to traditional on-chip interconnects. But in order to fully exploit the benefits offered by the new paradigm, especially as the number of cores in the network increases, challenging resource management questions need to be addressed. Of particular interest and the subject of our study is the question of how to map applications to processors (network nodes) in a NoC so as to minimize the dynamic power consumption of the NoC.},
+author = {Michael, Nithin and Wang, Yao and Suh, G. Edward and Tang, Ao},
+doi = {10.1109/NoCS.2013.6558409},
+journal = {Networks on Chip (NoCS), 2013 Seventh IEEE/ACM International Symposium on},
+title = {{Quadrisection-based task mapping on many-core processors for energy-efficient on-chip communication}},
+year = {2013}
+}
+@article{Chatha2005,
+abstract = {Network-on-chip (NoC) has been proposed as a solution for the global communication challenges of system-on-chip (SoC) design in the nanoscale technologies. NoC design with mesh based topologies requires mapping of cores to router ports, and routing of traffic traces such that the bandwidth and latency constraints are satisfied. The authors presented a novel automated design technique that solves the mesh based NoC design problem with an objective of minimizing the communication energy. In contrast to existing research that only take bandwidth constraints as inputs, the technique solves the NoC design problem in the presence of bandwidth as well as latency constraints. The technique was compared with a recent work called NMAP and an optimal MILP based formulation. It is proven that the complexity of the technique is lower than that of NMAP. For the latency constrained case, while NMAP fails on most test cases, the technique is able to generate high quality results. In comparison to the MILP formulation, the results produced by our technique are within 14 {\%} of the optimal.},
+author = {Chatha, K.S. and Srinivasan, K.},
+doi = {10.1145/1077603.1077695},
+journal = {Low Power Electronics and Design, 2005. ISLPED '05},
+title = {{A technique for low energy mapping and routing in network-on-chip architectures}},
+year = {2005}
+}
+@techreport{Bienia2008,
+author = {Bienia, Christian and Kumar, Sanjeev and Singh, Jaswinder Pal and Li, and Kai},
+institution = {Princeton University},
+title = {{The PARSEC Benchmark Suite: Characterization and Architectural Implications}},
+year = {2008}
+}
+@techreport{Bailey1995,
+author = {Bailey, David and Harris, Tim and Saphir, William and Van, Rob and Wijngaart, Der and Woo, Alex and Yarrow, Maurice},
+title = {{The NAS Parallel Benchmarks 2.0}},
+year = {1995}
+}
+@inproceedings{Castro-Podesta-ERAD:2016,
+address = {S{\~{a}}o Leopoldo, Brazil},
+author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson D and Penna, Pedro H and Rocha, Rodrigo Caetano and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
+booktitle = {ERAD/RS},
+pages = {299--302},
+publisher = {SBC},
+title = {{PSkel-MPPA: Uma Adapta{\c{c}}{\~{a}}o do Framework PSkel para o Processador Manycore MPPA-256}},
+year = {2016}
+}
+@techreport{Kogge2008,
+author = {Kogge, Peter and Bergman, Keren and Borkar, Shekhar and Campbell, Dan and Carlson, William and Dally, William and Denneau, Monty and Franzon, Paul and Harrod, William and Hill, Kerry and Hiller, Jon and Karp, Sherman and Keckler, Stephen and Klein, Dean and Lucas, Robert and Richards, Mark and Scarpelli, Al and Scott, Steven and Snavely, Allan and Sterling, Thomas and Williams, R. Stanley and Yelick, Katherine},
+institution = {University of Notre Dame},
+pages = {278},
+title = {{ExaScale Computing Study: Technology Challenges in Achieving Exascale Systems}},
+year = {2008}
+}
+@inproceedings{Castro-Podesta-ERAD:2017,
+address = {Iju{\'{i}}, Brazil},
+author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson D and Rocha, Rodrigo Caetano and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
+booktitle = {ERAD/RS},
+pages = {395--398},
+publisher = {SBC},
+title = {{Uma Implementa{\c{c}}{\~{a}}o do Framework PSkel com Suporte a Aplica{\c{c}}{\~{o}}es Est{\^{e}}ncil Iterativas para o Processador MPPA-256}},
 year = {2017}
+}
+@article{fur,
+author = {Economou, Andrew D and Ohazama, Atsushi and Porntaveetus, Thantrira and Sharpe, Paul T and Kondo, Shigeru and Basson, M Albert and Gritli-Linde, Amel and Cobourne, Martyn T and Green, Jeremy B A},
+doi = {10.1038/ng.1090},
+issn = {1546-1718},
+journal = {Nature genetics},
+number = {3},
+pages = {348--351},
+title = {{Periodic stripe formation by a Turing-mechanism operating at growth zones in the mammalian palate}},
+volume = {44},
+year = {2012}
+}
+@inproceedings{rosten05,
+author = {Rosten, Edward and Drummond, Tom},
+booktitle = {IEEE ICCV},
+pages = {1508--1515},
+title = {{Fusing Points and Lines for High Performance Tracking}},
+year = {2005}
+}
+@inproceedings{maruyama11,
+author = {Maruyama, Naoya and Nomura, Tatsuo and Sato, Kento and Matsuoka, Satoshi},
+booktitle = {ACM/IEEE SC},
+pages = {11:1----11:12},
+title = {{Physis: An Implicitly Parallel Programming Model for Stencil Computations on Large-Scale GPU-Accelerated Supercomputers}},
+year = {2011}
 }
 @inproceedings{dinechin13,
 author = {de Dinechin, B D and Ayrignac, R and Beaucamps, P E and Couvert, P and Ganne, B and de Massas, P G and Jacquet, F and Jones, S and Chaisemartin, N M and Riss, F and Strudel, T},
@@ -23,6 +99,53 @@ booktitle = {High Performance Extreme Computing Conference (HPEC), 2013 IEEE},
 pages = {1--6},
 title = {{A clustered manycore processor architecture for embedded and accelerated applications}},
 year = {2013}
+}
+@article{lutz13,
+author = {Lutz, Thibaut and Fensch, Christian and Cole, Murray},
+journal = {ACM Trans. Archit. Code Optim.},
+number = {4},
+pages = {59:1--59:24},
+title = {{PARTANS: An Autotuning Framework for Stencil Computation on Multi-GPU Systems}},
+volume = {9},
+year = {2013}
+}
+@article{Castro-Souza-CCPE:2016,
+author = {Souza, Matheus A and Penna, Pedro Henrique and Queiroz, Matheus M and Pereira, Alyson D and G{\'{o}}es, Lu{\'{i}}s Fabricio W and Freitas, Henrique C and Castro, M{\'{a}}rcio and Navaux, Philippe O A and M{\'{e}}haut, Jean‐Fran{\c{c}}ois},
+doi = {10.1002/cpe.3892},
+issn = {1532-0634},
+journal = {Concurrency and Computation: Practice and Experience},
+title = {{CAP Bench: A Benchmark Suite for Performance and Energy Evaluation of Low-power Many-core Processors}},
+year = {2016}
+}
+@article{Castro-PARCO:2016,
+abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
+author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Dupros, Fabrice and Aochi, Hideo and Navaux, Philippe O A and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+doi = {10.1016/j.parco.2016.01.011},
+issn = {01678191},
+journal = {Parallel Computing},
+keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
+pages = {108--120},
+title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
+url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
+volume = {54},
+year = {2016}
+}
+@inproceedings{papi12,
+author = {Weaver, V M and Johnson, M and Kasichayanula, K and Ralph, J and Luszczek, P and Terpstra, D and Moore, S},
+booktitle = {2012 41st International Conference on Parallel Processing Workshops},
+doi = {10.1109/ICPPW.2012.39},
+issn = {0190-3918},
+pages = {262--268},
+title = {{Measuring Energy and Power with {\{}PAPI{\}}}},
+year = {2012}
+}
+@book{Charm:2012,
+edition = {1st},
+editor = {Kale, Laxmikant V and Bhatele, Abhinav},
+isbn = {1466504129},
+publisher = {CRC Press},
+title = {{Parallel Science and Engineering Applications: The Charm++ Approach}},
+year = {2012}
 }
 @inproceedings{MPPA-2:2013,
 address = {Barcelona, Spain},
@@ -34,102 +157,6 @@ title = {{A Distributed Run-Time Environment for the Kalray MPPA-256 Integrated 
 volume = {18},
 year = {2013}
 }
-@article{meng11,
-author = {Meng, Jiayuan and Skadron, Kevin},
-issn = {0885-7458},
-journal = {International Journal of Parallel Programming},
-number = {1},
-pages = {115--142},
-publisher = {Springer US},
-title = {{A Performance Study for Iterative Stencil Loops on GPUs with Ghost Zone Optimizations}},
-volume = {39},
-year = {2011}
-}
-@inproceedings{kamil10,
-author = {Kamil, S and Chan, C and Oliker, L and Shalf, J and Williams, S},
-booktitle = {IEEE IPDPS},
-pages = {1--12},
-title = {{An Auto-Tuning Framework for Parallel Multicore Stencil Computations}},
-year = {2010}
-}
-@inproceedings{Castro-IA3:2013,
-address = {Denver, EUA},
-author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Ngu{\'{e}}l{\'{e}}, Thomas M and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA{\^{}}3)},
-pages = {5:1----5:8},
-publisher = {ACM},
-title = {{Analysis of Computing and Energy Performance of Multicore, {\{}NUMA{\}}, and Manycore Platforms for an Irregular Application}},
-year = {2013}
-}
-@book{demmel97,
-author = {Demmel, James W},
-publisher = {SIAM},
-title = {{Applied numerical linear algebra}},
-year = {1997}
-}
-@article{cole-skeleton:2004,
-address = {Amsterdam, The Netherlands, The Netherlands},
-author = {Cole, Murray},
-doi = {10.1016/j.parco.2003.12.002},
-issn = {0167-8191},
-journal = {Parallel Comput.},
-keywords = {MPI,libraries,parallel programming,patterns,skeletons},
-number = {3},
-pages = {389--406},
-publisher = {Elsevier Science Publishers B. V.},
-title = {{Bringing Skeletons out of the Closet: A Pragmatic Manifesto for Skeletal Parallel Programming}},
-url = {http://dx.doi.org/10.1016/j.parco.2003.12.002},
-volume = {30},
-year = {2004}
-}
-@article{Castro-Souza-CCPE:2016,
-author = {Souza, Matheus A and Penna, Pedro Henrique and Queiroz, Matheus M and Pereira, Alyson D and G{\'{o}}es, Lu{\'{i}}s Fabricio W and Freitas, Henrique C and Castro, M{\'{a}}rcio and Navaux, Philippe O A and M{\'{e}}haut, Jean‐Fran{\c{c}}ois},
-doi = {10.1002/cpe.3892},
-issn = {1532-0634},
-journal = {Concurrency and Computation: Practice and Experience},
-title = {{CAP Bench: A Benchmark Suite for Performance and Energy Evaluation of Low-power Many-core Processors}},
-year = {2016}
-}
-@inproceedings{silva10,
-author = {da Silva, Alisson Rodrigo and {Gouv{\^{e}}a Jr.}, Maury Meirelles},
-booktitle = {SCSC},
-pages = {278--283},
-title = {{Cloud Dynamics Simulation with Cellular Automata}},
-year = {2010}
-}
-@inproceedings{SCCEnergy:2012,
-address = {New Brunswick, Canada},
-author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
-booktitle = {IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
-doi = {10.1109/ISPASS.2012.6189208},
-pages = {78--87},
-publisher = {IEEE Computer Society},
-title = {{Comparing the Power and Performance of Intel's SCC to State-of-the-Art CPUs and GPUs}},
-year = {2012}
-}
-@book{gonzalez06,
-author = {Gonzalez, Rafael C and Woods, Richard E},
-publisher = {Prentice-Hall, Inc.},
-title = {{Digital Image Processing (3rd Edition)}},
-year = {2006}
-}
-@inproceedings{thoraransen16,
-author = {Thorarensen, S and Cuello, R and Kessler, C and Li, L and Barry, B},
-booktitle = {2016 24th Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)},
-doi = {10.1109/PDP.2016.123},
-pages = {398--402},
-title = {{Efficient Execution of SkePU Skeleton Programs on the Low-Power Multicore Processor Myriad2}},
-year = {2016}
-}
-@inproceedings{Valero:2012,
-address = {New York, USA},
-author = {Morari, Alessandro and Tumeo, Antonino and Villa, Oreste and Secchi, Simone and Valero, Mateo},
-booktitle = {International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD)},
-pages = {171--178},
-publisher = {IEEE Computer Society},
-title = {{Efficient Sorting on the {\{}T{\}}ilera Manycore Architecture}},
-year = {2012}
-}
 @inproceedings{Castro-SBAC-PAD:2014,
 address = {Paris, France},
 author = {Castro, M{\'{a}}rcio and Dupros, Fabrice and Francesquini, Emilio and M{\'{e}}haut, Jean-Fran{\c{c}}ois and Navaux, Philippe Olivier Alexandre},
@@ -137,6 +164,37 @@ booktitle = {International Symposium on Computer Architecture and High Performan
 pages = {57--64},
 publisher = {IEEE Computer Society},
 title = {{Energy Efficient Seismic Wave Propagation Simulation on a Low-power Manycore Processor}},
+year = {2014}
+}
+@inproceedings{Rahman:2011:USC:2016604.2016641,
+author = {Rahman, Shah M Faizur and Yi, Qing and Qasem, Apan},
+booktitle = {ACM International Conference on Computing Frontiers (CF)},
+doi = {10.1145/2016604.2016641},
+isbn = {978-1-4503-0698-0},
+pages = {30:1----30:10},
+publisher = {ACM},
+title = {{Understanding Stencil Code Performance on Multicore Architectures}},
+year = {2011}
+}
+@inproceedings{TSHMEM:2013,
+address = {Cambridge, USA},
+author = {Lam, B C and George, A D and Lam, H},
+booktitle = {IEEE International Parallel and Distributed Processing Symposium Workshops and PhD Forum (IPDPSW)},
+doi = {10.1109/IPDPSW.2013.154},
+isbn = {978-0-7695-4979-8},
+keywords = {Bandwidth,Computer architecture,Electronics packaging,Libraries,OpenSHMEM library,PGAS programming model,Program processors,Synchronization,TSHMEM,Tilera many-core processor architecture,Tiles,distributed memory systems,distributed-memory architectures,high-performance computing,large parallel computing systems,parallel architectures,parallel programming,parallel programming tools,partitioned global address space programming model,performance analysis,shared memory systems,shared-memory parallel computing,shared-memory programming library},
+pages = {325--334},
+publisher = {IEEE Computer Society},
+title = {{TSHMEM: Shared-Memory Parallel Computing on Tilera Many-Core Processors}},
+year = {2013}
+}
+@article{Castro-IA3-JPDC:2014,
+author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+doi = {10.1016/j.jpdc.2014.11.002},
+journal = {J. Parallel Distrib. Comput.},
+pages = {32--48},
+title = {{On the Energy Efficiency and Performance of Irregular Applications on Multicore, {\{}NUMA{\}} and Manycore Platforms}},
+volume = {76},
 year = {2014}
 }
 @inproceedings{MPPA-1:2013,
@@ -150,12 +208,40 @@ title = {{Extended Cyclostatic Dataflow Program Compilation and Execution for an
 volume = {18},
 year = {2013}
 }
-@inproceedings{rosten05,
-author = {Rosten, Edward and Drummond, Tom},
-booktitle = {IEEE ICCV},
-pages = {1508--1515},
-title = {{Fusing Points and Lines for High Performance Tracking}},
-year = {2005}
+@inproceedings{kamil10,
+author = {Kamil, S and Chan, C and Oliker, L and Shalf, J and Williams, S},
+booktitle = {IEEE IPDPS},
+pages = {1--12},
+title = {{An Auto-Tuning Framework for Parallel Multicore Stencil Computations}},
+year = {2010}
+}
+@inproceedings{silva10,
+author = {da Silva, Alisson Rodrigo and {Gouv{\^{e}}a Jr.}, Maury Meirelles},
+booktitle = {SCSC},
+pages = {278--283},
+title = {{Cloud Dynamics Simulation with Cellular Automata}},
+year = {2010}
+}
+@article{meng11,
+author = {Meng, Jiayuan and Skadron, Kevin},
+issn = {0885-7458},
+journal = {International Journal of Parallel Programming},
+number = {1},
+pages = {115--142},
+publisher = {Springer US},
+title = {{A Performance Study for Iterative Stencil Loops on GPUs with Ghost Zone Optimizations}},
+volume = {39},
+year = {2011}
+}
+@article{sunway:2016,
+author = {Fu, Haohuan and Liao, Junfeng and Yang, Jinzhe and Wang, Lanning and Song, Zhenya and Huang, Xiaomeng and Yang, Chao and Xue, Wei and Liu, Fangfang and Qiao, Fang-Li and Zhao, Wei and Yin, Xunqiang and Hou, Chaofeng and Zhang, Chenglong and Ge, Wei and Zhang, Jian and Wang, Yangang and Zhou, Chunbo and Yang, Guangwen},
+doi = {10.1007/s11432-016-5588-7},
+journal = {{\{}SCIENCE{\}} {\{}CHINA{\}} Information Sciences},
+number = {7},
+pages = {072001:1----072001:16},
+title = {{The Sunway TaihuLight supercomputer: system and applications}},
+volume = {59},
+year = {2016}
 }
 @inproceedings{holewinski12,
 author = {Holewinski, Justin and Pouchet, Louis-No{\"{e}}l and Sadayappan, P},
@@ -164,12 +250,14 @@ pages = {311--320},
 title = {{High-Performance Code Generation for Stencil Computations on GPU Architectures}},
 year = {2012}
 }
-@inproceedings{rosten06,
-author = {Rosten, Edward and Drummond, Tom},
-booktitle = {ECCV},
-pages = {430--443},
-title = {{Machine Learning for High-Speed Corner Detection}},
-year = {2006}
+@article{pereira15,
+author = {Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
+journal = {Concurrency and Computation: Practice and Experience},
+number = {17},
+pages = {4938--4953},
+title = {{{\{}PSkel{\}}: A Stencil Programming Framework for CPU-GPU Systems}},
+volume = {27},
+year = {2015}
 }
 @article{gardner70,
 author = {Gardner, Martin},
@@ -179,14 +267,26 @@ title = {{Mathematical Games - The Fantastic Combinations of John Conway's New S
 volume = {223},
 year = {1970}
 }
-@inproceedings{papi12,
-author = {Weaver, V M and Johnson, M and Kasichayanula, K and Ralph, J and Luszczek, P and Terpstra, D and Moore, S},
-booktitle = {2012 41st International Conference on Parallel Processing Workshops},
-doi = {10.1109/ICPPW.2012.39},
-issn = {0190-3918},
-pages = {262--268},
-title = {{Measuring Energy and Power with {\{}PAPI{\}}}},
-year = {2012}
+@book{demmel97,
+author = {Demmel, James W},
+publisher = {SIAM},
+title = {{Applied numerical linear algebra}},
+year = {1997}
+}
+@inproceedings{Varghese14,
+address = {Phoenix, USA},
+author = {Varghese, Anish and Edwards, Bob and Mitra, Gaurav and Rendell, Alistair P},
+booktitle = {International Parallel Distributed Processing Symposium Workshops (IPDPSW)},
+pages = {984--992},
+publisher = {IEEE Computer Society},
+title = {{Programming the {\{}A{\}}dapteva {\{}E{\}}piphany 64-Core Network-on-Chip Coprocessor}},
+year = {2014}
+}
+@inproceedings{datta08,
+author = {Datta, Kaushik and Murphy, Mark and Volkov, Vasily and Williams, Samuel and Carter, Jonathan and Oliker, Leonid and Patterson, David and Shalf, John and Yelick, Katherine},
+booktitle = {ACM/IEEE SC},
+title = {{Stencil Computation Optimization and Auto-Tuning on State-of-the-Art Multicore Architectures}},
+year = {2008}
 }
 @inproceedings{gysi15,
 author = {Gysi, T and Grosser, T and Hoefler, T},
@@ -195,40 +295,24 @@ pages = {177--186},
 title = {{MODESTO: Data-centric Analytic Optimization of Complex Stencil Programs on Heterogeneous Architectures}},
 year = {2015}
 }
-@article{Castro-IA3-JPDC:2014,
-author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1016/j.jpdc.2014.11.002},
-journal = {J. Parallel Distrib. Comput.},
-pages = {32--48},
-title = {{On the Energy Efficiency and Performance of Irregular Applications on Multicore, {\{}NUMA{\}} and Manycore Platforms}},
-volume = {76},
-year = {2014}
+@article{rocha17,
+author = {Rocha, Rodrigo C O and Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
+issn = {1532-0634},
+journal = {Concurrency and Computation: Practice and Experience},
+number = {8},
+pages = {e4053},
+title = {{{\{}TOAST{\}}: Automatic tiling for iterative stencil computations on {\{}GPUs{\}}}},
+volume = {29},
+year = {2017}
 }
-@inproceedings{buono13,
-author = {Buono, D and Danelutto, M and Lametti, S and Torquati, M},
-booktitle = {2013 21st Euromicro International Conference on Parallel, Distributed, and Network-Based Processing},
-doi = {10.1109/PDP.2013.27},
-issn = {1066-6192},
-pages = {131--139},
-title = {{Parallel Patterns for General Purpose Many-Core}},
-year = {2013}
-}
-@book{Charm:2012,
-edition = {1st},
-editor = {Kale, Laxmikant V and Bhatele, Abhinav},
-isbn = {1466504129},
-publisher = {CRC Press},
-title = {{Parallel Science and Engineering Applications: The Charm++ Approach}},
+@inproceedings{Valero:2012,
+address = {New York, USA},
+author = {Morari, Alessandro and Tumeo, Antonino and Villa, Oreste and Secchi, Simone and Valero, Mateo},
+booktitle = {International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD)},
+pages = {171--178},
+publisher = {IEEE Computer Society},
+title = {{Efficient Sorting on the {\{}T{\}}ilera Manycore Architecture}},
 year = {2012}
-}
-@article{lutz13,
-author = {Lutz, Thibaut and Fensch, Christian and Cole, Murray},
-journal = {ACM Trans. Archit. Code Optim.},
-number = {4},
-pages = {59:1--59:24},
-title = {{PARTANS: An Autotuning Framework for Stencil Computation on Multi-GPU Systems}},
-volume = {9},
-year = {2013}
 }
 @inproceedings{christen11,
 author = {Christen, Matthias and Schenk, Olaf and Burkhart, Helmar},
@@ -249,63 +333,33 @@ series = {AMCOS'05},
 title = {{Performance Evaluation of Programming Paradigms and Languages Using Multithreading on Digital Image Processing}},
 year = {2005}
 }
+@book{gonzalez06,
+author = {Gonzalez, Rafael C and Woods, Richard E},
+publisher = {Prentice-Hall, Inc.},
+title = {{Digital Image Processing (3rd Edition)}},
+year = {2006}
+}
+@inproceedings{thoraransen16,
+author = {Thorarensen, S and Cuello, R and Kessler, C and Li, L and Barry, B},
+booktitle = {2016 24th Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)},
+doi = {10.1109/PDP.2016.123},
+pages = {398--402},
+title = {{Efficient Execution of SkePU Skeleton Programs on the Low-Power Multicore Processor Myriad2}},
+year = {2016}
+}
+@inproceedings{rosten06,
+author = {Rosten, Edward and Drummond, Tom},
+booktitle = {ECCV},
+pages = {430--443},
+title = {{Machine Learning for High-Speed Corner Detection}},
+year = {2006}
+}
 @article{Castro-Padoin-IET:2015,
 author = {Padoin, Edson L and Pilla, La{\'{e}}rcio L and Castro, M{\'{a}}rcio and Boito, Francieli Z and Navaux, Philippe O A and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
 doi = {10.1049/iet-cdt.2014.0074},
 journal = {IET Computers {\&} Digital Techniques},
 title = {{Performance/Energy Trade-off in Scientific Computing: The Case of ARM big.LITTLE and Intel Sandy Bridge}},
 year = {2015}
-}
-@article{fur,
-author = {Economou, Andrew D and Ohazama, Atsushi and Porntaveetus, Thantrira and Sharpe, Paul T and Kondo, Shigeru and Basson, M Albert and Gritli-Linde, Amel and Cobourne, Martyn T and Green, Jeremy B A},
-doi = {10.1038/ng.1090},
-issn = {1546-1718},
-journal = {Nature genetics},
-number = {3},
-pages = {348--351},
-title = {{Periodic stripe formation by a Turing-mechanism operating at growth zones in the mammalian palate}},
-volume = {44},
-year = {2012}
-}
-@inproceedings{maruyama11,
-author = {Maruyama, Naoya and Nomura, Tatsuo and Sato, Kento and Matsuoka, Satoshi},
-booktitle = {ACM/IEEE SC},
-pages = {11:1----11:12},
-title = {{Physis: An Implicitly Parallel Programming Model for Stencil Computations on Large-Scale GPU-Accelerated Supercomputers}},
-year = {2011}
-}
-@inproceedings{Varghese14,
-address = {Phoenix, USA},
-author = {Varghese, Anish and Edwards, Bob and Mitra, Gaurav and Rendell, Alistair P},
-booktitle = {International Parallel Distributed Processing Symposium Workshops (IPDPSW)},
-pages = {984--992},
-publisher = {IEEE Computer Society},
-title = {{Programming the {\{}A{\}}dapteva {\{}E{\}}piphany 64-Core Network-on-Chip Coprocessor}},
-year = {2014}
-}
-@article{Castro-PARCO:2016,
-abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
-author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Dupros, Fabrice and Aochi, Hideo and Navaux, Philippe O A and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1016/j.parco.2016.01.011},
-issn = {01678191},
-journal = {Parallel Computing},
-keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
-pages = {108--120},
-title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
-url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
-volume = {54},
-year = {2016}
-}
-@inproceedings{steuwer11,
-address = {Washington, DC, USA},
-author = {Steuwer, Michel and Kegel, Philipp and Gorlatch, Sergei},
-booktitle = {Proceedings of the 2011 IEEE International Symposium on Parallel and Distributed Processing Workshops and PhD Forum},
-isbn = {978-0-7695-4577-6},
-pages = {1176--1182},
-publisher = {IEEE Computer Society},
-series = {IPDPSW '11},
-title = {{SkelCL - A Portable Skeleton Library for High-Level GPU Programming}},
-year = {2011}
 }
 @inproceedings{enmyren10,
 address = {New York, NY, USA},
@@ -319,11 +373,50 @@ series = {HLPP '10},
 title = {{SkePU: A Multi-backend Skeleton Programming Library for multi-GPU Systems}},
 year = {2010}
 }
-@inproceedings{datta08,
-author = {Datta, Kaushik and Murphy, Mark and Volkov, Vasily and Williams, Samuel and Carter, Jonathan and Oliker, Leonid and Patterson, David and Shalf, John and Yelick, Katherine},
-booktitle = {ACM/IEEE SC},
-title = {{Stencil Computation Optimization and Auto-Tuning on State-of-the-Art Multicore Architectures}},
-year = {2008}
+@article{cole-skeleton:2004,
+address = {Amsterdam, The Netherlands, The Netherlands},
+author = {Cole, Murray},
+doi = {10.1016/j.parco.2003.12.002},
+issn = {0167-8191},
+journal = {Parallel Comput.},
+keywords = {MPI,libraries,parallel programming,patterns,skeletons},
+number = {3},
+pages = {389--406},
+publisher = {Elsevier Science Publishers B. V.},
+title = {{Bringing Skeletons out of the Closet: A Pragmatic Manifesto for Skeletal Parallel Programming}},
+url = {http://dx.doi.org/10.1016/j.parco.2003.12.002},
+volume = {30},
+year = {2004}
+}
+@inproceedings{SCCEnergy:2012,
+address = {New Brunswick, Canada},
+author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
+booktitle = {IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+doi = {10.1109/ISPASS.2012.6189208},
+pages = {78--87},
+publisher = {IEEE Computer Society},
+title = {{Comparing the Power and Performance of Intel's SCC to State-of-the-Art CPUs and GPUs}},
+year = {2012}
+}
+@inproceedings{steuwer11,
+address = {Washington, DC, USA},
+author = {Steuwer, Michel and Kegel, Philipp and Gorlatch, Sergei},
+booktitle = {Proceedings of the 2011 IEEE International Symposium on Parallel and Distributed Processing Workshops and PhD Forum},
+isbn = {978-0-7695-4577-6},
+pages = {1176--1182},
+publisher = {IEEE Computer Society},
+series = {IPDPSW '11},
+title = {{SkelCL - A Portable Skeleton Library for High-Level GPU Programming}},
+year = {2011}
+}
+@inproceedings{buono13,
+author = {Buono, D and Danelutto, M and Lametti, S and Torquati, M},
+booktitle = {2013 21st Euromicro International Conference on Parallel, Distributed, and Network-Based Processing},
+doi = {10.1109/PDP.2013.27},
+issn = {1066-6192},
+pages = {131--139},
+title = {{Parallel Patterns for General Purpose Many-Core}},
+year = {2013}
 }
 @inproceedings{mccool10,
 author = {McCool, Michael D},
@@ -332,44 +425,12 @@ pages = {5},
 title = {{Structured Parallel Programming With Deterministic Patterns}},
 year = {2010}
 }
-@article{sunway:2016,
-author = {Fu, Haohuan and Liao, Junfeng and Yang, Jinzhe and Wang, Lanning and Song, Zhenya and Huang, Xiaomeng and Yang, Chao and Xue, Wei and Liu, Fangfang and Qiao, Fang-Li and Zhao, Wei and Yin, Xunqiang and Hou, Chaofeng and Zhang, Chenglong and Ge, Wei and Zhang, Jian and Wang, Yangang and Zhou, Chunbo and Yang, Guangwen},
-doi = {10.1007/s11432-016-5588-7},
-journal = {{\{}SCIENCE{\}} {\{}CHINA{\}} Information Sciences},
-number = {7},
-pages = {072001:1----072001:16},
-title = {{The Sunway TaihuLight supercomputer: system and applications}},
-volume = {59},
-year = {2016}
-}
-@inproceedings{TSHMEM:2013,
-address = {Cambridge, USA},
-author = {Lam, B C and George, A D and Lam, H},
-booktitle = {IEEE International Parallel and Distributed Processing Symposium Workshops and PhD Forum (IPDPSW)},
-doi = {10.1109/IPDPSW.2013.154},
-isbn = {978-0-7695-4979-8},
-keywords = {Bandwidth,Computer architecture,Electronics packaging,Libraries,OpenSHMEM library,PGAS programming model,Program processors,Synchronization,TSHMEM,Tilera many-core processor architecture,Tiles,distributed memory systems,distributed-memory architectures,high-performance computing,large parallel computing systems,parallel architectures,parallel programming,parallel programming tools,partitioned global address space programming model,performance analysis,shared memory systems,shared-memory parallel computing,shared-memory programming library},
-pages = {325--334},
-publisher = {IEEE Computer Society},
-title = {{TSHMEM: Shared-Memory Parallel Computing on Tilera Many-Core Processors}},
-year = {2013}
-}
-@inproceedings{Castro-Podesta-ERAD:2017,
-address = {Iju{\'{i}}, Brazil},
-author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson D and Rocha, Rodrigo Caetano and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
-booktitle = {ERAD/RS},
-pages = {395--398},
-publisher = {SBC},
-title = {{Uma Implementa{\c{c}}{\~{a}}o do Framework PSkel com Suporte a Aplica{\c{c}}{\~{o}}es Est{\^{e}}ncil Iterativas para o Processador MPPA-256}},
-year = {2017}
-}
-@inproceedings{Rahman:2011:USC:2016604.2016641,
-author = {Rahman, Shah M Faizur and Yi, Qing and Qasem, Apan},
-booktitle = {ACM International Conference on Computing Frontiers (CF)},
-doi = {10.1145/2016604.2016641},
-isbn = {978-1-4503-0698-0},
-pages = {30:1----30:10},
+@inproceedings{Castro-IA3:2013,
+address = {Denver, EUA},
+author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Ngu{\'{e}}l{\'{e}}, Thomas M and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA{\^{}}3)},
+pages = {5:1----5:8},
 publisher = {ACM},
-title = {{Understanding Stencil Code Performance on Multicore Architectures}},
-year = {2011}
+title = {{Analysis of Computing and Energy Performance of Multicore, {\{}NUMA{\}}, and Manycore Platforms for an Irregular Application}},
+year = {2013}
 }
