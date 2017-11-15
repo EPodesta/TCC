@@ -20,16 +20,30 @@ de Dados, devido à problemas com \textit{Big Data}. Normalmente, arquiteturas
 
 Atualmente, os \textit{cores} (núcleos) de arquiteturas \textit{manycore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número de
-\textit{cores} e energia consumida pelo supercomputador em primeiro lugar no
-\textit{ranking} do TOP500, confirmando esse comportamento. Pode-se perceber o
-aumento significativo da quantidade de \textit{cores} ao longo dos anos.
+\textit{cores} pelo supercomputador em primeiro lugar no \textit{ranking} do
+TOP500, confirmando esse comportamento.
 % \todo[inline]{Adicionar comentário sobre imagem de \textit{cores}}
 Além disso, pode-se verificar o consumo de energia que aumenta de acordo com o
 número de \textit{cores} utilizados pelo supercomputador. Chegando à um total,
-atualmente, de $15$ kW/h.
+atualmente, de $15$ kW/h. Por outro lado, a eficiência energética nos supercomputadores começou a
+surgir pelo ano de 2006, como mostra o gráfico~\ref{fig:graphEnergy}.
 
-% \todo[inline]{Explicar que há uma tendência no crescimento de núcleos em arquiteturas de HPC para se conseguir processar mais dados em menos tempo. Adicionar a figura do TOP 500. Essas arquiteturas são compostas normalmente por CPUs (multicore) e aceleradores (ex. GPUS).}
+\begin{figure}[b]
+	\centering
+	\caption{Número de núcleos, baseado no Top500.}
+	\includegraphics[width=\textwidth]{figs/top500.pdf}
+    \caption*{Fonte: desenvolvido pelo autor.}
+	\label{fig:graphCores}
+\end{figure}
 
+
+\begin{figure}[b]
+	\centering
+	\caption{Eficiência energética, baseado no Green500.}
+        \includegraphics[width=\textwidth]{figs/green500.pdf}
+    \caption*{Fonte: desenvolvido pelo autor.}
+	\label{fig:graphEnergy}
+\end{figure}
 
 
 Até a última década, o desempenho das arquiteturas \hpc era quantificado quase
