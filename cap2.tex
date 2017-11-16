@@ -2,78 +2,210 @@
 
 
 \section{Arquiteturas Paralelas}
+
+De acordo com TANENBAUM (colocar referência), as arquiteturas paralelas podem ser classificadas em
+dois grandes grupos: multiprocessadores e multicomputadores. Nas seções a seguir são apresentados os
+principais conceitos básicos destas duas classes de arquiteturas paralelas. Posteriormente, será discutido
+em mais detalhes o processador \textit{manycore} \mppa, o qual será utilizado neste trabalho.
+
+\todo[inline]{Para o restante desta seção, tu podes pegar informações do livro do Tanenbaum de SO. O capítulo 8
+trata sobre multiprocessadores (seção 8.1) e multicomputadores (seção 8.2)}
+
+\subsection{Multiprocessadores}
+
+\todo[inline]{
+- Organização: processadores interconectados a uma memória compartilhada via barramento (UMA). Podes usar a figura
+8.2c do livro como base para fazer uma tua e mostrar as ideias.
+}
+
+\todo[inline]{
+- Podes falar rapidamente sobre NUMA e as diferenças para o UMA.
+}
+
+\todo[inline]{
+- Então, podes entrar no assunto dos multicores:
+
 Até a última década, o desempenho sobre computadores escalava de acordo com o
 aumento da frequência dos processadores. Contudo, com o aumento da frequência,
-a potência, isto é, a energia consumida aumenta. De acordo com a
-equação~\eqref{eq:power}, pode-se perceber que a potência aumenta,
-proporcionalmente, com o aumento da frequência. Portanto, o aumento do
-desempenho encontrou uma barreira no consumo de energia, onde tornou-se inviável
-um aumento indiscriminado da frequência. Desta forma, tornou-se necessário uma
-nova abordagem para aumentar o desempenho dos computadores, uma solução é a
-divisão dos algoritmos sobre as \textit{threads} ou \textit{cores} de uma \cpu,
-isto é, paralelizar o algoritmo.
+a potência e o consumo de energia também aumentam. De acordo com a
+Equação~\eqref{eq:power}, pode-se perceber que a potência aumenta,
+proporcionalmente, com o aumento da frequência. 
+}
 
 \begin{equation}\label{eq:power}
-	P = C \times V^2 \times F
+	P = CV^2f
 \end{equation}
 
-Existem diversos tipos de arquiteturas que proporcionam ao desenvolvedor uma
-abordagem paralela. Multiprocessadores são arquiteturas que fornecem vários
-núcleos de processamento em uma máquina e a comunicação entre os núcleos é feita
-através da memória compartilhada, contudo este modelo traz dificuldades em
-relação à organização e particionamento de dados entre núcleos. Devido ao espaço
-limitado em \textit{chip}, o aumento do número de núcleos nessa arquitetura pode
-se tornar inviável, portanto, arquiteturas multicomputadas são utilizadas, onde
-temos várias máquinas, sendo, geralmente, multiprocessadas, interligadas para
-fornecer um maior poder de processamento. A comunicação entre cada
-\textit{cluster}, isto é, cada nó na rede de computadores utiliza distribuição
-de dados e sincronizações, como não temos compartilhamento de memória entre os
-nós de processamento, o desenvolvimento de código para essa arquitetura é mais
-complicada, pois existem vários fatores à serem avaliados pelo desenvolvedor. Na
-próxima seção serão abordadas as dificuldades e implementação de cada modelo.
+\todo[inline]{Esta parte está ruim. 1) Não foi explicada a equação (o que é P, C, V e f?).
+2) Dizer que a potência aumenta proporcionalmente com o aumento da frequência não está totalmente correto,
+pois a tensão (V) também tem relação com a frequência (f). A tensão tem um impacto ainda maior, pois
+ela é quadrática na equação. Tens que dar uma olhada melhor nisso e corrigir o texto.}
+
+Portanto, o aumento do desempenho encontrou uma barreira no consumo de energia, onde tornou-se inviável
+um aumento indiscriminado da frequência. Desta forma, tornou-se necessário uma
+nova abordagem para aumentar o desempenho dos processadores. A solução encontrada
+pelos fabricantes de \textit{chips} foi de aumentar a quantidade de núcleos processamento no \textit{chip},
+porém reduzindo a frequência de operação dos mesmos, dando origem aos processadores \textit{multicore}.
+
+\todo[inline]{
+- Falar de \textit{manycores} (de modo geral), dando exemplos: Xeon Phi e GPU, que são dois tipos de \textit{manycores}
+bem diferentes.
+}
+
+\todo[inline]{
+- Finalizar dizendo que o \textit{manycore} utilizado neste trabalho se diferencia dos dois exemplos anteriores, pois
+seus núcleos são conectados através de uma NoC. Então, diz que será tratado desse assunto na Seção 2.1.3
+}
+
+\subsection{Multicomputadores}
+
+\todo[inline]{
+- Organização: sistemas multiprocessados, cada um com sua memória de dedicada, conectados através de uma rede. Podes usar
+a figura 8-18 como base para explicar as ideias.
+}
+
+\todo[inline]{
+- Podes falar rapidamente dos diferentes tipos de interconexão: figura 8-16 do livro
+}
+
+\todo[inline]{
+- Falar dos tipos de multicomputadores: NOW, COW, etc...
+}
+
+\todo[inline]{
+- Finalizar indicando que nos multicomputadores a comunicação entre os processadores é feita de maneira explícita através de trocas de mensagens.
+}
+
+\subsection{O Processador \textit{Manycore} MPPA-256}
+
+O \mppa é um processador \textit{manycore} desenvolvido pela empresa francesa
+Kalray, o qual possui 256 núcleos de processamento de 400 MHz. Ele mistura características
+de um multiprocessador e de um multicomputador, porém em um único \textit{chip}.
+
+Os núcleos de processamento do \mppa são denominados \pes.
+Além dos PEs, o processador possui 32 núcleos dedicados a gerência de recursos
+denominados \textit{Resource Managers} (RMs). PEs e RMs são distribuídos
+fisicamente no \textit{chip} em 16 \textit{clusters} e 4 subsistemas de
+Entrada/Saída (E/S), contendo cada \textit{cluster} 16 PEs e 1 RM. Além dos
+\textit{clusters}, o \mppa possui 4 subsistemas de E/S contendo, cada um, 4 RMs.
+Toda a comunicação entre \textit{clusters} e/ou subsistemas de E/S é feita
+através de uma \noc \textit{torus} 2D. A arquitetura do \mppa pode ser vista na
+Figura~\ref{fig:mppa}.
+
+A finalidade principal dos PEs é executar \textit{threads} de usuário de forma
+ininterrupta e não preemptível para realização de computação. PEs de um mesmo
+\textit{cluster} compartilham uma memória de 2 MB, a qual é utilizada para
+armazenar os dados a serem processados pelos PEs. Cada PE possui também uma
+memória \textit{cache} associativa 2-\textit{way} de 32KB para dados e uma para
+instruções. Porém, o processador não dispõe de coerência de \textit{caches}, o
+que dificulta o desenvolvimento de aplicações para esse processador. Por outro
+lado, a finalidade dos RMs é gerenciar E/S, controlar comunicações entre
+\textit{clusters} e/ou subsistemas de E/S e realizar comunicação com uma memória
+RAM. Na arquitetura utilizada, um dos subsistemas de E/S está conectado a uma
+memória externa \lpddr de 2 GB.
+
+\begin{figure}[t]
+	\centering
+	\caption{Visão geral do \mppa.}
+	\includegraphics[width=0.7\textwidth]{figs/mppa-overall.pdf}
+    \caption*{Fonte: ...}
+	\label{fig:mppa}
+\end{figure}
+
+- Terminar essa seção falando que a comunicação entre clusters e entre cluster/IO tem
+que ser feita de maneira explícita utilizando uma API de baixo nível. Então, diz que os detalhes
+referentes a programação nesse processador serão tratados na Seção 2.2.3
+
+%Existem diversos tipos de arquiteturas que proporcionam ao desenvolvedor uma
+%abordagem paralela. Multiprocessadores são arquiteturas que fornecem vários
+%núcleos de processamento em uma máquina e a comunicação entre os núcleos é feita
+%através da memória compartilhada, contudo este modelo traz dificuldades em
+%relação à organização e particionamento de dados entre núcleos. Devido ao espaço
+%limitado em \textit{chip}, o aumento do número de núcleos nessa arquitetura pode
+%se tornar inviável, portanto, arquiteturas multicomputadas são utilizadas, onde
+%temos várias máquinas, sendo, geralmente, multiprocessadas, interligadas para
+%fornecer um maior poder de processamento. A comunicação entre cada
+%\textit{cluster}, isto é, cada nó na rede de computadores utiliza distribuição
+%de dados e sincronizações, como não temos compartilhamento de memória entre os
+%nós de processamento, o desenvolvimento de código para essa arquitetura é mais
+%complicada, pois existem vários fatores à serem avaliados pelo desenvolvedor. Na
+%próxima seção serão abordadas as dificuldades e implementação de cada modelo.
 
 %Arquiteturas paralelas: multicomputadores, multiprocessadores, compartilhamento de memória e distribuição de dados.
 %Programação paralela: uso de apis, dificuldades. POSIX, MPI...
 
 
 \section{Programação Paralela}
+
 O desenvolvimento de aplicações são, geralmente, implementadas de forma
-sequêncial, isto é, um conjunto serializado de instruções que será executado
+sequencial, isto é, um conjunto serializado de instruções que será executado
 sobre uma \cpu. Por outro lado, a computação paralela ou distribuída efetua o
-processamento de instruções sobre múltiplos elementos de processamento. Dentre
-esses elementos, pode-se ter várias \cpu{}s (multicomputado) ou várias
-\textit{threads} dentro da mesma \cpu (multiprocessado). O algoritmo que compõe
-a implementação pode ser dividido em partes menores que podem ser executadas
-simultâneamente entre os elementos de processamento.
-%falar sobre distribuida e paralela.
+processamento de instruções sobre múltiplos elementos de processamento. A ideia
+principal é dividir a computação em partes menores que podem ser executadas
+simultaneamente entre os elementos de processamento distintos com intuito de se
+realizar um processamento em menos tempo.
+
+Diferentes APIs de programação paralela foram criadas com intuito de simplificar
+o desenvolvimento de aplicações em arquiteturas multiprocessadas e multicomputadas.
+A seguir, serão apresentadas as APIs mais utilizadas no âmbito de \hpc em cada tipo de
+arquitetura. Por fim, será apresentada a \api utilizada para o desenvolvimento de aplicações
+no processador \mppa.
 
 
-Computação paralela em uma arquitetura multiprocessada contém diversas
-dificuldades para o desenvolvimento de código, como: \textbf{(i) dependência de
-    dados:} quando um processo ou \textit{thread} está executando uma parte do
-código, outra \textit{thread} deve ter os dados atualizados corretamente. Esta
-dependência pode gerar problemas, como \textit{deadlocks} e \textit{livelocks}.
-\textit{Deadlocks} são conflitos que ocorrem entre \textit{threads}, quando uma
-\textit{thread} $A$ precisa de um recurso alocado por uma \textit{thread} $B$
-que, por sua vez, precisa de um recurso alocado pela \textit{thread} $A$, ocorre
-um ciclo na execução, caracterizando um \textit{deadlock}. Por outro lado,
-\textit{Livelocks} são similares aos \textit{deadlocks}, contudo o estado das
-\textit{threads} estão em constante mudança, fazendo com que nenhum deles
-continue sua execução normalmente, pois a cada mudança um \textit{deadlock}
-ocorre. Além disso, dependências geram problemas de sincronização entre
-\textit{threads}, deixando para o desenvolvedor da aplicação a tarefa de
-gerenciar corretamente a execução. \textbf{(ii) Condição de Corrida:} uma
-\textit{thread} escreve sobre uma váriavel ou, mais especificamente, um espaço
-de memória, enquanto outra \textit{thread} fará alguma operação sobre esse mesmo
-espaço. Isso pode gerar inconsistências de dados, entre outros problemas.
+\subsection{OpenMP}
 
-Mais especificamente, a comunicação em uma arquitetura multiprocessada pode ser
-feita por uma \api denominada \openMP. A \api é baseada no modelo de programação
+\todo[inline]{
+- Dizer que é feita para ser utilizada em arquiteturas multiprocessadas, ou seja, com memória
+compartilhada.
+}
+
+\todo[inline]{
+- Apresentar as principais ideias do OpenMP: dizer que é baseada em pragmas, modelo fork-join,
+regiões paralelas, paralelização de laços, ... (A \api é baseada no modelo de programação
 paralela de memória compartilhada, apresentando uma boa portabilidade e pouco
 esforço de programação. O modelo de programação utiliza diretivas de compilação
 e variáveis, tornando possível poucas modificações de código para utilizar
-outras \textit{threads} na aplicação.
+outras \textit{threads} na aplicação....)
+}
 
+%Computação paralela em uma arquitetura multiprocessada contém diversas
+%dificuldades para o desenvolvimento de código, como: \textbf{(i) dependência de
+%    dados:} quando um processo ou \textit{thread} está executando uma parte do
+%código, outra \textit{thread} deve ter os dados atualizados corretamente. Esta
+%dependência pode gerar problemas, como \textit{deadlocks} e \textit{livelocks}.
+%\textit{Deadlocks} são conflitos que ocorrem entre \textit{threads}, quando uma
+%\textit{thread} $A$ precisa de um recurso alocado por uma \textit{thread} $B$
+%que, por sua vez, precisa de um recurso alocado pela \textit{thread} $A$, ocorre
+%um ciclo na execução, caracterizando um \textit{deadlock}. Por outro lado,
+%\textit{Livelocks} são similares aos \textit{deadlocks}, contudo o estado das
+%\textit{threads} estão em constante mudança, fazendo com que nenhum deles
+%continue sua execução normalmente, pois a cada mudança um \textit{deadlock}
+%ocorre. Além disso, dependências geram problemas de sincronização entre
+%\textit{threads}, deixando para o desenvolvedor da aplicação a tarefa de
+%gerenciar corretamente a execução. \textbf{(ii) Condição de Corrida:} uma
+%\textit{thread} escreve sobre uma váriavel ou, mais especificamente, um espaço
+%de memória, enquanto outra \textit{thread} fará alguma operação sobre esse mesmo
+%espaço. Isso pode gerar inconsistências de dados, entre outros problemas.
+
+\subsection{MPI}
+
+\todo[inline]{
+- Motivação para usar MPI:
+
+A programação paralela em multicomputadores é feita através da utilização de múltiplos processos que se comunicam
+através de trocas de mensagens. Devido à característica de baixo nível intrínseca do modelo de troca de
+mensagens, utilizar \textit{sockets} manualmente para a comunicação entre nós de
+uma rede de \textit{clusters} é inadequada para o desenvolvedor. Portanto, mostra-se necessário utilizar
+APIs de mais alto nível, possibilitando uma maior abstração ao desenvolvedor.
+}
+
+\todo[inline]{
+- Dizer que MPI é a API mais amplamente utilizada para programação paralela em multicomputadores, ou seja, para arquiteturas multicomputadas, ou seja, com memória distribuída. 
+}
+
+\todo[inline]{
+- Apresentar as principais ideias do MPI: processos MPI, rank, Send/Recv, comunicações coletivas, ...
+}
 %
 % \renewcommand{\lstlistingname}{Código}
 % \definecolor{lightgray}{rgb}{0.97,0.97,0.97}
@@ -122,52 +254,73 @@ outras \textit{threads} na aplicação.
 % \caption*{Exemplo de código OpenMP.}
 % \end{figure}
 %
-
-
-
-Computações distribuídas (arquiteturas multicomputadas) são utilizadas para
-dissipar melhor a energia entre \textit{clusters}. Mais especificamente, elas
-utilizam comunicações por troca de mensagens para efetuar a passagem de
-informações entre processos. Além disso, esse modelo apresenta dificuldades de
-sincronização entre \textit{clusters} diferentes em uma mesma rede, dificuldades
-de comunicação, além dos problemas já apresentados sobre a arquitetura
-multiprocessada, pois cada nó da rede pode possuir uma arquitetura
-multiprocessada para aumentar o desempenho de aplicações.
-Devido à característica de baixo nível intrínseca do modelo de troca de
-mensagens, utilizar \textit{sockets} manualmente para a comunicação entre nós de
-uma rede de \textit{clusters} é inadequada para o desenvolvedor, desta forma, as
-comunicações utilizam uma \api de troca de mensagens denominada \MPI, ela
-adiciona um nível a mais sobre os \textit{sockets} possibilitando uma maior
-abstração ao desenvolvedor.
-
-
 % \todo{Apresentar código \MPI}
 
-Os modelos multiprocessados e multicomputados tem como objetivo dividir o
-processamento em subtarefas, executá-las simultâneamente em elementos de
-processamento para aumentar o desempenho da aplicação e diminuir o consumo de
-energia, obtendo um menor tempo de execução.
 
-
-Ao aperfeiçoar esses modelos, começaram a surgir processadores para \hpc com
-vários \textit{cores} de processamento. Esses processadores utilizam várias
-técnicas, que abordam o paralelismo e características específicas de cada
-máquina, para aumentar o desempenho de aplicações. Com o aumento da importância
-do consumo de energia, novos porcessadores \textit{manycore} de baixo consumo de
-energia começaram a surgir. Contudo, processadores \textit{manycore} são
-onerosos e suceptíveis à erros, apresentando diversos problemas para o
-desenvolvedor~\cite{pereira15}. Geralmente, núcleos de processamento sem
-coerência de \textit{cache} são distribuídos em uma arquitetura organizada em
-\textit{clusters}, onde cada \textit{cluster} possui uma memória local
-(compartilhada somente entre os \textit{cores} do \textit{cluster}). Dessa
-forma, a comunicação entre \textit{clusters} deve ser feita de uma forma
-distribuída e a comunicação intra-\textit{cluster} deve ser feita por meio do
-modelo de memória compartilhada. Devido à comunicação entre os \textit{clusters}
-o peso do tempo de comunicação pode ter um grande impacto no tempo total de
-execução.
+%Ao aperfeiçoar esses modelos, começaram a surgir processadores para \hpc com
+%vários \textit{cores} de processamento. Esses processadores utilizam várias
+%técnicas, que abordam o paralelismo e características específicas de cada
+%máquina, para aumentar o desempenho de aplicações. Com o aumento da importância
+%do consumo de energia, novos porcessadores \textit{manycore} de baixo consumo de
+%energia começaram a surgir. Contudo, processadores \textit{manycore} são
+%onerosos e suceptíveis à erros, apresentando diversos problemas para o
+%desenvolvedor~\cite{pereira15}. Geralmente, núcleos de processamento sem
+%coerência de \textit{cache} são distribuídos em uma arquitetura organizada em
+%\textit{clusters}, onde cada \textit{cluster} possui uma memória local
+%(compartilhada somente entre os \textit{cores} do \textit{cluster}). Dessa
+%forma, a comunicação entre \textit{clusters} deve ser feita de uma forma
+%distribuída e a comunicação intra-\textit{cluster} deve ser feita por meio do
+%modelo de memória compartilhada. Devido à comunicação entre os \textit{clusters}
+%o peso do tempo de comunicação pode ter um grande impacto no tempo total de
+%execução.
 %-------------------------------------------------------------------
 
-\section{Padrões Paralelos}
+\subsection{Modelo de Programação do MPPA-256}
+
+\todo[inline]{
+- Falar de como se programa o MPPA: processo mestre roda no I/O, ele faz spawn de um
+processo escravo para cada cluster, cada processo escravo pode criar até 16 threads.
+}
+
+\todo[inline]{
+- Threads podem ser criadas usando POSIX ou OpenMP (que foi tratado anteriormente)
+}
+
+\todo[inline]{
+- Explicar que MPPA não tem suporte para a API MPI. Portanto, é necessário utilizar uma API de comunicação low-level
+desenvolvida pela Kalray. Explicar que cada  cluster tem seu espaço de endereçamento, que se usa o conceito de portais, para se 
+fazer escrita remota, etc... Falar um pouco de como funciona essas comunicações através da NoC.
+}
+
+\todo[inline]{
+- Finaliza falando das dificuldades de se programar com essa API low-level (texto abaixo):
+}
+
+Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
+para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns
+fatores importantes. O primeiro deles está relacionado ao \textbf{modelo de
+    programação híbrido} exigido pelo processador: \textit{threads} em um mesmo
+\textit{cluster} se comunicam através de uma memória compartilhada local, porém
+a comunicação entre \textit{clusters} é feita explicitamente via \noc, em um
+modelo de memória distribuída. Mais especificamente, aplicações desenvolvidas
+para o \mppa precisam utilizar duas bibliotecas de programação paralela para
+utilizar os recursos do processador: OpenMP, baseado em um modelo de memória
+compartilhada, utilizada para paralelizar a computação dentro de cada
+\textit{cluster} e uma \api proprietária, que segue um modelo de memória
+distribuída, sendo utilizado na comunicação entre os \textit{clusters} e o
+subsistema de E/S por meio da NoC. O segundo fator importante está relacionado a
+\textbf{capacidade limitada de memória} no \textit{chip}: cada \textit{cluster}
+possui apenas 2 MB de memória local de baixa latência. Portanto, aplicações
+reais precisam constantemente realizar comunicações com o subsistema de \io
+conectado à memória \lpddr. Por fim, o último fator está diretamente relacionado
+à \textbf{ausência de coerência de \textit{cache}}: cada \pe possui uma memória
+\textit{cache} privada sem coerência de \textit{cache}, sendo necessário o uso
+explícito de instruções do tipo \textit{flush} para atualizar a \textit{cache}
+de um \pe quando necessário.
+
+
+\section{O Padrão \textit{Stencil}}
+
 As dificuldades presentes na computação paralela tem um grande impacto sobre a
 eficiência do desenvolvimento de aplicações para esse modelo. Com o
 desenvolvimento de aplicações paralelas, começou-se a notar um padrão entre
@@ -188,40 +341,40 @@ gerenciar os detalhes de execução, diminuindo o tempo de desenvolvimento e
 
 Existem diversos padrões paralelos, como o \textit{map}, \textit{reduce},
 \textit{scan}, \textit{stencil}, entre outros. Dentre os padrões existentes, o
-padrão estêncil é de grande importância tanto no ambiente acadêmico quanto no
+padrão \textit{stencil} é de grande importância tanto no ambiente acadêmico quanto no
 industrial, utilizado em diversos campos importantes, como física quântica,
 previsão do tempo e processamento de imagens.~\cite{pereira15}.
 
-
-O padrão \textit{stencil} atualiza elementos de uma matriz (\texttt{Array}) de entrada
-, de acordo com um padrão específicado. Mais especificamente, em uma aplicação
-estêncil, cada iteração utiliza a máscara de vizinhança (\texttt{Mask})
+O padrão \textit{stencil} atualiza elementos de uma matriz (\texttt{Array}) de entrada,
+de acordo com um padrão especificado. Mais especificamente, em uma aplicação
+\textit{stencil}, cada iteração utiliza a máscara de vizinhança (\texttt{Mask})
 responsável por determinar os vizinhos utilizados na computação. A máscara é
 aplicada sobre o \texttt{Array} de entrada para determinar o valor de cada
 célula do \texttt{Array} de saída. No exemplo da Figura~\ref{fig:stencil}, o
 valor de cada célula do \texttt{Array} de saída é determinado em função dos
 valores de cada uma das células vizinhas adjacentes. Esse processo é realizado
 para todas as células do \texttt{Array} de entrada, produzindo um \texttt{Array}
-de saída da computação estêncil. Além disso, o padrão possibilita a computação
+de saída da computação \textit{stencil}. Além disso, o padrão possibilita a computação
 iterativa, isto é, ao final de uma iteração, o \texttt{Array} de saída será
 considerado como \texttt{Array} de entrada para a próxima iteração,
 caracterizando uma nova iteração da computação.
 
 \begin{figure}[t]
 	\centering
-	\caption{Ilustração do padrão estêncil oferecido pelo \pskel.}
+	\caption{Ilustração do padrão \textit{stencil} oferecido pelo \pskel.}
 	\includegraphics[width=0.7\textwidth]{figs/stencilComp.pdf}
     \caption*{Fonte: desenvolvido pelo autor.}
 	\label{fig:stencil}
 \end{figure}
 
+\todo[inline]{- Adicionar 1 ou 2 parágrafos falando de exemplos de aplicações que usam esse padrão.
+Podes usar o Fur e o Jacobi.}
 
-
-\section{\textit{Framework} PSkel}
-O PSkel é um \fw de programação em alto nível para o padrão estêncil, que
+\section{PSkel}
+O PSkel é um \fw de programação em alto nível para o padrão \textit{stencil}, que
 oferece suporte à execuções paralelas em arquiteturas heterogêneas incluindo CPU
 e GPU. Utilizando uma única interface de programação escrita em C++, o usuário é
-responsável por definir o \textit{kernel} principal da computação estêncil,
+responsável por definir o \textit{kernel} principal da computação \textit{stencil},
 enquanto o \fw se encarrega de gerar código executável para as diferentes
 plataformas paralelas e realizar todo o gerenciamento de memória e transferência
 de dados entre dispositivos de forma transparente~\cite{pereira15}. Mais
@@ -232,8 +385,8 @@ estática para o particionamnto de tarefas e dados no PSkel.
 A API do PSkel possibilita a definição de \textit{templates} para a manipulação
 de estruturas $n$-dimensionais, denominadas \texttt{Array} (1 dimensão),
 \texttt{Array2D} (2 dimensões) e \texttt{Array3D} (3 dimensões). Além disso, o
-\fw provê abstrações para a definição da vizinhança do estêncil (\texttt{Mask})
-e o \textit{kernel} da computação estêncil (\texttt{stencilKernel()}). O
+\fw provê abstrações para a definição da vizinhança do \textit{stencil} (\texttt{Mask})
+e o \textit{kernel} da computação \textit{stencil} (\texttt{stencilKernel()}). O
 \texttt{stencilKernel()} é um método a ser implementado pelo usuário que
 descreve, especificamente, a computação que será executada para cada célula do
 \texttt{Array} de entrada com base nos valores de sua vizinhança (\texttt{Mask}).
@@ -249,8 +402,8 @@ estruturas que armazenam \texttt{Arrays} para leitura/escrita de dados. Eles sã
 responsáveis por gerenciar a alocação de memória na \cpu e \gpu.
 Por fim, o desenvolvedor irá instanciar a classe de \textit{Runtime} que adota
 um padrão \textit{Facade} que efetua a abstração dos detalhes da implementação e
-configurações do padrão estêncil. Essa classe provê os métodos de execução para
-os padrões estêncil, além do particionamento transparente de tarefas e dados
+configurações do padrão \textit{stencil}. Essa classe provê os métodos de execução para
+os padrões \textit{stencil}, além do particionamento transparente de tarefas e dados
 entre \cpu e \gpu.
 
 % \begin{figure}[t]
@@ -265,15 +418,15 @@ entre \cpu e \gpu.
 % %\vspace{-4em}
 % \end{figure}
 %
-Em uma aplicação estêncil iterativa, cada iteração utiliza a máscara de
+Em uma aplicação \textit{stencil} iterativa, cada iteração utiliza a máscara de
 vizinhança (\texttt{Mask}) sobre o \texttt{Array} de entrada para determinar o
 valor de cada célula do \texttt{Array} de saída. No exemplo da
 Figura~\ref{fig:stencil}, o valor de cada célula do \texttt{Array} de saída é
 determinado em função dos valores de cada uma das células vizinhas adjacentes.
 Esse processo é realizado para todas as células do \texttt{Array} de entrada,
-produzindo um \texttt{Array} de saída da computação estêncil. Ao final de uma
+produzindo um \texttt{Array} de saída da computação \textit{stencil}. Ao final de uma
 iteração, o \texttt{Array} de saída será considerado como \texttt{Array} de
-entrada para a próxima iteração no caso de uma aplicação estêncil iterativa.
+entrada para a próxima iteração no caso de uma aplicação \textit{stencil} iterativa.
 
 No código abaixo temos um exemplo de aplicação no \fw. Nele temos a
 especificação do \texttt{stencilKernel} da aplicação, além das estruturas para
@@ -283,6 +436,8 @@ computação, entre outras estruturas. Estruturas como \texttt{Array2D},
 A classe de \textit{Runtime} é determinada pela estrutura \texttt{Stencil2D},
 onde ao efetuar a chamada para funções específicas, a execução da computação irá
 iniciar.
+
+\todo[inline]{Falar mais precisamente o que é feito em cada linha.}
 
 \renewcommand{\lstlistingname}{Código}
 \definecolor{lightgray}{rgb}{0.97,0.97,0.97}
@@ -349,59 +504,4 @@ void main(){
 \end{tabular}
 \end{figure}
 
-
-\section{Kalray MPPA-256}
-O \mppa é um processador \textit{manycore} desenvolvido pela empresa francesa
-Kalray, o qual possui 256 núcleos de processamento de 400 MHz denominados \pes.
-Além dos PEs, o processador possui 32 núcleos dedicados a gerência de recursos
-denominados \textit{Resource Managers} (RMs). PEs e RMs são distribuídos
-fisicamente no \textit{chip} em 16 \textit{clusters} e 4 subsistemas de
-Entrada/Saída (E/S), contendo cada \textit{cluster} 16 PEs e 1 RM. Além dos
-\textit{clusters}, o \mppa possui 4 subsistemas de E/S contendo, cada um, 4 RMs.
-Toda a comunicação entre \textit{clusters} e/ou subsistemas de E/S é feita
-através de uma \noc \textit{torus} 2D. A arquitetura do \mppa pode ser vista na
-Figura~\ref{fig:mppa}.
-
-A finalidade principal dos PEs é executar \textit{threads} de usuário de forma
-ininterrupta e não preemptível para realização de computação. PEs de um mesmo
-\textit{cluster} compartilham uma memória de 2 MB, a qual é utilizada para
-armazenar os dados a serem processados pelos PEs. Cada PE possui também uma
-memória \textit{cache} associativa 2-\textit{way} de 32KB para dados e uma para
-instruções. Porém, o processador não dispõe de coerência de \textit{caches}, o
-que dificulta o desenvolvimento de aplicações para esse processador. Por outro
-lado, a finalidade dos RMs é gerenciar E/S, controlar comunicações entre
-\textit{clusters} e/ou subsistemas de E/S e realizar comunicação com uma memória
-RAM. Na arquitetura utilizada, um dos subsistemas de E/S está conectado a uma
-memória externa \lpddr de 2 GB.
-
-\begin{figure}[b]
-	\centering
-	\caption{Visão geral do \mppa.}
-	\includegraphics[width=0.7\textwidth]{figs/mppa-overall.pdf}
-    \caption*{Fonte: ...}
-	\label{fig:mppa}
-\end{figure}
-
-
-Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
-para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns
-fatores importantes. O primeiro deles está relacionado ao \textbf{modelo de
-    programação híbrido} exigido pelo processador: \textit{threads} em um mesmo
-\textit{cluster} se comunicam através de uma memória compartilhada local, porém
-a comunicação entre \textit{clusters} é feita explicitamente via \noc, em um
-modelo de memória distribuída. Mais especificamente, aplicações desenvolvidas
-para o \mppa precisam utilizar duas bibliotecas de programação paralela para
-utilizar os recursos do processador: OpenMP, baseado em um modelo de memória
-compartilhada, utilizada para paralelizar a computação dentro de cada
-\textit{cluster} e uma \api proprietária, que segue um modelo de memória
-distribuída, sendo utilizado na comunicação entre os \textit{clusters} e o
-subsistema de E/S por meio da NoC. O segundo fator importante está relacionado a
-\textbf{capacidade limitada de memória} no \textit{chip}: cada \textit{cluster}
-possui apenas 2 MB de memória local de baixa latência. Portanto, aplicações
-reais precisam constantemente realizar comunicações com o subsistema de \io
-conectado à memória \lpddr. Por fim, o último fator está diretamente relacionado
-à \textbf{ausência de coerência de \textit{cache}}: cada \pe possui uma memória
-\textit{cache} privada sem coerência de \textit{cache}, sendo necessário o uso
-explícito de instruções do tipo \textit{flush} para atualizar a \textit{cache}
-de um \pe quando necessário.
 
