@@ -9,60 +9,60 @@ energia e, consequentemente, a temperatura do \textit{chip} aumenta. Desta
 forma, indústrias começaram a investir em outros meios para aumentar o
 desempenho de arquiteturas, um exemplo, são os processadores \textit{manycore}.
 
-Arquiteturas \hpc são exemplos de \textit{manycores} utilizadas para o
+Arquiteturas utilizadas na área de \hpc empregam processadores \textit{manycore} para atingir um
 processamento de uma imensa quantidade de dados ou para aplicações que precisam
 de um grande quantidade de tempo para serem executadas. Supercomputadores e
 \textit{clusters} de computadores são utilizados para tornar a computação de
 aplicações ou dados tratável do ponto de vista computacional. Essas arquiteturas
 são utilizadas em aplicações científicas ou, mais atualmente, em áreas de Banco
 de Dados, devido à problemas com \textit{Big Data}. Normalmente, arquiteturas
-\hpc são compostas por uma \cpu{} e aceleradores (e.g, \gpu).
+\hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
 
-Atualmente, os \textit{cores} (núcleos) de arquiteturas \textit{manycore}
-aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número de
-\textit{cores} pelo supercomputador em primeiro lugar no \textit{ranking} do
-TOP500, confirmando esse comportamento.
+Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{manycore}
+aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
+\textit{cores} do supercomputador em primeiro lugar no \textit{ranking} do
+TOP500\footnote{\url{http://top500.org}}, confirmando esse comportamento.
 % \todo[inline]{Adicionar comentário sobre imagem de \textit{cores}}
-Além disso, pode-se verificar o consumo de energia que aumenta de acordo com o
-número de \textit{cores} utilizados pelo supercomputador. Chegando à um total,
-atualmente, de $15$ kW/h. Por outro lado, a eficiência energética nos supercomputadores começou a
-surgir pelo ano de 2006, como mostra o gráfico~\ref{fig:graphEnergy}.
+
+\todo[inline]{Saiu a lista de novembro. Atualizar o gráfico.}
 
 \begin{figure}[b]
 	\centering
-	\caption{Número de núcleos, baseado no Top500.}
+	\caption{Crescimento do número de núcleos do supercomputadores número 1 do \textit{ranking} Top500 (dados extraídos do Top500).}
 	\includegraphics[width=\textwidth]{figs/top500.pdf}
     \caption*{Fonte: desenvolvido pelo autor.}
 	\label{fig:graphCores}
 \end{figure}
 
+\todo[inline]{Saiu a lista de novembro. Atualizar o gráfico e o texto.}
 
-\begin{figure}[b]
+\begin{figure}[t]
 	\centering
-	\caption{Eficiência energética, baseado no Green500.}
+	\caption{Eficiência energética do supercomputador número 1 do \textit{ranking} Green500 (dados extraídos do Green500).}
         \includegraphics[width=\textwidth]{figs/green500.pdf}
     \caption*{Fonte: desenvolvido pelo autor.}
 	\label{fig:graphEnergy}
 \end{figure}
 
 
-Até a última década, o desempenho das arquiteturas \hpc era quantificado quase
+Até a última década, o desempenho das arquiteturas utilizadas em \hpc era quantificado quase
 que exclusivamente pelo seu poder de processamento, usualmente medido por
 \flops. Contudo, o consumo excessivo de energia é uma barreira para o aumento de
-dsempenho de forma escalável nestas plataformas.
+desempenho de forma escalável nestas plataformas.
 
 % \todo[inline]{Ressaltar o relatório DARPA/IPTO e falar da eficiência energética do supercomputador nro 1 e quão distante ele está do ideal.}
 
 Essa preocupação com o aumento de energia é ressaltada pelo relatório emitido
 pelo Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO)
-~\cite{Kogge2008}. O relatório ressalta que para atingir o
-\textit{Exascale}(10$^{18}$) é necessário, aproximadamente, 20 MW, isto é, com
-essas características, um supercomputador deve ser capaz de efetuar 50 GFlops/W.
+~\cite{Kogge2008}. O relatório ressalta que a potência máxima aceitável para supercomputadores
+\textit{Exascale} (10$^{18}$) seria de 20 MW, isto é, com
+essas características, um supercomputador deveria possuir uma eficiência energética de 50 GFlops/W.
 Por outro lado, atualmente, os supercomputadores mais energicamente eficientes
-possuem uma eficiência energética inferior à $6,1$ TFlops/W, com um pico
-inferior à $8,2$ TFlops/W. Esse valor é 8 vezes menor que o ressaltado pelo
+possuem uma eficiência energética de no máximo $17$ TFlops/W, como pode ser observado nos dados extraídos do \textit{ranking}
+Green500\footnote{\url{https://www.top500.org/green500/}} mostrados na Figura~\ref{fig:graphEnergy}.
+Este valor é quase 3 vezes menor que o ressaltado pelo
 relatório da DARPA/IPTO, sendo assim, atualmente a eficiência energética de
-supercomputadores está bem distante da ideal. Portanto, para que
+supercomputadores está ainda distante da ideal. Portanto, para que
 supercomputadores tenham potencial para atingir o \textit{Exascale} é necessário
 um consumo energético viável e um alto desempenho. Contudo, o crescimento dessas
 duas variáveis não é proporcional.
@@ -89,9 +89,9 @@ Por essa razão, o tempo de comunicação pode variar entre os núcleos que est�
 comunicando.
 %Explicar as dificuldades.
 
-O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados de
-\pe, e 4 subsistemas de \io. O ambiente do \mppa é heterogêneo, sendo utilizado
-entre os \textit{clusters} e \io, uma comunicação via troca de mensagens, e
+O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados
+\pes, e 4 subsistemas de \io. O ambiente do \mppa é heterogêneo, sendo utilizado
+entre os \textit{clusters} e \io, uma comunicação via \noc, e
 dentro de cada \textit{cluster} são utilizados comunicações diretas entre
 \pe{}s, por meio de memória compartilhada. As principais dificuldades do
 desenvolvimento de aplicações para o \mppa são: \textbf{(i) modelo de
@@ -99,25 +99,24 @@ desenvolvimento de aplicações para o \mppa são: \textbf{(i) modelo de
 em um mesmo \textit{cluster} se comunicam através de memória compartilhada
 local, porém a comunicação entre \textit{clusters} é feita explicitamente via
 NoC, seguindo um modelo de computação distribuída; \textbf{(ii) comunicação:} é
-necessária a utilização de uma \textit{Application Programming Interface} (API)
+necessária a utilização de uma \api
 específica para a comunicação via NoC, similar ao POSIX de baixo nível para
 \ipc; \textbf{(iii) memória:} cada \textit{cluster} possui apenas 2MB de memória
 local de baixa latência, portanto aplicações reais precisam constantemente
-realizar comunicações com o subsistema de E/S e \textbf{(iv) coerência em
+realizar comunicações com o subsistema de E/S; e \textbf{(iv) coerência em
     cache:} cada PE possui uma memória \textit{cache} privada e sem coerência
 com as \textit{caches} dos demais PEs, sendo necessário atualizar a
 \textit{cache} manualmente.
 
 Uma possível solução para os problemas apresentados é a utilização de padrões
 paralelos ou \textit{skeletons}~\cite{cole-skeleton:2004}. \textit{Skeletons}
-são modelos de programação paralelas em alto nível. Esses modelos fornecem
+são modelos de programação paralela de alto nível de abstração. Esses modelos fornecem
 vantagens para o desenvolvedor, escondendo a complexidade de aplicações
 paralelas e distribuídas. Os \textit{Skeletons} especificam, mais precisamente,
 os padrões de acesso de dados e comunicação. Desta forma, eles possibilitam aos
 desenvolvedores focarem apenas nos algoritmos, ao invés da comunicação,
 sincronização de tarefas e escalonamento, que são gerenciados de forma
 transparente pelo \fw que implementa um \textit{skeleton}.
-
 Entre os diversos \textit{skeletons} existentes (\textit{map}, \textit{reduce},
 \textit{pipeline} e \textit{scan}), o padrão \textit{stencil} é o mais
 utilizado em ambientes importantes, como física quântica, previsão do tempo e
@@ -139,21 +138,25 @@ desenvolvimento em ambientes heterogêneos CPU-GPU, enquanto particiona tarefas 
 dados de forma transparente entre CPU e GPU.
 %\section{Motivação}
 
-\section{Objetivo}
+\section{Objetivos}
 \subsection{Objetivo Geral}
-O objetivo deste TCC é adaptar o \fw ~\pskel para o processador \mppa,
-fornecendo as vantagens provenientes do \fw, como a transparência e alta
-abstração, para o \mppa. Além de uma portabilidade total de aplicações já
-desenvolvidas para o \fw.
+
+O objetivo principal deste TCC é propor uma adaptação do \fw \pskel para o processador \mppa,
+facilitando assim o desenvolvimento de aplicações \textit{stencil} neste processador \textit{manycore}.
+Além disso, a adaptação permitirá que aplicações já existentes do \pskel possam ser executadas
+no \mppa sem nenhuma necessidade de alteração de código.
 
 \subsection{Objetivos Específicos}
+
 \begin{itemize}
-	\item Efetuar a comunicação de tarefas de forma transparente.
-    \item Utilizar a \noc para a comunicação entre \io e \textit{clusters}.
-    \item Aplicações executadas no \fw não serão alteradas para execuções feitas
-        no \mppa.
-    \item As técnicas utilizadas para a comunicação devem considerar o limite de
-        memória de cada \textit{cluster}.
+	\item Definir uma estratégia de distribuição de dados entre os \textit{clusters} do \mppa a fim de
+	lidar com a capacidade limitada de memória no \textit{chip};
+	\item Propor e implementar técnicas que permitam reduzir os custos de comunicação na \noc;
+	\item Adaptar as principais classes e abstrações existentes no \pskel para o processador \mppa;
+	\item Realizar uma análise do desempenho e do consumo de energia da solução proposta para o \mppa
+	utilizando-se diversas aplicações \textit{stencil} já implementadas no \pskel;
+	\item Realizar comparações de desempenho e consumo de energia com outros processadores \textit{multicore}
+	e \gpus.
 \end{itemize}
 
 \section{Organização do Texto}
