@@ -13,24 +13,140 @@ trata sobre multiprocessadores (seção 8.1) e multicomputadores (seção 8.2)}
 
 \subsection{Multiprocessadores}
 
+% \todo[inline]{
+% - Organização: processadores interconectados a uma memória compartilhada via barramento (UMA). Podes usar a figura
+% 8.2c do livro como base para fazer uma tua e mostrar as ideias.
+% }
+
+% \todo[inline]{
+% - Podes falar rapidamente sobre NUMA e as diferenças para o UMA.
+% }
+
+% \todo[inline]{
+% - Então, podes entrar no assunto dos multicores:
+
+Multiprocessadores são sistemas que possuem uma ou mais \cpus que compartilham totalmente
+a \ram do sistema. Desta forma, aplicações executando sobre o sistema podem
+utilizar o mesmo espaço de endereçamento virtual. Essa característica do sistema
+pode ocasionar problemas de concorrência, onde um valor, escrito por um
+processador, localizado em uma palavra na memória, pode ser alterado por outra \cpu, trazendo
+inconsistência no sistema. Utilizada corretamente, essa propriedade dos sistemas
+multiprocessados fornece a base de comunicação entre os processadores.
+
+Mais especificamente, multiprocessadores podem possuir propriedades adicionais,
+como acesso uniforme à memória. Máquinas com essa propriedade são chamadas de
+\uma. Por outro lado, existem multiprocessadores que não apresetam essa
+característica, como é o caso de multiprocessadores \numa, que apresentam um acesso
+não-uniforme à memória.
+
+Multiprocessadores \uma mais simplificados apresentam várias \cpus e memórias conectadas à um
+único barramento. Comunicações nesse multiprocessador são feitas pelo
+barramento. Quando um processador deseja efetuar a comunicação, o barramento é
+verificado para determinar a sua disponibilidade. Caso o barramento esteja
+ocupado, o processador espera até que ele fique livre. Com o barramento livre, o
+processador coloca o endereço da palavra no barramento, utiliza sinais de
+controle e espera até que a memória coloque esse endereço no barramento. Esse
+método é gerenciável para poucas \cpus, contudo com o acréscimo de
+processadores, a quantidade de comunicações aumenta significativamente, tornando
+o gerenciamento de comunicações por meio do barramento insuportável. Desta
+forma, o barramento se torna o gargalo do sistema.
+
+A solução é utilizar \textit{caches} nos processadores, desta forma, requisições
+de leitura podem ser satisfeitas pela \textit{cache}, diminuindo a quantidade de
+comunicações. É possível adicionar mais \cpus no barramento devido a baixa
+quantidade de tráfego. \textit{Caches} possuem protocolos de coerência para
+manter a consistência das \textit{caches} e do sistema. Quando um processador
+efetua uma escrita sobre uma palavra, todas as \textit{caches} que possuem essa
+palavra serão notificadas. Uma \textit{cache} com uma cópia modificada, isto é,
+diferente do dado presente na memória, deve escrever essa cópia diretamente na
+memória. Caso uma cópia exata do dado na memória esteja presente na
+\textit{cache}, ele pode ser descartado fazendo com que o processador acesse
+diretamente a memória.
+
+Além disso, é possível inserir mais \textit{caches} nos processadores
+diminuindo o tráfego, e retirando a necessidade de mais acessos à memória
+principal. Contudo, devido ao limite arquitetural, uma quantidade muito grande
+de \textit{caches} é inviável. Além disso, um tamanho muito grande para
+\textit{caches} torna o seu acesso muito lento, prejudicando o desempenho do
+sistema.
+
+Sistemas multiprocessados \numa são diferentes de sistemas \uma, como mencionado
+anteriormente, devido ao acesso à memória remota ser mais lento que à memória
+local. Mais especificamente, em um sistema \numa existem nós interconectados por
+quma rede, onde cada nó possui \cpu e memória. A \cpu de cada nó pode possuir
+uma \textit{cache}, possibilitando uma redução no tempo de acesso à um dado
+localizado em uma memória remota, esse sistema é denominada de \ccnuma. Por outro
+lado, um sistema sem \textit{cache} é denominado \ncnuma.
+
+\subsection{Multicomputadores}
+
 \todo[inline]{
-- Organização: processadores interconectados a uma memória compartilhada via barramento (UMA). Podes usar a figura
-8.2c do livro como base para fazer uma tua e mostrar as ideias.
+- Organização: sistemas multiprocessados, cada um com sua memória de dedicada, conectados através de uma rede. Podes usar
+a figura 8-18 como base para explicar as ideias.
 }
 
 \todo[inline]{
-- Podes falar rapidamente sobre NUMA e as diferenças para o UMA.
+- Podes falar rapidamente dos diferentes tipos de interconexão: figura 8-16 do livro
 }
 
 \todo[inline]{
-- Então, podes entrar no assunto dos multicores:
+- Falar dos tipos de multicomputadores: NOW, COW, etc...
+}
+
+\todo[inline]{
+- Finalizar indicando que nos multicomputadores a comunicação entre os processadores é feita de maneira explícita através de trocas de mensagens.
+}
+
+Multiprocessadores de grande porte são difíceis de construir devido ao alto
+custo. Desta forma, devido a simplicidade de construção, multicomputadores
+começaram a surgir, que utilizam \cpus fortemente aclopadas sem compartilhamento
+de memória. Um \pc comum e uma placa de interface de rede formam um nó do
+sistema multicomputado, onde um gerenciamento de forma inteligente a rede auxilia o desempenho
+do sistema.
+
+A figura~\ref{fig:multicomputado} mostra como um sistema multicomputado simples é
+organizado. Existem nós que possuem uma \cpu, memória principal dedicada e uma
+conexão diretamente com outros nós ou à um comutador. A topologia apresentada na
+imagem é uma das topologias possíveis em um sistema multicomputado. Outra
+alternativa é utilizar uma topologia em anel, retirando a necessidade de um
+comutador, pois um nó é conectado diretamente aos outros nós. Cada nó é
+conectado ao nó à sua esquerda e à sua direita.
+
+Topologia em malha (\textit{mesh}) da Figura~\ref{fig:topologia}c conecta os nós
+em comutadores distindos pelo sistema, e cada comutador conectado à outros
+comutadores, formando uma espécie de malha no sistema. Uma variante dessa
+topologia é o toro duplo apresentado na Figura ~\ref{fig:topologia}d, onde os
+comutadores de cantos opostos estão conectados diretamente. Desta forma, a
+comunicação entre nós de cantos opostos não terão a necessidade de inúmeros
+saltos pelos comutadores para efetuar a transmissão de informações.
+
+A Figura~\ref{fig:topologia}e ilustra uma topologia tridimensional, e a
+Figura~\ref{fig:topologia}f ilustra um cubo tetradimensional. Topologias
+$n$ dimensionais são utilizadas para diminuir o atraso de comunicação entre nós,
+pois o diâmetro da rede cresce linearmente de acordo com a dimensionalidade.
+Devido à essa propriedade, topologias $n$ dimensionais são utilizadas em
+computadores paralelos.
+
+%Cow Now
+
+
+
+\begin{figure}[t]
+	\centering
+        \caption{Topologias de interconexão.}
+	\includegraphics[width=0.7\textwidth]{figs/topologia.pdf}
+    \caption*{Fonte: ...}
+	\label{fig:mppa}
+\end{figure}
+
+
 
 Até a última década, o desempenho sobre computadores escalava de acordo com o
 aumento da frequência dos processadores. Contudo, com o aumento da frequência,
 a potência e o consumo de energia também aumentam. De acordo com a
 Equação~\eqref{eq:power}, pode-se perceber que a potência aumenta,
-proporcionalmente, com o aumento da frequência. 
-}
+proporcionalmente, com o aumento da frequência.
+
 
 \begin{equation}\label{eq:power}
 	P = CV^2f
@@ -55,25 +171,6 @@ bem diferentes.
 \todo[inline]{
 - Finalizar dizendo que o \textit{manycore} utilizado neste trabalho se diferencia dos dois exemplos anteriores, pois
 seus núcleos são conectados através de uma NoC. Então, diz que será tratado desse assunto na Seção 2.1.3
-}
-
-\subsection{Multicomputadores}
-
-\todo[inline]{
-- Organização: sistemas multiprocessados, cada um com sua memória de dedicada, conectados através de uma rede. Podes usar
-a figura 8-18 como base para explicar as ideias.
-}
-
-\todo[inline]{
-- Podes falar rapidamente dos diferentes tipos de interconexão: figura 8-16 do livro
-}
-
-\todo[inline]{
-- Falar dos tipos de multicomputadores: NOW, COW, etc...
-}
-
-\todo[inline]{
-- Finalizar indicando que nos multicomputadores a comunicação entre os processadores é feita de maneira explícita através de trocas de mensagens.
 }
 
 \subsection{O Processador \textit{Manycore} MPPA-256}
@@ -200,7 +297,7 @@ APIs de mais alto nível, possibilitando uma maior abstração ao desenvolvedor.
 }
 
 \todo[inline]{
-- Dizer que MPI é a API mais amplamente utilizada para programação paralela em multicomputadores, ou seja, para arquiteturas multicomputadas, ou seja, com memória distribuída. 
+- Dizer que MPI é a API mais amplamente utilizada para programação paralela em multicomputadores, ou seja, para arquiteturas multicomputadas, ou seja, com memória distribuída.
 }
 
 \todo[inline]{
@@ -288,7 +385,7 @@ processo escravo para cada cluster, cada processo escravo pode criar até 16 thr
 
 \todo[inline]{
 - Explicar que MPPA não tem suporte para a API MPI. Portanto, é necessário utilizar uma API de comunicação low-level
-desenvolvida pela Kalray. Explicar que cada  cluster tem seu espaço de endereçamento, que se usa o conceito de portais, para se 
+desenvolvida pela Kalray. Explicar que cada  cluster tem seu espaço de endereçamento, que se usa o conceito de portais, para se
 fazer escrita remota, etc... Falar um pouco de como funciona essas comunicações através da NoC.
 }
 
