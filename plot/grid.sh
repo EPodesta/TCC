@@ -9,7 +9,7 @@ yformat="%1.1f"
                 -e "label='$label'"                               \
                 -e "yformat='$yformat'"                                        \
                 -e "scale='$scale'"                                            \
-                -e "data='./tmptop2.txt'"                             \
+                -e "data='./tmpgreen.txt'"                             \
                 -e "outfile='$PLOTDIR/PreviewPlot.eps'"                        \
             grid.gnuplot
 
