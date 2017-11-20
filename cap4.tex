@@ -13,6 +13,24 @@ alteração.
 
 \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
+Na implementação da proposta será necessário modificar classes já existentes
+no \fw para suportar as características do \mppa. Em especial, a classe
+responsável por determinar a estrutura \texttt{Stencil} deverá ser modificada,
+pois ela é responsável pela subdivisão de tarefas e dados.
+Além disso, a comunicação entre os processos mestre e escravo do \mppa será
+feita utilizando portais de comunicação.
+
+Mais especificamente, uma nova função será criada, responsável por subdividir a matriz
+de entrada em pequenas partes, ou \textit{tiles}.
+Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
+trapezoidal, e enviado para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
+Além disso, o número de \textit{tiles} será definido em relação ao número de
+\textit{clusters} e o tamanho da matriz de entrada.
+
+O processo trabalhador
+
+
+
 \section{Trabalhos Relacionados}
 
 A proposta deste trabalho está diretamente relacionada a diversos outros trabalhos de pesquisa.
