@@ -687,7 +687,7 @@ iterativa, isto é, ao final de uma iteração, o \texttt{Array} de saída será
 considerado como \texttt{Array} de entrada para a próxima iteração,
 caracterizando uma nova iteração da computação.
 
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
 	\caption{Ilustração do padrão \textit{stencil} oferecido pelo \pskel.}
 	\includegraphics[width=0.7\textwidth]{figs/stencilComp.pdf}
@@ -695,6 +695,15 @@ caracterizando uma nova iteração da computação.
 	\label{fig:stencil}
 \end{figure}
 
+Abaixo temos um exemplo do código de uma aplicação baseada no padrão
+\textit{stencil}, denominada Jacobi, que tem como o objetivo a
+resolução de equações matriciais pelo método iterativo de Jacobi. O número de
+iterações é determinado pelo parâmetro \texttt{tsteps} (linha 1). A computação
+\textit{stencil} é realizada sobre cada elemento da matriz A, de tamanho N,
+utilizando o coeficiente c1 e uma vizinhança de 5 elementos(linha 7). Devido a
+sua característica iterativa, existe uma troca de dados entre as matrizes A e B
+(linha 8 e 9), pois o resultado da iteração $i$ deve ser utilizado na iteração
+$i+1$.
 
 \renewcommand{\lstlistingname}{Código}
 \definecolor{lightgray}{rgb}{0.97,0.97,0.97}
@@ -705,9 +714,9 @@ caracterizando uma nova iteração da computação.
 }
 
 \lstset{
-numbers=none,
+numbers=left,
 stepnumber=1,
-numbersep=-8pt,
+numbersep=5pt,
 numberstyle=\small\color{black},
 basicstyle=\scriptsize\ttfamily,
 keywordstyle=\color{blue},
@@ -715,8 +724,11 @@ commentstyle=\color{black},
 stringstyle=\color{black},
 numberstyle=\footnotesize\ttfamily\color{black},
 escapeinside={(@}{@)},
-frame=none, %single
+% frame=none, %single
 tabsize=2,
+frame=tb,
+xleftmargin=.1\textwidth,
+xrightmargin=.1\textwidth,
 float,
 language=C++, %morecomment=[l][{\color[rgb]{0.1, 0.2, 0.8}}]{},
 %aboveskip=0.1in, % space before the caption
@@ -724,39 +736,42 @@ language=C++, %morecomment=[l][{\color[rgb]{0.1, 0.2, 0.8}}]{},
 captionpos=b,
 showstringspaces=false,
 %belowcaptionskip=1\baselineskip,
-%breaklines=true,
+breaklines=true,
 %moredelim=[l][\color{blue}]{\#pragma},
 backgroundcolor=\color{white},
 %xleftmargin=.2\textwidth, xrightmargin=.2\textwidth
 }
 
-\begin{figure}[thp] % the figure provides the caption
+\begin{figure}[bh] % the figure provides the caption
 \centering          % which should be centered
-\caption*{Exemplo de código no PSkel.}
-\begin{tabular}{c}
-
+\caption*{Exemplo de código da aplicação Jacobi.}
+% \begin{tabular}{c}
 \begin{lstlisting}[]
-(@\textcolor{blue}{\textbf{\_\_parallel\_\_}}@) void
-stencilKernel((@\textcolor{blue}{\textbf{Array2D}}@)<float> A, (@\textcolor{blue}{\textbf{Array2D}}@)<float> B,
-             (@\textcolor{blue}{\textbf{Mask2D}}@)<int> mask, struct Arguments args,
-             int x, int y){
-    B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) +
-                           A(x+1,y) + A(x-1,y));
- }
-
 void jacobi(int tsteps, int N, float *A, float *B){
- int t, i, j
- (@\textcolor{blue}{\textbf{Array2D}}@)<float> input(A,M,N);
- (@\textcolor{blue}{\textbf{Array2D}}@)<float> output(B,M,N);
+    int t, i, j;
+    float c1 = 0.2;
+    for (t = 0; t < tsteps; t++) {
+        for (i = 1; i < N-1; i++) {
+            for (j = 1; j < N-1; j++) {
+                B(i,j) = c1 * (A(i,j) + A(i,j-1) + A(i,j+1) +
+                                          A(i+1,j)+A(i-1,j));
+            }
+        }
+        for (i = 1; i < N-1; i++) {
+            for (j = 1; j < N-1; j++) {
+                A(i,j) = B(i,j)
+            }
+        }
+    }
 }
 \end{lstlisting}
-\end{tabular}
+% \end{tabular}
 \end{figure}
 
 
 
-\todo[inline]{- Adicionar 1 ou 2 parágrafos falando de exemplos de aplicações que usam esse padrão.
-Podes usar o Fur e o Jacobi.}
+% \todo[inline]{- Adicionar 1 ou 2 parágrafos falando de exemplos de aplicações que usam esse padrão.
+% Podes usar o Fur e o Jacobi.}
 
 \section{PSkel}
 O PSkel é um \fw de programação em alto nível para o padrão \textit{stencil}, que
@@ -816,17 +831,23 @@ produzindo um \texttt{Array} de saída da computação \textit{stencil}. Ao fina
 iteração, o \texttt{Array} de saída será considerado como \texttt{Array} de
 entrada para a próxima iteração no caso de uma aplicação \textit{stencil} iterativa.
 
-No código abaixo temos um exemplo de aplicação no \fw. Nele temos a
-especificação do \texttt{stencilKernel} da aplicação, além das estruturas para
-efetuar a computação, como o \texttt{Array} de entrada e saída, a máscara da
-computação, entre outras estruturas. Estruturas como \texttt{Array2D},
-\texttt{Mask2D}, são exemplos dos \textit{containers} disponibilizados pelo \fw.
-A classe de \textit{Runtime} é determinada pela estrutura \texttt{Stencil2D},
-onde ao efetuar a chamada para funções específicas, a execução da computação irá
-iniciar.
+No código abaixo temos um exemplo da aplicação Jacobi no \fw. Nele temos a
+especificação do \texttt{stencilKernel} da aplicação (lina 2 à 7), além das estruturas para
+efetuar a computação, como o \texttt{Array} de entrada e saída (linha 11 e 12).
+A máscara irá determinar a vizinhança utilizada na computação (linha 14).
+Estruturas como \texttt{Array2D}, \texttt{Mask2D}, são exemplos dos
+\textit{containers} disponibilizados pelo \fw. A classe de \textit{Runtime} é
+determinada pela estrutura \texttt{Stencil2D} (linha 17), onde ao efetuar a chamada para
+função \texttt{runIterative} (linha 19), a execução da computação irá iniciar.
 
-\todo[inline]{Falar mais precisamente o que é feito em cada linha.}
+% \todo[inline]{Falar mais precisamente o que é feito em cada linha.}
 
+A computação \textit{stencil} (linha 5 e 6) fica mais simplificada, pois os
+\texttt{tsteps} e a iteração sobre as matrizes ficam implícitas, sendo
+gerenciadas pelo \fw. Os elementos das matrizes são determinados pelos
+parâmetros $x$ e $y$ da função \texttt{stencilKernel}. Além disso, o coeficiente
+da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denominada
+\texttt{Arguments} (linha 15).
 
 \renewcommand{\lstlistingname}{Código}
 \definecolor{lightgray}{rgb}{0.97,0.97,0.97}
@@ -837,9 +858,9 @@ iniciar.
 }
 
 \lstset{
-numbers=none,
+numbers=left,
 stepnumber=1,
-numbersep=-8pt,
+numbersep=5pt,
 numberstyle=\small\color{black},
 basicstyle=\scriptsize\ttfamily,
 keywordstyle=\color{blue},
@@ -847,7 +868,7 @@ commentstyle=\color{black},
 stringstyle=\color{black},
 numberstyle=\footnotesize\ttfamily\color{black},
 escapeinside={(@}{@)},
-frame=none, %single
+frame=tb, %single
 tabsize=2,
 float,
 language=C++, %morecomment=[l][{\color[rgb]{0.1, 0.2, 0.8}}]{},
@@ -859,13 +880,13 @@ showstringspaces=false,
 %breaklines=true,
 %moredelim=[l][\color{blue}]{\#pragma},
 backgroundcolor=\color{white},
-%xleftmargin=.2\textwidth, xrightmargin=.2\textwidth
+xleftmargin=.1\textwidth, xrightmargin=.1\textwidth
 }
 
 \begin{figure}[thp] % the figure provides the caption
 \centering          % which should be centered
-\caption*{Exemplo de código no PSkel.}
-\begin{tabular}{c}
+\caption*{Exemplo do código da aplicação Jacobi no PSkel.}
+% \begin{tabular}{c}
 
 \begin{lstlisting}[]
 (@\textcolor{blue}{\textbf{\_\_parallel\_\_}}@) void
@@ -890,7 +911,7 @@ void main(){
  /* ... */
 }
 \end{lstlisting}
-\end{tabular}
+% \end{tabular}
 \end{figure}
 
 
