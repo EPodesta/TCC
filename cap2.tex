@@ -580,10 +580,11 @@ mensagem de um processo para todos os outros processos do sistema.
 % }
 
 O \mppa possui uma arquitetura interessante para um modelo mestre/trabalhador ou
-um modelo \textit{pipeline} sobre os algoritmos. Desta forma, o processo mestre
-é executado em um \rman no subsistema de \es, e é responsável por inicializar os
-processos trabalhadores. Os processos trabalhadores são executados nos
-\textit{clusters}, podendo criaraté 16 POSIX \textit{threads}, uma para cada \pe.
+um modelo \textit{pipeline} sobre os algoritmos. Em um modelo
+mestre/trabalhador, o processo mestre é executado em um \rman no subsistema de
+\es, e é responsável por inicializar os processos trabalhadores. Os processos
+trabalhadores são executados nos \textit{clusters}, podendo criar até 16 POSIX
+\textit{threads}, uma para cada \pe.
 
 A Figura~\ref{fig:MPPAIPCTutorial} ilustra o funcionamento do modelo mestre e
 escravo no \mppa. O processo mestre será responsável por iniciar os
@@ -600,7 +601,7 @@ uma \api proprietária de baixo nível do \mppa, similar a \posix \ipc.
 Devido à cada processo trabalhador possuir um espaço de endereçamento, são
 utilizados portais para efetuar a comunicação entre o mestre e o trabalhador. Os
 portais efetuam escrita e leitura remota, onde um processo deve criar um portal
-com uma classificação, denominada \textit{tag}, e um
+com uma classificação, denominada \textit{tag}, e relacionar o portal com um
 espaço de endereçamento para realizar a comunicação.
 
 Para efetuar a escrita em um espaço de endereçamento é necessário chamar uma

@@ -1,4 +1,5 @@
 \chapter{Proposta: PSkel-MPPA}
+\label{cha:proposta}
 
 \section{Visão Geral}
 
@@ -11,25 +12,38 @@ utilizará dos benefícios que as características intrínsecas do processador
 fornecem. Além disso, aplicações já desenvolvidas para o \fw serão portadas sem
 alteração.
 
-\todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
+% \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
 Na implementação da proposta será necessário modificar classes já existentes
-no \fw para suportar as características do \mppa. Em especial, a classe
-responsável por determinar a estrutura \texttt{Stencil} deverá ser modificada,
-pois ela é responsável pela subdivisão de tarefas e dados.
-Além disso, a comunicação entre os processos mestre e escravo do \mppa será
-feita utilizando portais de comunicação.
+no \fw para suportar as características do \mppa. Devido à subdivisão da matriz
+e a comunicação serem diferentes para o \mppa, classes responsáveis por essas
+operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
+\textit{Stencil}. Além disso, a comunicação entre os processos mestre e escravo
+do \mppa será feita utilizando portais de comunicação.
 
-Mais especificamente, uma nova função será criada, responsável por subdividir a matriz
-de entrada em pequenas partes, ou \textit{tiles}.
+Mais especificamente, uma nova função responsável por subdividir a matriz
+de entrada em pequenas partes (\textit{tiles}), será criada.
 Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
-trapezoidal, e enviado para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
-Além disso, o número de \textit{tiles} será definido em relação ao número de
-\textit{clusters} e o tamanho da matriz de entrada.
+trapezoidal, sendo enviados para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
+Para efetuar o envio dos \textit{tiles} será criado um portal relacionado com
+cada \textit{tile} retirado da matriz de entrada.
 
-O processo trabalhador
+A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto é,
+\textit{tiles} com uma borda maior, determinada por uma \textit{ghost zone}.
+Desta forma, o processo trabalhador poderá realizar mais de uma iteração sobre
+cada \textit{tile}, diminuindo o número de sincronizações entre os processos.
 
+O processo trabalhador terá uma função responsável por receber os
+\textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação
+sobre cada \textit{tile} e enviar o resultado ao mestre. Para realizar a
+execução paralela das computações sobre o processo trabalhador, é necessário utilizar a biblioteca OpenMP ou
+\posix \textit{threads}.
 
+A implementação da proposta será focada em obter ganhos de desempenho e energia
+em relação à outras arquiteturas, como, por exemplo, o processador
+\textit{multicore} Intel Xeon. Desta forma, métodos escolhidos para efetuar a
+comunicação e a subdivisão dos dados, serão testadas, buscando o melhor método
+para cumprir o foco da proposta.
 
 \section{Trabalhos Relacionados}
 
@@ -38,9 +52,10 @@ A seguir, serão citados alguns trabalhos de pesquisa que fazem uso de esqueleto
 arquiteturas \textit{manycore}. Além disso, serão destacados alguns trabalhos de pesquisa sobre
 o \mppa.
 
-\todo[inline]{Aqui, acho que poderia subdividir os trabalhos relacionados em subseções, de acordo com os assuntos que eles tratam.}
+% \todo[inline]{Aqui, acho que poderia subdividir os trabalhos relacionados em subseções, de acordo com os assuntos que eles tratam.}
 
-\emph{Buono}~\etal~\cite{buono13} portou um \fw baseado em esqueletos paralelos,
+\subsection{Esqueletos paralelos e padrão \textit{stencil}}
+\emph{Buono}~\etal~\cite{buono13} portaram um \fw baseado em esqueletos paralelos,
 chamado de \emph{FastFlow}, para o processador \textit{manycore} \emph{TilePro64}.
 Esse processador possui 64 núcleos de processamento idênticos, interconectados
 por uma malha da \noc. O \fw \emph{FastFlow} provê padrões de \textit{design}
@@ -48,7 +63,7 @@ customizáveis, como, por exemplo, \textit{pipelines} e \textit{task farms},
 que podem ser compostas para formar outros esqueletos, como \textit{map} e
 \textit{reduce}.
 
-De forma similar, \emph{Thorarensen}~\etal~\cite{thoraransen16} apresenta um
+De forma similar, \emph{Thorarensen}~\etal~\cite{thoraransen16} apresentaram um
 novo \textit{back-end} do \fw \emph{SkePU} para o processador \textit{manycore}
 de baixa potência \emph{Myriad2}. Esse processador possui uma arquitetura
 heterogênea, tendo como alvo dispositivos com limites em questão de energia.
@@ -63,7 +78,9 @@ coletivamente. De forma similar, \emph{Gysi}~\etal~\cite{gysi15} propôs um \fw
 para otimizações automáticas de \textit{tiling} em computações \textit{stencil}
 situadas em um ambiente híbrido \cpu{}-\gpu.
 
+%------------------------------------------
 
+\subsection{Processadores \textit{manycore} de baixo consumo de energia}
 Alguns trabalhos surgiram recentemente com intuito de avaliar o uso de
 processadores \emph{manycore} em CAD, além de discutir os desafios do
 desenvolvimento de aplicações para esses processadores.
@@ -115,14 +132,14 @@ Entre as plataformas avaliadas, o \mppa apresentou a melhor eficiência
 energética, reduzindo a energia consumida em aplicações \cpu{}-\textit{bound},
 híbirdas e \textit{memory-bound} em 6.9x, 6.5x e 3.8x, respectivamente.
 
-Trabalhos recentes que propuseram APIs e ambientes de execução para
-\emph{manycores}. Em~\cite{TSHMEM:2013}, os autores propuseram uma adaptação
-Espaço de Endereçamento Global Particionado (\emph{Partitioned Global Address
-    Space} -- PGAS) para simplificar o desenvolvimento de aplicações paralelas
-para os processadores \emph{manycore} TILE-Gx e TILEPro. Mais precisamente, os
-autores utilizaram a biblioteca OpenSHMEM como base para a proposta,
-utilizando-a como uma camada de abstração para as bibliotecas fornecidas pelo
-fabricante dos processadores. Com isso, aplicações atualmente implementadas
-utilizando a API OpenSHMEM podem ser executadas nos processadores
-\emph{manycore} da linha TILE sem que haja a necessidade de modificações no
-código.
+% Trabalhos recentes que propuseram APIs e ambientes de execução para
+% \emph{manycores}. Em~\cite{TSHMEM:2013}, os autores propuseram uma adaptação
+% Espaço de Endereçamento Global Particionado (\emph{Partitioned Global Address
+%     Space} -- PGAS) para simplificar o desenvolvimento de aplicações paralelas
+% para os processadores \emph{manycore} TILE-Gx e TILEPro. Mais precisamente, os
+% autores utilizaram a biblioteca OpenSHMEM como base para a proposta,
+% utilizando-a como uma camada de abstração para as bibliotecas fornecidas pelo
+% fabricante dos processadores. Com isso, aplicações atualmente implementadas
+% utilizando a API OpenSHMEM podem ser executadas nos processadores
+% \emph{manycore} da linha TILE sem que haja a necessidade de modificações no
+% código.
