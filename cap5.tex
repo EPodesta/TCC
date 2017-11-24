@@ -1,38 +1,10 @@
 \chapter{Cronograma}
-
-As atividades previstas no projeto estão descritas abaixo:
-
-\todo[inline]{Descrever resumidamente as atividades.}
-
-\begin{itemize}
-    \item \textbf{A1: Revisão aprofundada do estado da arte e prática.} Nesta etapa será
-        realizada uma revisão mais aprofundada do estado da arte, buscando mais
-        conteúdo sobre o tema da proposta, e uma base conceitual sobre abordagens de
-        comunicação entre a \cpu e aceleradores.
-    % \item \textbf{A2: Elaboração da proposta.} Nesta etapa será realizada a
-        % elaboração da proposta
-    \item \textbf{A2: Implementação da proposta.} Nesta etapa será realizada a
-        implementação da proposta descrita no capítulo ~\ref{cha:proposta},
-        buscando, também, estudar outras implementações para alcançar um bom
-        desempenho e consumo de energia no processador \mppa.
-    \item \textbf{A3: Realização de experimentos.} Nesta etapa serão realizados
-        experimentos comparativos entre a implementação proposta sobre o \mppa e
-        outros processadores. Buscando avaliar o desempenho e o consumo de
-        energia da implementação proposta em relação à outros processadores.
-    \item \textbf{A4: Escrita do rascunho do TCC II.} Nesta etapa será realizada
-        a escrita do rascunho do TCC II com os experimentos desenvolvidos e a
-        implementação completa da proposta.
-    \item \textbf{A5: Preparação da defesa pública.} Nesta etapa será realizada...
-    \item \textbf{A6: Defesa pública.} Nesta etapa será realizada a defesa do projeto desenvolvido. Pretende-se realizar a defesa pública do trabalho na XX semana do mês de novembro.
-    \item \textbf{A7: Correções e entrega da versão final do TCC.} Nesta etapa será realizada... A entrega da versão final está prevista para a XX semana do mês de novembro.
-\end{itemize}
-
-A Figura~\ref{fig:cronograma} apresenta o cronograma previsto para a realização das atividades descritas anteriormente, o que inclui atividades durante o primeiro e segundo semestres de 2018.
-
-% \begin{adjustwidth}{-2.5cm}{}
-  \begin{figure}
+\label{cha:cronograma}
+% \todo[inline]{Descrever resumidamente as atividades.}
+  \begin{figure}[ht]
     \begin{center}
      \begin{ganttchart}[
+       x unit = 1cm,
        y unit title=0.4cm,
        y unit chart=0.6cm,
        hgrid,
@@ -54,25 +26,56 @@ A Figura~\ref{fig:cronograma} apresenta o cronograma previsto para a realizaçã
 	 \gantttitle{\textbf{Abr}}{2}
 	 \gantttitle{\textbf{Mai}}{2}
 	 \gantttitle{\textbf{Jun}}{2}
-	 \gantttitle{\textbf{Jul}}{2}
+	 \gantttitle{\textbf{Jul}}{2} \\
 	 % \gantttitle{\textbf{Ago}}{2}
 	 % \gantttitle{\textbf{Set}}{2}
 	 % \gantttitle{\textbf{Out}}{2}
 	 % \gantttitle{\textbf{Nov}}{2}\\
 
      \ganttbar{A1}{1}{4} \\
-     \ganttbar{A2}{5}{10} \\
-     \ganttbar{A3}{9}{14} \\
-     \ganttbar{A4}{13}{16} \\
-     \ganttbar{A5}{16}{19} \\
-     \ganttbar{A6}{19}{22} \\
-     \ganttbar{A7}{18}{23} \\
-     \ganttbar{A8}{24}{24} \\
-     \ganttbar{A9}{25}{25} \\
-     \ganttbar{A10}{26}{26}
+     \ganttbar{A2}{3}{10} \\
+     \ganttbar{A3}{8}{11} \\
+     \ganttbar{A4}{11}{13} \\
+     \ganttbar{A5}{13}{14} \\
+     \ganttbar{A6}{14}{15} \\
+     \ganttbar{A7}{16}{16} \\
+     % \ganttbar{A8}{24}{24} \\
+     % \ganttbar{A9}{25}{25} \\
+     % \ganttbar{A10}{26}{26}
      \end{ganttchart}
 %  \end{adjustwidth}
      \caption{Cronograma de atividades.}\label{fig:cronograma}
   \end{center}
 \end{figure}
 % ---
+A Figura~\ref{fig:cronograma} apresenta o cronograma previsto para a realização
+das atividades descritas abaixo, o que inclui atividades durante o primeiro e segundo semestres de 2018.
+
+\begin{itemize}
+    \item \textbf{A1: Revisão aprofundada do estado da arte e prática.} Nesta etapa será
+        realizada uma revisão mais aprofundada do estado da arte, buscando mais
+        conteúdo sobre o tema da proposta, e uma base conceitual sobre abordagens de
+        comunicação entre a \cpu e aceleradores.
+    % \item \textbf{A2: Elaboração da proposta.} Nesta etapa será realizada a
+        % elaboração da proposta
+    \item \textbf{A2: Implementação da proposta.} Nesta etapa será realizada a
+        implementação da proposta descrita no capítulo ~\ref{cha:proposta},
+        buscando, também, estudar outras implementações para alcançar um bom
+        desempenho e consumo de energia no processador \mppa.
+    \item \textbf{A3: Realização de experimentos.} Nesta etapa serão realizados
+        experimentos comparativos entre a implementação proposta sobre o \mppa e
+        outros processadores. Buscando avaliar o desempenho e o consumo de
+        energia da implementação proposta em relação à outros processadores.
+    \item \textbf{A4: Escrita do rascunho do TCC II.} Nesta etapa será realizada
+        a escrita do rascunho do TCC II com os experimentos desenvolvidos e a
+        implementação completa da proposta.
+    \item \textbf{A5: Preparação da defesa pública.} Nesta etapa será realizada
+        a preparação de \textit{slides} e ensaio da defesa pública.
+    \item \textbf{A6: Defesa pública.} Nesta etapa será realizada a defesa do
+        projeto desenvolvido, mostrando os resultados obtidos e suas conclusões.
+    \item \textbf{A7: Correções e entrega da versão final do TCC.} Nesta etapa
+        será realizada as correções solicitadas pelos membros da banca, buscando
+        melhorar a versão final do TCC.
+\end{itemize}
+% \begin{adjustwidth}{2.5cm}{}
+

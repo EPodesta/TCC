@@ -24,20 +24,46 @@ do \mppa será feita utilizando portais de comunicação.
 Mais especificamente, uma nova função responsável por subdividir a matriz
 de entrada em pequenas partes (\textit{tiles}), será criada.
 Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
-trapezoidal, sendo enviados para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
+trapezoidal~\cite{meng11}, sendo enviados para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
 Para efetuar o envio dos \textit{tiles} será criado um portal relacionado com
-cada \textit{tile} retirado da matriz de entrada.
+cada \textit{tile} da matriz de entrada.
 
 A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto é,
 \textit{tiles} com uma borda maior, determinada por uma \textit{ghost zone}.
-Desta forma, o processo trabalhador poderá realizar mais de uma iteração sobre
-cada \textit{tile}, diminuindo o número de sincronizações entre os processos.
+% Desta forma, o processo trabalhador poderá realizar mais de uma iteração sobre
+% cada \textit{tile}, diminuindo o número de sincronizações entre os processos.
+A Figura~\ref{fig:tiling} ilustra essa técnica, onde a \textit{ghost zone}
+agrupa as iterações em estágios. Cada estágio realiza
+operações sobre \textit{tiles} sobrepostos, denominados trapezóides.
+Por fim, trapezóides irão produzir um dado sem sobreposição ao final da
+computação de todas as iterações.
+Com esta técnica, é possível realizar mais iterações sobre o mesmo
+\textit{tile}, diminuindo o número de comunicações entre processos.
+
+Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída à outro
+\textit{tile}, computações redundantes serão realizadas. O tamanho do
+\textit{tile} aumentado pode trazer perda em desempenho em troca de um menor
+número de comunicações entre os processos, isto é, quanto maior o número de
+computações redundantes, menor o número de comunicações. Desta forma, as \textit{ghost zones}
+fornecem um \textit{trade-off} entre computações redundantes e a redução de
+comunicações entre processos.
+
+\begin{figure}[h]
+	\centering
+    \caption{Esquema da técnica de \textit{tiling} trapezoidal.}
+    \includegraphics[width=0.6\textwidth]{figs/tiling.pdf}
+    \caption*{Fonte: ~\cite{meng11}.}
+    \label{fig:tiling}
+\end{figure}
+
+
 
 O processo trabalhador terá uma função responsável por receber os
 \textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação
-sobre cada \textit{tile} e enviar o resultado ao mestre. Para realizar a
-execução paralela das computações sobre o processo trabalhador, é necessário utilizar a biblioteca OpenMP ou
-\posix \textit{threads}.
+sobre cada \textit{tile} e enviar o resultado ao mestre.
+Além disso, será possível efetuar iterações sobre o mesmo \textit{tile},
+buscando diminuir o número de comunicações. Por fim, o porcesso trabalhador utilizará os \pes do
+\textit{cluster} para paralelizar a computação.
 
 A implementação da proposta será focada em obter ganhos de desempenho e energia
 em relação à outras arquiteturas, como, por exemplo, o processador
