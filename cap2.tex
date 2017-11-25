@@ -25,31 +25,32 @@ em mais detalhes o processador \textit{manycore} \mppa, o qual será utilizado n
 % \todo[inline]{
 % - Então, podes entrar no assunto dos multicores:
 
-Multiprocessadores são sistemas que possuem uma ou mais \cpus que compartilham totalmente
+Multiprocessadores são sistemas constituídos de uma ou mais \cpus que
+compartilham totalmente
 a \ram do sistema. Desta forma, \textit{threads} de um mesmo processo se
 comunicam através do mesmo espaço de endereçamento, por meio de escrita e
 leitura na memória. Essa característica do sistema pode ocasionar problemas de
 concorrência, onde um valor escrito por uma \textit{thread}, localizado em uma
-palavra na memória, pode ser alterado por outra \textit{thread}, trazendo inconsistência no
-sistema.
+palavra na memória, pode ser alterado por outra \textit{thread}, trazendo
+inconsistência ao sistema.
 
 Mais especificamente, multiprocessadores podem possuir propriedades adicionais,
 como acesso uniforme à memória. Máquinas com essa propriedade são chamadas de
-\uma. Por outro lado, existem multiprocessadores que não apresetam essa
+\uma. Por outro lado, existem multiprocessadores que não apresentam essa
 característica, como é o caso de multiprocessadores \numa, que apresentam um acesso
 não-uniforme à memória.
 
 A Figura~\ref{fig:uma} apresenta a arquitetura de sistemas multiprocessados \uma
-mais simplificados, onde apresentam várias \cpus que se
+mais simplificados, onde existem várias \cpus que se
 comunicam com uma memória compartilhada por meio de um barramento. Quando uma
 \cpu deseja efetuar a comunicação, o barramento é verificado para
 determinar a sua disponibilidade. Caso o barramento esteja ocupado, a
 \cpu espera até que ele fique livre. Com o barramento livre, a \cpu
 coloca o endereço da palavra no barramento, utiliza sinais de
-controle e espera até que a memória coloque esse endereço no barramento. Esse
+controle e espera até que a memória coloque a palavra desejada no barramento. Esse
 método é gerenciável para poucas \cpus, contudo com uma maior quantidade, o
 número de comunicações aumenta significativamente, tornando
-o gerenciamento de comunicações por meio do barramento insuportável. Desta
+o gerenciamento de comunicações, por meio do barramento, insuportável. Desta
 forma, o barramento se torna o gargalo do sistema.
 
 \begin{figure}[b]
@@ -69,11 +70,11 @@ forma, o barramento se torna o gargalo do sistema.
 \end{figure}
 
 
-A solução é utilizar \textit{caches} nas \cpus, desta forma, requisições
-de leitura podem ser satisfeitas pela \textit{cache}, diminuindo a quantidade de
-comunicações. É possível adicionar mais \cpus no barramento devido a baixa
+A solução é utilizar \textit{caches} nas \cpus, possibilitando que requisições
+de leitura sejam satisfeitas pela \textit{cache}, diminuindo a quantidade de
+comunicações. Desta forma, é possível adicionar mais \cpus no barramento devido a baixa
 quantidade de tráfego. \textit{Caches} possuem protocolos de coerência para
-manter a consistência das \textit{caches} e do sistema. Quando uma \cpu
+manter a consistência do sistema. Quando uma \cpu
 efetua uma escrita sobre uma palavra, todas as \textit{caches} que possuem essa
 palavra serão notificadas. Uma \textit{cache} com uma cópia modificada, isto é,
 diferente do dado presente na memória, deve escrever essa cópia diretamente na
@@ -109,7 +110,7 @@ tradicionais, contudo, devido à proximidade de conexão entre \cpus, falhas em 
 componente pode ocasionar problemas em outros componentes do sistema.
 
 \soc é uma categoria de \textit{chips} multicores, onde existem uma ou mais
-\cpus, e \textit{cores} de propósito específico, como decodificadores de áudio e
+\cpus e \textit{cores} de propósito específico, como decodificadores de áudio e
 vídeo, interface de rede, entre outros.
 
 
@@ -133,7 +134,7 @@ milhares de \textit{cores} disponíveis. \gpus utilizam esses \textit{cores},
 essencialmente, para a solução de cálculos, focando menos em questões de
 \textit{cache} e lógica de controle. Desta forma, elas são utilizadas em
 pequenas computações que podem ser paralelizadas. Contudo, a programação para
-\gpus é difícil, pois os seus \textit{cores} fazem a execução da mesma intrução
+\gpus é difícil, pois os seus \textit{cores} fazem a execução da mesma instrução
 com diferentes partes do dado, isto é, são máquinas \simd. Esse modelo de
 programação é interessante para abordar o paralelismo de dados, contudo, o
 desenvolvedor pode se deparar com dificuldades durante o desenvolvimento para
@@ -200,9 +201,9 @@ sobre esse assunto serão tratados na seção 2.1.3.
 %
 Multiprocessadores de grande porte são difíceis de construir devido ao alto
 custo. Desta forma, devido a simplicidade de construção, multicomputadores
-começaram a surgir, que utilizam \cpus fortemente aclopadas sem compartilhamento
+começaram a surgir, que utilizam \cpus fortemente acopladas sem compartilhamento
 de memória~\cite{Tanenbaum2015}. Um \pc comum e uma placa de interface de rede formam um nó do
-sistema multicomputado, onde um gerenciamento de forma inteligente a rede auxilia o desempenho
+sistema multicomputado, onde um gerenciamento de forma inteligente da rede auxilia o desempenho
 do sistema.
 
 \begin{figure}[t]
@@ -219,12 +220,12 @@ A Figura~\ref{fig:multicomputado} mostra como um sistema multicomputado simples 
 organizado. Existem nós que possuem uma \cpu, memória principal dedicada e uma
 conexão diretamente com outros nós ou à um comutador. A topologia apresentada na
 imagem é uma das topologias possíveis em um sistema multicomputado. Outra
-alternativa é utilizar uma topologia em anel, retirando a necessidade de um
+alternativa é utilizar uma topologia em anel (Figura~\ref{fig:topologia}b), retirando a necessidade de um
 comutador, pois um nó é conectado diretamente aos outros nós. Cada nó é
 conectado ao nó à sua esquerda e à sua direita.
 
-Topologia em malha (\textit{mesh}) da Figura~\ref{fig:topologia}c conecta os nós
-em comutadores distindos pelo sistema, e cada comutador conectado à outros
+Topologia em malha (\textit{mesh}), ilustrada pela Figura~\ref{fig:topologia}c, conecta os nós
+em comutadores distindos pelo sistema, e cada comutador é conectado à outros
 comutadores, formando uma espécie de malha no sistema. Uma variante dessa
 topologia é o toro duplo apresentado na Figura ~\ref{fig:topologia}d, onde os
 comutadores de cantos opostos estão conectados diretamente. Desta forma, a
@@ -236,7 +237,7 @@ Figura~\ref{fig:topologia}f ilustra um cubo tetradimensional. Topologias
 $n$ dimensionais são utilizadas para diminuir o atraso de comunicação entre nós,
 pois o diâmetro da rede cresce linearmente de acordo com a dimensionalidade.
 Devido à essa propriedade, topologias $n$ dimensionais são utilizadas em
-computadores paralelos.
+vários sistemas.
 
 
 
@@ -257,13 +258,13 @@ conjunto sobre uma operação, esse sistema é denominado de \now. Devido à sua
 simplicidade, esse sistema não é focado em ganho de desempenho. \cow
 são constituídos de computadores interconectados sem teclado, monitor e \textit{mouse}. Esses
 sistemas são focados em desempenho, subdividindo tarefas e enviando por meio de
-uma conexão eficiênte para ganhar o máximo em desempenho sobre uma operação.
+uma conexão eficiente para ganhar o máximo de desempenho sobre uma operação.
 
 A comunicação em um multicomputador é feita por meio de troca de mensagens.
 Processos localizados em diferentes \cpus se comunicam por meio de operações
 disponibilizadas pelo \so. Mais especificamente, o \so disponibiliza, pelo
 menos, duas chamadas de função: \textit{send} e  \textit{recieve}. Na função
-\textit{send} o desenvolvedor envia uma mensagem para um processo determinado pelos
+\textit{send} o desenvolvedor envia uma mensagem para um processo, que é determinado pelos
 parâmetros da função. A função \textit{recieve} é responsável pelo recebimento
 de mensagens, utlizando como parâmetro o endereço que será lido para coletar a
 mensagem recebida. Portanto, em sistemas multicomputados a troca de mensagens
@@ -283,7 +284,7 @@ Os núcleos de processamento do \mppa são denominados \pes.
 Além dos \pes, o processador possui 32 núcleos dedicados a gerência de recursos
 denominados  \rmans. \pes e \rmans são distribuídos
 fisicamente no \textit{chip} em 16 \textit{clusters} e 4 subsistemas de \es,
-contendo cada \textit{cluster} 16 \pes e 1 \rman. Além dos \textit{clusters}, o
+contendo cada \textit{cluster}, 16 \pes e 1 \rman. Além dos \textit{clusters}, o
 \mppa possui 4 subsistemas de \es contendo, cada um, 4 \rmans. Toda a comunicação
 entre \textit{clusters} e/ou subsistemas de \es é feita através de uma \noc
 \textit{torus} 2D. A arquitetura do \mppa pode ser vista na Figura~\ref{fig:mppa}.
@@ -311,7 +312,7 @@ memória externa \lpddr de 2~\gb.
 A comunicação dos \textit{clusters} com o subsistema de \es, e a comunicação
 entre \textit{clusters} é realizada de maneira explícita, utilizando uma \api
 própria do \mppa de baixo nível similar à \posix \ipc. Detalhes referentes à
-essa comunicação e programação nesse processador serão abordads na seção
+essa comunicação e programação nesse processador serão abordadas na seção
 2.2.3.
 
 % - Terminar essa seção falando que a comunicação entre clusters e entre cluster/IO tem
@@ -344,7 +345,7 @@ sequencial, isto é, um conjunto serializado de instruções que será executado
 sobre uma \cpu. Por outro lado, a computação paralela ou distribuída efetua o
 processamento de instruções sobre múltiplos elementos de processamento. A ideia
 principal é dividir a computação em partes menores que podem ser executadas
-simultaneamente entre os elementos de processamento distintos com intuito de se
+simultaneamente entre os elementos de processamento distintos, com intuito de se
 realizar um processamento em menos tempo.
 
 Diferentes APIs de programação paralela foram criadas com intuito de simplificar
@@ -396,7 +397,7 @@ sincronizadas, e a execução irá continuar apenas com a \textit{master thread}
 \end{figure}
 
 Por meio de diretivas de compilação é possível definir o comportamento do
-OpenMP, inclusive determinar regiões paralelas, entre outras funções da \api.
+OpenMP, inclusive, determinar regiões paralelas e outras funções da \api.
 Dados são classificados em \textit{shared} ou \textit{private} possibilitando
 o gerenciamento da execução pela \api. Um dado \textit{shared} é compartilhado
 entre as \textit{threads} de uma região paralela. Por outro lado, dados
@@ -466,7 +467,7 @@ O \mpi é uma \api utilizada amplamente em multicomputadores fornecendo uma maio
 abstração em relação à programação sobre \textit{sockets}. A \api é baseada no
 modelo \spmd, onde todos os processos executam o mesmo código fonte com
 dados diferentes. Desta forma, com apenas um código fonte, processos diferentes
-serão responsáveis por realizar diferentes operações, fornecendo uma abordagem
+serão responsáveis por realizar operações sobre dados diferentes, fornecendo uma abordagem
 paralela sobre código.
 
 A \api utiliza funções, como \texttt{MPI\_Init} para inicializar a alocação de
@@ -580,23 +581,23 @@ mensagem de um processo para todos os outros processos do sistema.
 % }
 
 O \mppa possui uma arquitetura interessante para um modelo mestre/trabalhador ou
-um modelo \textit{pipeline} sobre os algoritmos. Em um modelo
+um modelo \textit{pipeline}. Em um modelo
 mestre/trabalhador, o processo mestre é executado em um \rman no subsistema de
 \es, e é responsável por inicializar os processos trabalhadores. Os processos
 trabalhadores são executados nos \textit{clusters}, podendo criar até 16 POSIX
 \textit{threads}, uma para cada \pe.
 
-A Figura~\ref{fig:MPPAIPCTutorial} ilustra o funcionamento do modelo mestre e
-escravo no \mppa. O processo mestre será responsável por iniciar os
+A Figura~\ref{fig:MPPAIPCTutorial} ilustra o funcionamento do modelo mestre/escravo
+no \mppa. O processo mestre será responsável por iniciar os
 \textit{clusters} por meio de uma função \texttt{spawn}, enviar dados e coletar
 o resultado final. Por outro lado, o processo trabalhador recebe um dado e
 realiza a computação utilizando \textit{threads}, que são criadas por meio da
-\api OpenMP ou \posix. Após o processo trabalhador finalizar a computação sobre
+\api OpenMP ou \posix \textit{threads}. Após o processo trabalhador finalizar a computação sobre
 um dado, ele irá enviar o resultado ao mestre.
 
 O \mppa não possui suporte para o \mpi, desta forma, os processos mestre e
 trabalhador utilizam objetos de comunicação, como portais e sincronizações, de
-uma \api proprietária de baixo nível do \mppa, similar a \posix \ipc.
+uma \api proprietária de baixo nível do \mppa, similar à \posix \ipc.
 
 Devido à cada processo trabalhador possuir um espaço de endereçamento, são
 utilizados portais para efetuar a comunicação entre o mestre e o trabalhador. Os
@@ -608,7 +609,7 @@ Para efetuar a escrita em um espaço de endereçamento é necessário chamar uma
 função denominada \texttt{mppa\_pwrite}. Essa função utiliza como parâmetros o
 portal que será utilizado na comunicação e o tamanho do dado que será enviado.
 A função \texttt{mppa\_aio\_read} realizará a leitura dos dados recebidos pelo
-portal, relacionando o portal que será feita a leitura com o espaço de
+portal, relacionando o portal responsável pela leitura com o espaço de
 endereçamento em que o dado será armazenado.
 
 \begin{figure}
@@ -635,7 +636,7 @@ modelo de memória distribuída. Mais especificamente, aplicações desenvolvida
 para o \mppa precisam utilizar duas bibliotecas de programação paralela para
 utilizar os recursos do processador: OpenMP, baseado em um modelo de memória
 compartilhada, utilizada para paralelizar a computação dentro de cada
-\textit{cluster} e uma \api proprietária, que segue um modelo de memória
+\textit{cluster} e a \api proprietária do \mppa, que segue um modelo de memória
 distribuída, sendo utilizado na comunicação entre os \textit{clusters} e o
 subsistema de E/S por meio da NoC. O segundo fator importante está relacionado a
 \textbf{capacidade limitada de memória} no \textit{chip}: cada \textit{cluster}
@@ -843,7 +844,8 @@ função \texttt{runIterative} (linha 19), a execução da computação irá ini
 
 % \todo[inline]{Falar mais precisamente o que é feito em cada linha.}
 
-A computação \textit{stencil} (linha 5 e 6) fica mais simplificada, pois os
+A computação \textit{stencil} (linha 5 e 6) fica mais simplificada em relação ao
+código anterior, pois os
 \texttt{tsteps} e a iteração sobre as matrizes ficam implícitas, sendo
 gerenciadas pelo \fw. Os elementos das matrizes são determinados pelos
 parâmetros $x$ e $y$ da função \texttt{stencilKernel}. Além disso, o coeficiente

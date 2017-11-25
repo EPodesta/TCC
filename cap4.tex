@@ -35,7 +35,7 @@ A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto �
 A Figura~\ref{fig:tiling} ilustra essa técnica, onde a \textit{ghost zone}
 agrupa as iterações em estágios. Cada estágio realiza
 operações sobre \textit{tiles} sobrepostos, denominados trapezóides.
-Por fim, trapezóides irão produzir um dado sem sobreposição ao final da
+Por fim, os trapezóides irão produzir um dado sem sobreposição ao final da
 computação de todas as iterações.
 Com esta técnica, é possível realizar mais iterações sobre o mesmo
 \textit{tile}, diminuindo o número de comunicações entre processos.
@@ -62,14 +62,17 @@ O processo trabalhador terá uma função responsável por receber os
 \textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação
 sobre cada \textit{tile} e enviar o resultado ao mestre.
 Além disso, será possível efetuar iterações sobre o mesmo \textit{tile},
-buscando diminuir o número de comunicações. Por fim, o porcesso trabalhador utilizará os \pes do
+buscando diminuir o número de comunicações. Por fim, o processo trabalhador utilizará os \pes do
 \textit{cluster} para paralelizar a computação.
 
 A implementação da proposta será focada em obter ganhos de desempenho e energia
 em relação à outras arquiteturas, como, por exemplo, o processador
 \textit{multicore} Intel Xeon. Desta forma, métodos escolhidos para efetuar a
 comunicação e a subdivisão dos dados, serão testadas, buscando o melhor método
-para cumprir o foco da proposta.
+para cumprir o foco da proposta. Os experimentos irão utilizar o \fw PSkel, onde
+no \mppa será utilizado a versão com a proposta implementada.  Por outro lado, em outros
+processadores, será utilizada a mesma versão sem efetuar chamadas para as
+funções relacionadas ao \mppa.
 
 \section{Trabalhos Relacionados}
 
@@ -97,10 +100,12 @@ O \fw \emph{SkePU} provê uma interface de programação para esqueletos paralel
 como o \textit{map}, \textit{reduce}, e \textit{stencil}, com suporte para
 diferentes \textit{back-ends}, incluindo processadores multicores e \gpus.
 
-\emph{Lutz}~\etal~\cite{lutz13} utiliza técnicas de \textit{tiling} em
+%------Trabalho relacionado sobre técnicas de tiling sobre o padrão estêncil.
+%------Deixar para mencionar sobre trabalhos relacionados à isso.
+\emph{Lutz}~\etal~\cite{lutz13} utilizaram técnicas de \textit{tiling} em
 computações \textit{stencil} para lidar com a capacidade limitada de memória
 de \gpus em ambientes multi-\gpu, utilizando as memórias das \gpus
-coletivamente. De forma similar, \emph{Gysi}~\etal~\cite{gysi15} propôs um \fw
+coletivamente. De forma similar, \emph{Gysi}~\etal~\cite{gysi15} propuseram um \fw
 para otimizações automáticas de \textit{tiling} em computações \textit{stencil}
 situadas em um ambiente híbrido \cpu{}-\gpu.
 
@@ -156,7 +161,7 @@ de trabalho \textit{memory-bound}, o processador \numa obteve um melhor desempen
 em relação ao \mppa, apesar de apresentar também um maior consumo de energia.
 Entre as plataformas avaliadas, o \mppa apresentou a melhor eficiência
 energética, reduzindo a energia consumida em aplicações \cpu{}-\textit{bound},
-híbirdas e \textit{memory-bound} em 6.9x, 6.5x e 3.8x, respectivamente.
+híbridas e \textit{memory-bound} em 6.9x, 6.5x e 3.8x, respectivamente.
 
 % Trabalhos recentes que propuseram APIs e ambientes de execução para
 % \emph{manycores}. Em~\cite{TSHMEM:2013}, os autores propuseram uma adaptação
