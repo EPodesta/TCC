@@ -2,11 +2,11 @@
 \label{cha:introducao}
 % \todo[inline]{Adicionar um parágrafo para explicar o que é HPC.}
 
-Nos primeiros computadores, avanços tecnológicos possibilitavam aumentar o
+Durante muito tempo, os avanços tecnológicos possibilitavam aumentar o
 desempenho de semicondutores e das arquiteturas por meio do aumento da
 frequência. Contudo, com o aumento da frequência, ocorre um maior consumo de
 energia e, consequentemente, a temperatura do \textit{chip} aumenta. Desta
-forma, indústrias começaram a investir em outros meios para aumentar o
+forma, as indústrias começaram a investir em outros meios para aumentar o
 desempenho de arquiteturas, um exemplo, são os processadores \textit{manycore}.
 
 Arquiteturas utilizadas na área de \hpc empregam processadores \textit{manycore} para atingir um
@@ -17,7 +17,6 @@ aplicações ou dados tratável do ponto de vista computacional. Essas arquitetu
 são utilizadas em aplicações científicas ou, mais atualmente, em áreas de Banco
 de Dados, devido à problemas com \textit{Big Data}. Normalmente, arquiteturas
 \hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
-
 Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{manycore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
 \textit{cores} do supercomputador em primeiro lugar no \textit{ranking} do
@@ -26,7 +25,7 @@ TOP500\footnote{\url{http://top500.org}}, confirmando esse comportamento.
 
 % \todo[inline]{Saiu a lista de novembro. Atualizar o gráfico.}
 
-\begin{figure}[b]
+\begin{figure}[t]
 	\centering
 	\caption{Crescimento do número de núcleos do supercomputadores número 1 do \textit{ranking} Top500 (dados extraídos do Top500).}
 	\includegraphics[width=\textwidth]{figs/top500.pdf}
@@ -49,9 +48,6 @@ Até a última década, o desempenho das arquiteturas utilizadas em \hpc era qua
 que exclusivamente pelo seu poder de processamento, usualmente medido por
 \flops. Contudo, o consumo excessivo de energia é uma barreira para o aumento de
 desempenho de forma escalável nestas plataformas.
-
-% \todo[inline]{Ressaltar o relatório DARPA/IPTO e falar da eficiência energética do supercomputador nro 1 e quão distante ele está do ideal.}
-
 Essa preocupação com o aumento de energia é ressaltada pelo relatório emitido
 pelo Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO)
 ~\cite{Kogge2008}. O relatório ressalta que a potência máxima aceitável para supercomputadores
@@ -93,22 +89,25 @@ O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados
 \pes, e 4 subsistemas de \io. O ambiente do \mppa é heterogêneo, sendo utilizado
 entre os \textit{clusters} e \io, uma comunicação via \noc, e
 dentro de cada \textit{cluster} são utilizados comunicações diretas entre
-\pe{}s, por meio de memória compartilhada. As principais dificuldades do
-desenvolvimento de aplicações para o \mppa são: \textbf{(i) modelo de
-    programação híbrido:} problema citado anteriormente, onde \textit{threads}
+\pes, por meio de memória compartilhada. As principais dificuldades do
+desenvolvimento de aplicações para o \mppa são resumidas a seguir:
+
+\begin{itemize}
+	\item \textbf{Modelo de programação híbrido}: problema citado anteriormente, onde \textit{threads}
 em um mesmo \textit{cluster} se comunicam através de memória compartilhada
 local, porém a comunicação entre \textit{clusters} é feita explicitamente via
-NoC, seguindo um modelo de computação distribuída; \textbf{(ii) comunicação:} é
-necessária a utilização de uma \api
+NoC, seguindo um modelo de computação distribuída; 
+	\item \textbf{Comunicação explícita}: é necessária a utilização de uma \api
 específica para a comunicação via NoC, similar ao POSIX de baixo nível para
-\ipc; \textbf{(iii) memória:} cada \textit{cluster} possui apenas 2MB de memória
+\ipc; 
+	\item \textbf{Memória limitada}: cada \textit{cluster} possui apenas 2MB de memória
 local de baixa latência, portanto aplicações reais precisam constantemente
-realizar comunicações com o subsistema de E/S; e \textbf{(iv) coerência em
-    cache:} cada PE possui uma memória \textit{cache} privada e sem coerência
-com as \textit{caches} dos demais PEs, sendo necessário atualizar a
-\textit{cache} manualmente.
+realizar comunicações com o subsistema de E/S;
+	\item \textbf{Ausência de coerência de \textit{cache}}: cada PE possui uma memória \textit{cache} privada e sem coerência
+com as \textit{caches} dos demais PEs, sendo necessário atualizar a \textit{cache} manualmente.
+\end{itemize}
 
-Uma possível solução para os problemas apresentados é a utilização de padrões
+Uma possível solução para os problemas apresentados anteriormente é a utilização de padrões
 paralelos ou \textit{skeletons}~\cite{cole-skeleton:2004}. \textit{Skeletons}
 são modelos de programação paralela de alto nível de abstração. Esses modelos fornecem
 vantagens para o desenvolvedor, escondendo a complexidade de aplicações
@@ -118,7 +117,7 @@ desenvolvedores focarem apenas nos algoritmos, ao invés da comunicação,
 sincronização de tarefas e escalonamento, que são gerenciados de forma
 transparente pelo \fw que implementa um \textit{skeleton}.
 Entre os diversos \textit{skeletons} existentes (\textit{map}, \textit{reduce},
-\textit{pipeline} e \textit{scan}), o padrão \textit{stencil} é o mais
+\textit{pipeline} e \textit{scan}), o padrão \stencil é o mais
 utilizado em ambientes importantes, como física quântica, previsão do tempo e
 processamento de imagens~\cite{gonzalez06,holewinski12}.
 
@@ -130,8 +129,8 @@ suporte para outras aplicações com diferentes características. Dessa forma, a
 utilização de um \fw pode facilitar o desenvolvimento de aplicações para
 ambientes onerosos, como ambientes \textit{manycore}.
 
-Muitos \fws foram propostos para o auxílio no desenvolvimento de
-\textit{stencil} paralelos em ambientes \textit{multicore} e \gpu, como o
+Muitos \fws foram propostos para o auxílio no desenvolvimento de aplicações paralelas do
+padrão \stencil em ambientes \textit{multicore} e \gpu, como o
 PSkel~\cite{pereira15}, SkePU~\cite{enmyren10} e SkelCL~\cite{steuwer11}. Em
 particular, o PSkel é um \fw que fornece uma abstração em alto nível para o
 desenvolvimento em ambientes heterogêneos CPU-GPU, enquanto particiona tarefas e
@@ -139,10 +138,14 @@ dados de forma transparente entre CPU e GPU.
 %\section{Motivação}
 
 \section{Objetivos}
+
+Com base no exposto, são apresentados a seguir o objetivo geral e os objetivos específicos
+do presente projeto.
+
 \subsection{Objetivo Geral}
 
 O objetivo principal deste TCC é propor uma adaptação do \fw \pskel para o processador \mppa,
-facilitando assim o desenvolvimento de aplicações \textit{stencil} neste processador \textit{manycore}.
+facilitando assim o desenvolvimento de aplicações \stencil neste processador \textit{manycore}.
 Além disso, a adaptação permitirá que aplicações já existentes do \pskel possam ser executadas
 no \mppa sem nenhuma necessidade de alteração de código.
 
@@ -154,18 +157,18 @@ no \mppa sem nenhuma necessidade de alteração de código.
 	\item Propor e implementar técnicas que permitam reduzir os custos de comunicação na \noc;
 	\item Adaptar as principais classes e abstrações existentes no \pskel para o processador \mppa;
 	\item Realizar uma análise do desempenho e do consumo de energia da solução proposta para o \mppa
-	utilizando-se diversas aplicações \textit{stencil} já implementadas no \pskel;
+	utilizando-se diversas aplicações \stencil já implementadas no \pskel;
 	\item Realizar comparações de desempenho e consumo de energia com outros processadores \textit{multicore}
 	e \gpus.
 \end{itemize}
 
 \section{Organização do Texto}
 O texto deste trabalho será organizado da seguinte forma. A
-seção~\ref{cha:fundTeorica} será responsável por descrever a base conceitual
-utilizada para realizar este trabalho. A seção~\ref{cha:proposta} irá descrever
+Seção~\ref{cha:fundTeorica} descreve a base conceitual
+utilizada para realizar este trabalho. A Seção~\ref{cha:proposta} apresenta
 a ideia inicial da proposta e os trabalhos relacionados. A
-seção~\ref{cha:cronograma} irá ilustrar um gráfico com as atividades planejadas
-para este trabalho. Por fim, a seção~\ref{cha:conclusao} irá apresentar as
+Seção~\ref{cha:cronograma} apresenta um cronograma contendo as atividades planejadas
+para este trabalho. Por fim, a Seção~\ref{cha:conclusao} discute as
 ideias finais sobre o trabalho que será realizado.
 
 % Introduzir Figura
