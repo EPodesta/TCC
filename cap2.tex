@@ -64,7 +64,7 @@ forma, o barramento se torna o gargalo do sistema.
 \begin{figure}[b]
 	\centering
     \caption{Esquema genérico de um multiprocessador \numa.}
-    \includegraphics[width=0.7\textwidth]{figs/multiprocNUMA.pdf}
+    \includegraphics[width=0.6\textwidth]{figs/multiprocNUMA.pdf}
     \caption*{Fonte: desenvolvido pelo autor.}
     \label{fig:numa}
 \end{figure}
@@ -606,7 +606,7 @@ com uma classificação, denominada \textit{tag}, e relacionar o portal com um
 espaço de endereçamento para realizar a comunicação.
 
 Para efetuar a escrita em um espaço de endereçamento é necessário chamar uma
-função denominada \texttt{mppa\_pwrite}. Essa função utiliza como parâmetros o
+função denominada \texttt{mppa\_pwrite}. Essa função possui como parâmetros o
 portal que será utilizado na comunicação e o tamanho do dado que será enviado.
 A função \texttt{mppa\_aio\_read} realizará a leitura dos dados recebidos pelo
 portal, relacionando o portal responsável pela leitura com o espaço de

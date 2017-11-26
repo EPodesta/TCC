@@ -16,7 +16,8 @@ alteração.
 
 Na implementação da proposta será necessário modificar classes já existentes
 no \fw para suportar as características do \mppa. Devido à subdivisão da matriz
-e a comunicação serem diferentes para o \mppa, classes responsáveis por essas
+e a comunicação serem diferentes para o \mppa em relação à um comunicação
+\cpu-\gpu, classes responsáveis por essas
 operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
 \textit{Stencil}. Além disso, a comunicação entre os processos mestre e escravo
 do \mppa será feita utilizando portais de comunicação.
@@ -50,7 +51,7 @@ comunicações entre processos.
 
 \begin{figure}[h]
 	\centering
-    \caption{Esquema da técnica de \textit{tiling} trapezoidal.}
+    \caption{Esquemático da técnica de \textit{tiling} trapezoidal.}
     \includegraphics[width=0.6\textwidth]{figs/tiling.pdf}
     \caption*{Fonte: ~\cite{meng11}.}
     \label{fig:tiling}
