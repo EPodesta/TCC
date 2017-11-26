@@ -62,11 +62,41 @@
 \usepackage{amssymb,amsfonts,amsthm}
 \usepackage{setspace}
 \usepackage[acronym,nowarn]{glossaries}
-\usepackage{listings}
 \usepackage{color}
 \usepackage{caption}
+% Code Snippets
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
+\lstset{
+	basicstyle=\scriptsize\ttfamily,
+	numbers=left,
+	stepnumber=1,
+	numbersep=-0.75em,
+	keywordstyle=\color{blue},
+	commentstyle=\color{black},
+	stringstyle=\color{black},
+	numberstyle=\scriptsize\ttfamily\color{black},
+	frame=single,
+	tabsize=2,
+	float,
+	language=C++,
+	captionpos=t,
+	showstringspaces=false,                                
+	backgroundcolor=\color{white},
+	morekeywords = {Array2D, __parallel__, Mask2D, Stencil2D},
+	emph={
+		pragma,
+		omp,
+		parallel,
+		reduction,
+		schedule,
+		private,
+		shared
+	},
+	emphstyle={\color{blue}}%
+}
+
 \input{acronyms.tex}
-\makeglossaries
 
 % ---
 
@@ -132,6 +162,10 @@
 \newcommand{\stencil}{\textit{stencil}\xspace}
 \newcommand{\etal}{\textit{et al.\ }}
 
+\newcommand{\kb}{KB\xspace}
+\newcommand{\mb}{MB\xspace}
+\newcommand{\gb}{GB\xspace}
+
 % alterando o aspecto da cor azul
 \definecolor{blue}{RGB}{41,5,195}
 
@@ -166,6 +200,15 @@
 % compila o indice
 % ---
 % \makeindex
+% ---
+
+% Prepara acrônimos.
+\makenoidxglossaries
+
+% ---
+% compila o indice
+% ---
+\makeindex
 % ---
 
 % ----
@@ -215,12 +258,12 @@
 % ---
 % inserir lista de tabelas
 % ---
-% \pdfbookmark[0]{\listtablename}{lot}
-% \listoftables*
-% \cleardoublepage
+%\pdfbookmark[0]{\listtablename}{lot}
+%\listoftables*
+%\cleardoublepage
 % ---
-% \printglossary[type=\acronymtype]
-% \clearpage
+\printnoidxglossaries
+\cleardoublepage
 % ---
 % inserir o sumario
 %% ---
@@ -235,6 +278,8 @@
 % ELEMENTOS TEXTUAIS
 % ----------------------------------------------------------
 \textual
+
+\glsresetall
 
 \input{cap1}
 \input{cap2}
