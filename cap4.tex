@@ -1,21 +1,24 @@
-\chapter{Proposta: PSkel-MPPA}
+ \chapter{Proposta: PSkel-MPPA}
 \label{cha:proposta}
+
+Esta seção apresenta as ideias fundamentais que irão embasar a proposta e implementação
+da adaptação do \fw \pskel para o processador \mppa.
 
 \section{Visão Geral}
 
-Diversas dificuldades prejudicam o desenvolvimento de aplicações para
-processadores \textit{manycore}, como o \mppa. Portanto, é interessante adaptar
-o \fw PSkel para esse processador, trazendo as características de transparência
-no particionamento de tarefas e dados para esse ambiente. Desta forma, o
-desenvolvedor irá se preocupar apenas com o desenvolvimento da aplicação, e
-utilizará dos benefícios que as características intrínsecas do processador
-fornecem. Além disso, aplicações já desenvolvidas para o \fw serão portadas sem
-alteração.
+Como dito anteriormente, diversas dificuldades prejudicam o desenvolvimento de aplicações para
+processadores \textit{manycore}, tais como o \mppa. Neste projeto, será dado um enfoque para
+uma classe de aplicações paralelas que seguem o padrão \stencil. Nesse sentido, adaptar
+o \fw PSkel para esse processador trará benefícios claros, simplificando o desenvolvimento
+de aplicações \stencil para o \mppa. O \fw fornecerá uma transparência
+no particionamento de tarefas e dados para esse ambiente, liberando o desenvolvedor
+da utilização de meios de comunicação via \noc. Além disso, aplicações já desenvolvidas para o
+\fw poderão ser executadas no \mppa sem a necessidade de nenhuma alteração em seus códigos originais.
 
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
 Na implementação da proposta será necessário modificar classes já existentes
-no \fw para suportar as características do \mppa. Devido à subdivisão da matriz
+no \fw para suportar as características do \mppa. Devido à subdivisão da matriz de entrada
 e a comunicação serem diferentes para o \mppa em relação à um comunicação
 \cpu-\gpu, classes responsáveis por essas
 operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
@@ -25,8 +28,9 @@ do \mppa será feita utilizando portais de comunicação.
 Mais especificamente, uma nova função responsável por subdividir a matriz
 de entrada em pequenas partes (\textit{tiles}), será criada.
 Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
-trapezoidal~\cite{meng11}, sendo enviados para o processo trabalhador seguindo um modelo \textit{Round-Robin}.
-Para efetuar o envio dos \textit{tiles} será criado um portal relacionado com
+trapezoidal~\cite{meng11}, sendo enviados para o processo trabalhador seguindo um modelo de
+escalonamento de tarefas do tipo \textit{round-robin}.
+Para efetuar o envio dos \textit{tiles} será criado um portal de comunicação relacionado com
 cada \textit{tile} da matriz de entrada.
 
 A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto é,
@@ -46,7 +50,7 @@ Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída à outro
 \textit{tile} aumentado pode trazer perda em desempenho em troca de um menor
 número de comunicações entre os processos, isto é, quanto maior o número de
 computações redundantes, menor o número de comunicações. Desta forma, as \textit{ghost zones}
-fornecem um \textit{trade-off} entre computações redundantes e a redução de
+fornecem uma relação custo-benefício entre computações redundantes e a redução de
 comunicações entre processos.
 
 \begin{figure}[h]
@@ -57,23 +61,18 @@ comunicações entre processos.
     \label{fig:tiling}
 \end{figure}
 
-
-
-O processo trabalhador terá uma função responsável por receber os
-\textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação
+Os processos escravos deverão receber os
+\textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação \stencil
 sobre cada \textit{tile} e enviar o resultado ao mestre.
 Além disso, será possível efetuar iterações sobre o mesmo \textit{tile},
-buscando diminuir o número de comunicações. Por fim, o processo trabalhador utilizará os \pes do
-\textit{cluster} para paralelizar a computação.
+buscando diminuir o número de comunicações. O \textit{kernel} da aplicação \stencil
+será executado em paralelo em cada \textit{cluster} do \mppa, através do uso da \api OpenMP.
 
 A implementação da proposta será focada em obter ganhos de desempenho e energia
-em relação à outras arquiteturas, como, por exemplo, o processador
+em relação a outras arquiteturas, como, por exemplo, o processador
 \textit{multicore} Intel Xeon. Desta forma, métodos escolhidos para efetuar a
-comunicação e a subdivisão dos dados, serão testadas, buscando o melhor método
-para cumprir o foco da proposta. Os experimentos irão utilizar o \fw PSkel, onde
-no \mppa será utilizado a versão com a proposta implementada.  Por outro lado, em outros
-processadores, será utilizada a mesma versão sem efetuar chamadas para as
-funções relacionadas ao \mppa.
+comunicação e a subdivisão dos dados serão testados, buscando o melhor método
+para cumprir o foco da proposta. 
 
 \section{Trabalhos Relacionados}
 
