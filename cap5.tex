@@ -1,55 +1,60 @@
 \chapter{Cronograma}
 \label{cha:cronograma}
 % \todo[inline]{Descrever resumidamente as atividades.}
+
+Esta seção apresenta o cronograma de atividades proposto para a conclusão do projeto apresentado neste documento.
+A Figura~\ref{fig:cronograma} apresenta o cronograma previsto, com atividades nomeadas de A1 até A7. A descrição de cada
+uma dessas atividades é mostrada a seguir.
+
   \begin{figure}[ht]
     \begin{center}
-     \begin{ganttchart}[
-       x unit = 1cm,
-       y unit title=0.4cm,
-       y unit chart=0.6cm,
-       hgrid,
-       vgrid={{dotted, dotted, dotted, black}},
-       title label font=\scriptsize,
-       title/.append style={fill=gray!30},
-       title height=1,
-       bar/.append style={fill=gray!30,rounded corners=2pt},
-       bar label font=\scriptsize,
-       group label font=\scriptsize,
-       ]{1}{16}
-     	% \gantttitle{\textbf{2017}}{4}
-        \gantttitle{\textbf{2018}}{16}\\
-     	% \gantttitle{\textbf{Nov}}{2}
-     	\gantttitle{\textbf{Dez}}{2}
-	 \gantttitle{\textbf{Jan}}{2}
-	 \gantttitle{\textbf{Fev}}{2}
-	 \gantttitle{\textbf{Mar}}{2}
-	 \gantttitle{\textbf{Abr}}{2}
-	 \gantttitle{\textbf{Mai}}{2}
-	 \gantttitle{\textbf{Jun}}{2}
-	 \gantttitle{\textbf{Jul}}{2} \\
-	 % \gantttitle{\textbf{Ago}}{2}
-	 % \gantttitle{\textbf{Set}}{2}
-	 % \gantttitle{\textbf{Out}}{2}
-	 % \gantttitle{\textbf{Nov}}{2}\\
-
-     \ganttbar{A1}{1}{4} \\
-     \ganttbar{A2}{3}{8} \\
-     \ganttbar{A3}{7}{10} \\
-     \ganttbar{A4}{8}{12} \\
-     \ganttbar{A5}{13}{13} \\
-     \ganttbar{A6}{14}{14} \\
-     \ganttbar{A7}{15}{15} \\
-     % \ganttbar{A8}{24}{24} \\
-     % \ganttbar{A9}{25}{25} \\
-     % \ganttbar{A10}{26}{26}
-     \end{ganttchart}
+	\resizebox{\textwidth}{!}{
+             \begin{ganttchart}[
+               x unit = 1cm,
+               y unit title=0.4cm,
+               y unit chart=0.6cm,
+               hgrid,
+               vgrid={{dotted, dotted, dotted, black}},
+               title label font=\scriptsize,
+               title/.append style={fill=gray!30},
+               title height=1,
+               bar/.append style={fill=gray!30,rounded corners=2pt},
+               bar label font=\scriptsize,
+               group label font=\scriptsize,
+               ]{1}{16}
+             	% \gantttitle{\textbf{2017}}{4}
+                \gantttitle{\textbf{2018}}{16}\\
+             	% \gantttitle{\textbf{Nov}}{2}
+             	\gantttitle{\textbf{Dez}}{2}
+        	 \gantttitle{\textbf{Jan}}{2}
+        	 \gantttitle{\textbf{Fev}}{2}
+        	 \gantttitle{\textbf{Mar}}{2}
+        	 \gantttitle{\textbf{Abr}}{2}
+        	 \gantttitle{\textbf{Mai}}{2}
+        	 \gantttitle{\textbf{Jun}}{2}
+        	 \gantttitle{\textbf{Jul}}{2} \\
+        	 % \gantttitle{\textbf{Ago}}{2}
+        	 % \gantttitle{\textbf{Set}}{2}
+        	 % \gantttitle{\textbf{Out}}{2}
+        	 % \gantttitle{\textbf{Nov}}{2}\\
+        
+             \ganttbar{A1}{1}{4} \\
+             \ganttbar{A2}{3}{8} \\
+             \ganttbar{A3}{7}{10} \\
+             \ganttbar{A4}{8}{12} \\
+             \ganttbar{A5}{13}{13} \\
+             \ganttbar{A6}{14}{14} \\
+             \ganttbar{A7}{15}{15}
+             % \ganttbar{A8}{24}{24} \\
+             % \ganttbar{A9}{25}{25} \\
+             % \ganttbar{A10}{26}{26}
+             \end{ganttchart}
+     }
 %  \end{adjustwidth}
      \caption{Cronograma de atividades.}\label{fig:cronograma}
   \end{center}
 \end{figure}
 % ---
-A Figura~\ref{fig:cronograma} apresenta o cronograma previsto para a realização
-das atividades descritas abaixo, o que inclui atividades durante o primeiro e segundo semestres de 2018.
 
 \begin{itemize}
     \item \textbf{A1: Revisão aprofundada do estado da arte e prática.} Nesta etapa será
@@ -59,13 +64,13 @@ das atividades descritas abaixo, o que inclui atividades durante o primeiro e se
     % \item \textbf{A2: Elaboração da proposta.} Nesta etapa será realizada a
         % elaboração da proposta
     \item \textbf{A2: Implementação da proposta.} Nesta etapa será realizada a
-        implementação da proposta descrita no capítulo~\ref{cha:proposta},
+        implementação da proposta descrita no Capítulo~\ref{cha:proposta},
         buscando, também, estudar outras implementações para alcançar um bom
         desempenho e consumo de energia no processador \mppa.
     \item \textbf{A3: Realização de experimentos.} Nesta etapa serão realizados
         experimentos comparativos entre a implementação proposta sobre o \mppa e
         outros processadores. Os experimentos irão avaliar o desempenho e o consumo de
-        energia da implementação proposta em relação à outros processadores.
+        energia da implementação proposta em relação a outros processadores.
     \item \textbf{A4: Escrita do rascunho do TCC II.} Nesta etapa será realizada
         a escrita do rascunho do TCC II, apresentando os experimentos desenvolvidos e a
         implementação completa da proposta.
