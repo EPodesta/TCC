@@ -314,7 +314,7 @@ memória externa \lpddr de 2~\gb.
 A comunicação dos \textit{clusters} com o subsistema de \es e a comunicação
 entre \textit{clusters} é realizada de maneira explícita, utilizando uma \api
 própria do \mppa de baixo nível similar à \posix \ipc. Detalhes referentes à
-essa comunicação e programação nesse processador serão abordadas posteriormente 
+essa comunicação e programação nesse processador serão abordadas posteriormente
 na Seção~\ref{sec:prog-mppa}.
 
 % - Terminar essa seção falando que a comunicação entre clusters e entre cluster/IO tem
@@ -431,7 +431,7 @@ escalar é a soma (\texttt{+}).
 	int produto_escalar(int *a, int *b, int tamanho)
 	{
 		int prod = 0;
-		
+
 		#pragma omp parallel for private(i) shared(a, b) reduction(+:prod)
 		for (int i = 0; i < tamanho; i++)
 			prod += a[i] * b[i];
@@ -500,7 +500,7 @@ paralela sobre código.
 
 A \api fornece diversas funções aos desenvolvedores. A função \texttt{MPI\_Init()} permite inicializar o ambiente \mpi.
 Após a inicialização, cada processo \mpi possuirá um identificador único (de $0$ até $np-1$, onde $np$ é o número total
-de processos \mpi em execução. Esse identificador único, denominado \textit{rank}, poderá ser utilizado em conjunto com
+de processos \mpi em execução). Esse identificador único, denominado \textit{rank}, poderá ser utilizado em conjunto com
 instruções de seleção (\texttt{if-else}) para determinar que processos \mpi distintos possam executar códigos distintos. Alem disso,
 ele será utilizado nas primitivas de comunicação do \mpi para especificar os remetentes e destinatários das mensagens.
 Para finalizar o ambiente \mpi é feita uma chamada para a função \texttt{MPI\_Finalize()}. O envio de mensagens
@@ -525,9 +525,9 @@ realiza o recebimento da mensagem e a imprime na tela juntamente com seu \textit
 	int main(int argc, char **argv)
 	{
 		int rank, size;
-		
+
 		MPI_Init(argc, argv);
-		
+
 		MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 		MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -538,11 +538,11 @@ realiza o recebimento da mensagem e a imprime na tela juntamente com seu \textit
 		}
 		else {
 			char mensagem[11];
-			MPI_Recv(&mensagem, 11, MPI_CHAR, 0, MPI_ANY_TAG, MPI_COMM_WORLD, 
+			MPI_Recv(&mensagem, 11, MPI_CHAR, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
 							 MPI_STATUS_IGNORE);
 			printf("Processo %d recebeu: %s\n", rank, mensagem);
 		}
-		
+
 		MPI_Finalize();
 		return(0);
 	}
@@ -661,7 +661,7 @@ escravos utilizam objetos de comunicação, como portais e filas, de
 uma \api proprietária de baixo nível do \mppa, similar à \posix \ipc.
 
 Devido à cada processo escravo possuir um espaço de endereçamento distinto, são
-utilizados portais para efetuar a comunicação entre o mestre e os escravos e entre escravos. Os
+utilizados portais para efetuar a comunicação entre o mestre e os escravos, e entre escravos. Os
 portais efetuam escrita e leitura remota, onde um processo deve criar um portal
 com uma classificação, denominada \textit{tag}, e relacionar o portal com um
 espaço de endereçamento para realizar a comunicação.
@@ -685,7 +685,7 @@ Um programa para o \mppa é composto por, pelo menos, dois arquivos principais:
 um deles conterá o código a ser executado pelo processo o mestre e outro conterá o código
 a ser executado por cada processo escravo. Esses arquivos são compilados separadamente,
 gerando dois arquivos binários (um para o processo mestre e outro para os processos escravos).
-O binário dos escravos é utilizado como argumento de entrada da função\texttt{MPPA\_Spawn()}
+O binário dos escravos é utilizado como argumento de entrada da função \texttt{MPPA\_Spawn()}
 descrita anteriormente durante a criação dos processos escravos.
 
 Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
@@ -782,7 +782,7 @@ considerada como a matriz de entrada para a próxima iteração,
 caracterizando uma nova iteração da computação.
 
 O Código~\ref{cod:exemplo-stencil} apresenta um exemplo do código de uma aplicação baseada no padrão
-\stencil, cujo o objetivo é a realização da resolução de equações matriciais pelo método iterativo de Jacobi. 
+\stencil, cujo o objetivo é a realização da resolução de equações matriciais pelo método iterativo de Jacobi.
 O número de iterações é determinado pelo parâmetro \texttt{tsteps} (linha 5). A computação
 \stencil é realizada lendo-se as informações da matriz de entrada \texttt{A} e escrevendo-se os resultados em uma matriz de saída \texttt{B}, ambas de tamanho \texttt{N*N}.
 Nesse exemplo, foi utilizado um coeficiente \texttt{c1} e uma vizinhança de 5 elementos (linha 8). A vizinhança de 5 elementos
@@ -805,7 +805,7 @@ enquanto o \fw se encarrega de gerar código executável para as diferentes
 plataformas paralelas e realizar todo o gerenciamento de memória e transferência
 de dados entre dispositivos de forma transparente~\cite{pereira15}. Mais
 especificamente, o \pskel traduz as abstrações em código C++ de baixo nível,
-compatível com Intel TBB e NVDIA CUDA. 
+compatível com Intel TBB e NVDIA CUDA.
 
 A \api do pskel possibilita a definição de \textit{templates} para a manipulação
 de estruturas $n$-dimensionais, denominadas \texttt{Array} (1 dimensão),
@@ -855,7 +855,7 @@ iteração, o \texttt{Array} de saída será considerado como \texttt{Array} de
 entrada para a próxima iteração no caso de uma aplicação \textit{stencil} iterativa.
 
 O Código~\ref{cod:exemplo-pskel} apresenta um exemplo da aplicação Jacobi discutida na
-Seção~\ref{sec:stencil} (Código~\ref{cod:exemplo-stencil}), porém agora implementada no \fw \pskel. 
+Seção~\ref{sec:stencil} (Código~\ref{cod:exemplo-stencil}), porém agora implementada no \fw \pskel.
 Nesse exemplo, a função \stencil principal da aplicação está implementada no método \texttt{stencilKernel()} nas linhas 1-5.
 As estruturas para efetuar a computação, como o \texttt{Array} de entrada (\texttt{input}) e de saída (\texttt{output}), são mostrados nas linhas 10-11.
 O formato da vizinhança é especificado na linha 12, sendo guardado na variável \texttt{neighbors}.
@@ -888,13 +888,13 @@ da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denomin
 
 	int main(int argc, char **argv) {
 		/* declaracoes de variaveis omitidas */
-		
+
 		Array2D<float> input(A, M, N);
 		Array2D<float> output(B, M, N);
 		int neighbors = {{0,1}, {-1,0}, {1,0}, {-1,0}};
 		Mask2D<int> mask(4, neighbors);
 		struct Arguments args(alpha);
-		
+
 		Stencil2D<Array2D<float>, Mask2D<int>, Arguments>
 			jacobi(A, B, args);
 		jacobi.runIterative(device::GPU, tsteps, 1.0);
