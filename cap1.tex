@@ -87,7 +87,7 @@ comunicando.
 
 O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados
 \pes, e 4 subsistemas de \io. O ambiente do \mppa é heterogêneo, sendo utilizado
-entre os \textit{clusters} e \io, uma comunicação via \noc, e
+entre os \textit{clusters} e subsistemas, uma comunicação via \noc, e
 dentro de cada \textit{cluster} são utilizados comunicações diretas entre
 \pes, por meio de memória compartilhada. As principais dificuldades do
 desenvolvimento de aplicações para o \mppa são resumidas a seguir:
@@ -96,10 +96,10 @@ desenvolvimento de aplicações para o \mppa são resumidas a seguir:
 	\item \textbf{Modelo de programação híbrido}: problema citado anteriormente, onde \textit{threads}
 em um mesmo \textit{cluster} se comunicam através de memória compartilhada
 local, porém a comunicação entre \textit{clusters} é feita explicitamente via
-NoC, seguindo um modelo de computação distribuída; 
+NoC, seguindo um modelo de computação distribuída;
 	\item \textbf{Comunicação explícita}: é necessária a utilização de uma \api
 específica para a comunicação via NoC, similar ao \posix de baixo nível para
-\ipc; 
+\ipc;
 	\item \textbf{Memória limitada}: cada \textit{cluster} possui apenas 2MB de memória
 local de baixa latência, portanto aplicações reais precisam constantemente
 realizar comunicações com o subsistema de E/S;
