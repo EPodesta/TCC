@@ -7,7 +7,7 @@ desempenho de semicondutores e das arquiteturas por meio do aumento da
 frequência. Contudo, com o aumento da frequência, ocorre um maior consumo de
 energia e, consequentemente, a temperatura do \textit{chip} aumenta. Desta
 forma, as indústrias começaram a investir em outros meios para aumentar o
-desempenho de arquiteturas, um exemplo, são os processadores \textit{manycore}.
+desempenho de arquiteturas, como, por exemplo, os processadores \textit{manycore}.
 
 Arquiteturas utilizadas na área de \hpc empregam processadores \textit{manycore} para atingir um
 processamento de uma imensa quantidade de dados ou para aplicações que precisam
@@ -15,7 +15,7 @@ de um grande quantidade de tempo para serem executadas. Supercomputadores e
 \textit{clusters} de computadores são utilizados para tornar a computação de
 aplicações ou dados tratável do ponto de vista computacional. Essas arquiteturas
 são utilizadas em aplicações científicas ou, mais atualmente, em áreas de Banco
-de Dados, devido à problemas com \textit{Big Data}. Normalmente, arquiteturas
+de Dados, devido aos problemas com \textit{Big Data}. Normalmente, arquiteturas
 \hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
 Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{manycore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
@@ -51,7 +51,7 @@ desempenho de forma escalável nestas plataformas.
 Essa preocupação com o aumento de energia é ressaltada pelo relatório emitido
 pelo Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO)
 ~\cite{Kogge2008}. O relatório ressalta que a potência máxima aceitável para supercomputadores
-\textit{Exascale} (10$^{18}$) seria de 20 MW, isto é, com
+\textit{Exascale} (10$^{18}$ \flops) seria de 20 MW, isto é, com
 essas características, um supercomputador deveria possuir uma eficiência energética de 50 GFlops/W.
 Por outro lado, atualmente, os supercomputadores mais energicamente eficientes
 possuem uma eficiência energética de no máximo $17$ GFlops/W, como pode ser observado nos dados extraídos do \textit{ranking}
@@ -65,8 +65,8 @@ duas variáveis não é proporcional.
 
 
 Por essa razão, o estudo de técnicas que melhorem a eficiência energética em
-plataformas \hpc está se tornando muito importante.  Recentemente, uma nova
-classe de processadores \textit{manycore} de baixa potência tais como o Sunway
+plataformas \hpc está se tornando muito importante.  Recentemente, novas
+classes de processadores \textit{manycore} de baixa potência, tais como, o Sunway
 SW26010~\cite{sunway:2016}, Mellanox TILE-Gx~\cite{Valero:2012} e Kalray
 \mppa~\cite{Castro-IA3:2013} foram desenvolvidos. Esses processadores possuem
 centenas de núcleos de processamento capazes de lidar com paralelismo de dados e
@@ -79,16 +79,15 @@ desafiadora~\cite{Varghese14,Castro-PARCO:2016,Castro-SBAC-PAD:2014}. Núcleos d
 processamento sem coerência de \textit{cache} são, geralmente, distribuídos em
 uma arquitetura organizada em \textit{clusters}, onde cada \textit{cluster}
 possui uma memória local (compartilhada somente entre os núcleos do
-\textit{cluster}). Dessa forma, a comunicação entre \textit{clusters} deve que
-ser efetuada através de uma \noc de maneira distribuída.
+\textit{cluster}). Dessa forma, a comunicação entre \textit{clusters} deve ser efetuada através de uma \noc de maneira distribuída.
 Por essa razão, o tempo de comunicação pode variar entre os núcleos que estão se
 comunicando.
 %Explicar as dificuldades.
 
 O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados
-\pes, e 4 subsistemas de \io. O ambiente do \mppa é heterogêneo, sendo utilizado
-entre os \textit{clusters} e subsistemas, uma comunicação via \noc, e
-dentro de cada \textit{cluster} são utilizados comunicações diretas entre
+\pes, e 4 subsistemas de \es. O ambiente do \mppa é heterogêneo, sendo utilizado
+entre os \textit{clusters} e subsistemas uma comunicação via \noc, e
+dentro de cada \textit{cluster} são utilizadas comunicações diretas entre
 \pes, por meio de memória compartilhada. As principais dificuldades do
 desenvolvimento de aplicações para o \mppa são resumidas a seguir:
 
@@ -102,7 +101,7 @@ específica para a comunicação via NoC, similar ao \posix de baixo nível para
 \ipc;
 	\item \textbf{Memória limitada}: cada \textit{cluster} possui apenas 2MB de memória
 local de baixa latência, portanto aplicações reais precisam constantemente
-realizar comunicações com o subsistema de E/S;
+realizar comunicações com o subsistema de \es;
 	\item \textbf{Ausência de coerência de \textit{cache}}: cada PE possui uma memória \textit{cache} privada e sem coerência
 com as \textit{caches} dos demais PEs, sendo necessário atualizar a \textit{cache} manualmente.
 \end{itemize}

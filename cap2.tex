@@ -91,8 +91,8 @@ anteriormente, devido ao acesso à memória remota ser mais lento que à memóri
 local. A Figura~\ref{fig:numa} apresenta a arquitetura desse sistema, onde
 existem nós interconectados por uma rede, e cada nó possui uma \cpu e um bloco
 de memória. A \cpu de cada nó pode possuir uma \textit{cache}, possibilitando
-uma redução no tempo de acesso à um dado localizado em uma memória remota, esse
-sistema é denominada de \ccnuma. Por outro lado, um sistema sem \textit{cache} é
+uma redução no tempo de acesso a um dado localizado em uma memória remota, esse
+sistema é denominado de \ccnuma. Por outro lado, um sistema sem \textit{cache} é
 denominado \ncnuma.
 
 \begin{figure}[t]
@@ -116,7 +116,7 @@ Esse problema pode ser ainda mais agravado em sistemas do tipo \mpsoc. Esses sis
 possuem geralmente \cpus (muitas vezes \textit{multicore}) de propósito geral, além de processadores
 dedicados a atividades bem específicas, tais como decodificadores de áudio e vídeo, processadores
 criptográficos, entre outros. Além dos processadores, esses sistemas também incluem diferentes tipos
-de interface de rede e de \io no mesmo \textit{chip}.
+de interface de rede e de \es no mesmo \textit{chip}.
 
 Quando a quantidade de \textit{cores} é grande, isto é, dezenas até milhares de
 \textit{cores}, o \textit{chip} pode ser classificado como \textit{manycore}.
@@ -203,7 +203,7 @@ sobre o \mppa serão apresentados posteriormente na Seção~\ref{sec:mppa}.
 % }
 %
 Multiprocessadores de grande porte são difíceis de construir devido ao alto
-custo. Desta forma, devido a simplicidade de construção, multicomputadores
+custo. Desta forma, devido à simplicidade de construção, multicomputadores
 começaram a surgir, que utilizam \cpus fortemente acopladas sem compartilhamento
 de memória~\cite{Tanenbaum2015}. Um \pc comum e uma placa de interface de rede formam um nó do
 sistema multicomputado, onde um gerenciamento de forma inteligente da rede auxilia o desempenho
@@ -314,7 +314,7 @@ memória externa \lpddr de 2~\gb.
 A comunicação dos \textit{clusters} com o subsistema de \es e a comunicação
 entre \textit{clusters} é realizada de maneira explícita, utilizando uma \api
 própria do \mppa de baixo nível similar à \posix \ipc. Detalhes referentes à
-essa comunicação e programação nesse processador serão abordadas posteriormente
+comunicação e programação nesse processador serão abordadas posteriormente
 na Seção~\ref{sec:prog-mppa}.
 
 % - Terminar essa seção falando que a comunicação entre clusters e entre cluster/IO tem
@@ -343,7 +343,7 @@ na Seção~\ref{sec:prog-mppa}.
 \section{Programação Paralela}
 \label{sec:prog-paralela}
 
-O desenvolvimento de aplicações são, geralmente, implementadas de forma
+Aplicações são, geralmente, implementadas de forma
 sequencial, isto é, um conjunto serializado de instruções que será executado
 sobre uma \cpu. Por outro lado, a computação paralela ou distribuída efetua o
 processamento de instruções sobre múltiplos elementos de processamento. A ideia
@@ -405,7 +405,7 @@ O Código~\ref{cod:exemplo-openmp} apresenta um exemplo de uma função
 que implementa o produto escalar entre dois vetores (\texttt{a} e \texttt{b}) paralelizada
 com uso do OpenMP. A região paralela é criada pela diretiva de compilação
 \texttt{\#pragma omp parallel} (linha 5). Variáveis dentro de uma região paralela
-podem ser classificadas como \texttt{shared} (compartilahdas) ou \texttt{private} (privadas),
+podem ser classificadas como \texttt{shared} (compartilhadas) ou \texttt{private} (privadas),
 possibilitando assim o gerenciamento da execução pela \api. Uma variável marcada como \texttt{shared}
 é compartilhada entre as \textit{threads} de uma região paralela. Por outro lado, variáveis marcadas
 como \texttt{private} são privadas para cada \textit{thread}, isto é, cada \textit{thread} possuirá uma
@@ -418,7 +418,7 @@ do \textit{loop} são distribuídas, de forma automática e flexível, sobre as
 \textit{threads} da região paralela. A paralelização das iterações do \textit{loop} é mostrada na linha 6 do
 Código~\ref{cod:exemplo-openmp} com uso da cláusula \texttt{for}. Além disso, operações de redução podem ser
 utilizadas ao fim de uma região paralela, aplicando sobre uma variável a
-operação especificada. Ao final da região paralela, o resultado é atribuído à uma variável compartilhada. A redução
+operação especificada. Ao final da região paralela, o resultado é atribuído a uma variável compartilhada. A redução
 é necessária no caso do produto escalar mostrado no Código~\ref{cod:exemplo-openmp}, sendo necessário
 utilizar a cláusula \texttt{reduction} sobre a variável \texttt{prod}. A operação de redução utilizada no caso do produto
 escalar é a soma (\texttt{+}).
@@ -501,7 +501,8 @@ paralela sobre código.
 A \api fornece diversas funções aos desenvolvedores. A função \texttt{MPI\_Init()} permite inicializar o ambiente \mpi.
 Após a inicialização, cada processo \mpi possuirá um identificador único (de $0$ até $np-1$, onde $np$ é o número total
 de processos \mpi em execução). Esse identificador único, denominado \textit{rank}, poderá ser utilizado em conjunto com
-instruções de seleção (\texttt{if-else}) para determinar que processos \mpi distintos possam executar códigos distintos. Alem disso,
+instruções de seleção (\texttt{if-else}) para determinar que processos \mpi
+distintos possam executar códigos distintos. Além disso,
 ele será utilizado nas primitivas de comunicação do \mpi para especificar os remetentes e destinatários das mensagens.
 Para finalizar o ambiente \mpi é feita uma chamada para a função \texttt{MPI\_Finalize()}. O envio de mensagens
 é realizado pela função \texttt{MPI\_Send()}, que construirá a mensagem, e irá
@@ -510,10 +511,12 @@ outras informações. A função \texttt{MPI\_Recv()} será responsável por rec
 mensagem enviada pelo processo, e irá armazená-la no espaço de memória
 do processo destinatário.
 
-O Código~\ref{cod:exemplo-mpi} mostra um exemplo de um programa em \mpi. Nesse exemplo, o processo com \textit{rank} igual à zero
+O Código~\ref{cod:exemplo-mpi} mostra um exemplo de um programa em \mpi. Nesse
+exemplo, o processo com \textit{rank} igual a zero
 envia uma mensagem a todos os demais processos. Ao receber a mensagem, cada um dos demais processos imprime na tela a mensagem
 recebida. As funções \texttt{MPI\_Comm\_rank()} e \texttt{MPI\_Comm\_size()} são utilizadas para armazenar nas variáveis \texttt{rank} e \texttt{size}
-o \textit{rank} do processo e o número total de processos, respectivamente. Nas linhas 12-13, o processo com \textit{rank} igual à 0 envia para os
+o \textit{rank} do processo e o número total de processos, respectivamente. Nas
+linhas 12-13, o processo com \textit{rank} igual a zero envia para os
 demais processos a mensagem \texttt{``Ola mundo!''}. As linhas 16-19 são executadas somente pelos demais processos, onde cada processo
 realiza o recebimento da mensagem e a imprime na tela juntamente com seu \textit{rank}.
 
@@ -549,7 +552,7 @@ realiza o recebimento da mensagem e a imprime na tela juntamente com seu \textit
 	\end{lstlisting}
 \end{figure}
 
-Além de comunicações do tipo ponto-à-ponto, existem comunicações coletivas e de sincronização entre
+Além de comunicações do tipo ponto-a-ponto, existem comunicações coletivas e de sincronização entre
 todos os processos. A função \texttt{MPI\_Barrier()} é uma barreira de sincronização, responsável por bloquear a
 execução de um processo até que todos os outros processos cheguem na barreira.
 Por outro lado, a função \texttt{MPI\_Bcast()} é responsável por enviar a mesma
@@ -660,8 +663,8 @@ O \mppa não possui suporte para o \mpi, desta forma, os processos mestre e
 escravos utilizam objetos de comunicação, como portais e filas, de
 uma \api proprietária de baixo nível do \mppa, similar à \posix \ipc.
 
-Devido à cada processo escravo possuir um espaço de endereçamento distinto, são
-utilizados portais para efetuar a comunicação entre o mestre e os escravos, e entre escravos. Os
+Cada processo escravo possui um espaço de endereçamento distinto, desta forma,
+são utilizados portais para efetuar a comunicação entre o mestre e os escravos, e entre escravos. Os
 portais efetuam escrita e leitura remota, onde um processo deve criar um portal
 com uma classificação, denominada \textit{tag}, e relacionar o portal com um
 espaço de endereçamento para realizar a comunicação.
@@ -700,10 +703,10 @@ utilizar os recursos do processador: OpenMP, baseado em um modelo de memória
 compartilhada, utilizada para paralelizar a computação dentro de cada
 \textit{cluster} e a \api proprietária do \mppa, que segue um modelo de memória
 distribuída, sendo utilizado na comunicação entre os \textit{clusters} e o
-subsistema de \io por meio da \noc. O segundo fator importante está relacionado a
-\textbf{capacidade limitada de memória} no \textit{chip}: cada \textit{cluster}
+subsistema de \es por meio da \noc. O segundo fator importante está relacionado
+à \textbf{capacidade limitada de memória} no \textit{chip}: cada \textit{cluster}
 possui apenas 2~\mb de memória local de baixa latência. Portanto, aplicações
-reais precisam constantemente realizar comunicações com o subsistema de \io
+reais precisam constantemente realizar comunicações com o subsistema de \es
 conectado à memória \lpddr. Por fim, o último fator está diretamente relacionado
 à \textbf{ausência de coerência de \textit{cache}}: cada \pe possui uma memória
 \textit{cache} privada sem coerência de \textit{cache}, sendo necessário o uso
@@ -775,8 +778,7 @@ utilizados na computação. A máscara é aplicada sobre $A$ para determinar o v
 célula da matriz de saída ($B$). No exemplo da Figura~\ref{fig:stencil}, o
 valor de cada célula da matriz de saída é determinado em função dos
 valores de cada uma das células vizinhas adjacentes da matriz de entrada. Esse processo é realizado
-para todas as células da matriz de entrada, produzindo uma matriz de saída
-de saída contendo o resultado da computação \stencil. Além disso, o padrão possibilita a computação
+para todas as células da matriz de entrada, produzindo uma matriz de saída contendo o resultado da computação \stencil. Além disso, o padrão possibilita a computação
 iterativa, isto é, ao final de uma iteração, a matriz de saída será
 considerada como a matriz de entrada para a próxima iteração,
 caracterizando uma nova iteração da computação.
@@ -787,7 +789,7 @@ O número de iterações é determinado pelo parâmetro \texttt{tsteps} (linha 5
 \stencil é realizada lendo-se as informações da matriz de entrada \texttt{A} e escrevendo-se os resultados em uma matriz de saída \texttt{B}, ambas de tamanho \texttt{N*N}.
 Nesse exemplo, foi utilizado um coeficiente \texttt{c1} e uma vizinhança de 5 elementos (linha 8). A vizinhança de 5 elementos
 representa a célula central e as 4 células adjacentes à célula central (cima, baixo, esquerda e direita).
-Devido a sua característica iterativa desta aplicação, existe uma troca de dados entre as matrizes \texttt{A} e \texttt{B}
+Devido à característica iterativa desta aplicação, existe uma troca de dados entre as matrizes \texttt{A} e \texttt{B}
 (linhas 10-12) para que o resultado da iteração \texttt{i} possa ser utilizado como entrada na iteração
 \texttt{i+1}.
 
@@ -807,7 +809,7 @@ de dados entre dispositivos de forma transparente~\cite{pereira15}. Mais
 especificamente, o \pskel traduz as abstrações em código C++ de baixo nível,
 compatível com Intel TBB e NVDIA CUDA.
 
-A \api do pskel possibilita a definição de \textit{templates} para a manipulação
+A \api do PSkel possibilita a definição de \textit{templates} para a manipulação
 de estruturas $n$-dimensionais, denominadas \texttt{Array} (1 dimensão),
 \texttt{Array2D} (2 dimensões) e \texttt{Array3D} (3 dimensões). Além disso, o
 \fw provê abstrações para a definição da vizinhança do \stencil (\texttt{Mask})
@@ -870,7 +872,7 @@ função \texttt{runIterative()} (linha 18), a execução da computação irá i
 É possível notar que o \textit{kernel} da computação \stencil (linha 4) fica mais simplificado em relação ao
 código original do Jacobi mostrado anteriormente (Código~\ref{cod:exemplo-stencil}), pois as iterações da aplicação
 (\texttt{tsteps}) e os \textit{loops} de computação sobre as matrizes ficam implícitos, sendo
-gerenciadas pelo \fw. Os elementos das matrizes são determinados pelos
+gerenciados pelo \fw. Os elementos das matrizes são determinados pelos
 parâmetros \texttt{x} e \texttt{y} da função \texttt{stencilKernel()}. Além disso, o coeficiente
 da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denominada
 \texttt{Arguments} (linha 14).
