@@ -1,4 +1,4 @@
- \chapter{Proposta: PSkel-MPPA}
+\chapter{PSkel-MPPA}
 \label{cha:proposta}
 
 Esta seção apresenta as ideias fundamentais que irão embasar a proposta e implementação
@@ -19,7 +19,7 @@ da utilização de meios de comunicação via \noc. Além disso, aplicações j�
 
 Na implementação da proposta será necessário modificar classes já existentes
 no \fw para suportar as características do \mppa. Devido à subdivisão da matriz de entrada
-e a comunicação serem diferentes para o \mppa em relação à uma comunicação
+e a comunicação serem diferentes para o \mppa em relação à comunicação
 \cpu-\gpu, classes responsáveis por essas
 operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
 \textit{Stencil}. Além disso, a comunicação entre os processos mestre e escravo
@@ -45,7 +45,7 @@ computação de todas as iterações.
 Com esta técnica, é possível realizar mais iterações sobre o mesmo
 \textit{tile}, diminuindo o número de comunicações entre processos.
 
-Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída à outro
+Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída a outro
 \textit{tile}, computações redundantes serão realizadas. O tamanho do
 \textit{tile} aumentado pode trazer perda em desempenho em troca de um menor
 número de comunicações entre os processos, isto é, quanto maior o número de
@@ -146,7 +146,7 @@ de trabalho a ser executada.
 \emph{Morari}~\etal~\cite{Valero:2012} propuseram uma implementação otimizada do
 \textit{radix sort} para o processador \textit{manycore} Tilera TILEPro64. Os
 resultados mostraram que a solução para o TILEPro64 provê uma melhor eficiência
-energética em relação à um processador \textit{multicore} de propósito geral, como
+energética em relação a um processador \textit{multicore} de propósito geral, como
 o Intel Xeon W5590, e em relação a uma \gpu NVIDIA Tesla C2070.
 
 Mais especificamente, \emph{Francesquini}~\etal~\cite{Castro-IA3-JPDC:2014} analisaram

@@ -141,7 +141,7 @@ pequenas computações que podem ser paralelizadas. Contudo, a programação par
 com diferentes partes do dado, isto é, são máquinas \simd. Esse modelo de
 programação é interessante para abordar o paralelismo de dados, contudo, o
 desenvolvedor pode se deparar com dificuldades durante o desenvolvimento para
-essa máquina. Desta forma, linguagens de programação, como CUDA e \opengl,
+essa máquina. Desta forma, linguagens de programação, como CUDA e \opencl,
 abstraem o desenvolvimento de aplicações para esses sistemas computacionais.
 
 O \mppa é um processador \textit{manycore} diferente dos apresentados acima,
@@ -291,7 +291,7 @@ dentro de cada \textit{cluster}.
 \end{figure}
 
 Os núcleos de processamento do \mppa são denominados \pes.
-Além dos \pes, o processador possui 32 núcleos dedicados a gerência de recursos
+Além dos \pes, o processador possui 32 núcleos dedicados à gerência de recursos
 denominados  \rmans. \pes e \rmans são distribuídos
 fisicamente no \textit{chip} em 16 \textit{clusters} e 4 subsistemas de \es,
 contendo cada \textit{cluster}, 16 \pes e 1 \rman. Além dos \textit{clusters}, o
@@ -725,8 +725,7 @@ de um \pe quando necessário.
 \section{O Padrão \textit{Stencil}}
 \label{sec:stencil}
 
-As dificuldades presentes na computação paralela tem um grande impacto sobre a
-eficiência do desenvolvimento de aplicações eficientes. Com o
+As dificuldades na computação paralela tem um grande impacto no desenvolvimento de aplicações. Com o
 desenvolvimento de aplicações paralelas, começou-se a notar um padrão entre
 elas. Com isso, foram criados os padrões paralelos para simplificar o
 desenvolvimento de código.
