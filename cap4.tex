@@ -17,43 +17,101 @@ da utilização de meios de comunicação via \noc. Além disso, aplicações j�
 
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
-Na implementação da proposta será necessário modificar classes já existentes
-no \fw para suportar as características do \mppa. Devido à subdivisão da matriz de entrada
-e a comunicação serem diferentes para o \mppa em relação à comunicação
-\cpu-\gpu, classes responsáveis por essas
-operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
-\textit{Stencil}. Além disso, a comunicação entre os processos mestre e escravo
-do \mppa será feita utilizando portais de comunicação.
+A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
+mestre-trabalhador. O processo mestre é executado no subsistema de \es conectado
+à uma memória LPDDR3, alocando dados de entrada e saída. Por outro lado, o
+processo trabalhador é executado em cada \textit{cluster} com o
+objetivo de realizar a computação \stencil de forma paralela. Devido às
+limitações de memória no \mppa, o mestre deverá enviar para o trabalhador
+pequenas partições da matriz de entrada, denominadas de \textit{tiles}. Durante
+o processo de subdivisão, cada \textit{tile} deverá considerar as dependências
+de vizinhança intrínsecas do padrão \stencil. Mais precisamente, a computação
+realizada sobre um elemento de um certo \textit{tile} poderá possuir uma relação
+de dependência com outros \textit{tiles} devido à máscara da computação.
 
-Mais especificamente, uma nova função responsável por subdividir a matriz
-de entrada em pequenas partes (\textit{tiles}), será criada.
-Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
-trapezoidal~\cite{meng11}, sendo enviados para o processo trabalhador seguindo um modelo de
-escalonamento de tarefas do tipo \textit{round-robin}.
-Para efetuar o envio dos \textit{tiles} será criado um portal de comunicação relacionado com
-cada \textit{tile} da matriz de entrada.
+Para tratar os problemas de dependência foi utilizada a técnica de
+\textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
+dados e computações~\cite{Rocha:2017}. A seguir, a técnica será ilustrada
+por meio de definições formais. Seja $A$ uma matriz de dados 2D, com dimensões
+$\textrm{dim}(A) = (h,w)$, onde $w$ e $h$ são largura e altura, respectivamente.
+Utilizando \textit{tiles} de dimensões ($w'$, $h'$), é possível obter
+$\lceil\frac{w}{w^\prime}\rceil\lceil\frac{h}{h^\prime}\rceil$ \textit{tiles}
+sobre $A$. Seja $A_{i,j}$ um \textit{tile} seguindo as definições descritas,
+onde $0 \leq i < \lceil\frac{w}{w^\prime}\rceil$ e $0\leq j <
+\lceil\frac{h}{h^\prime}\rceil$. $A_{i,j}$ possui um \textit{offset} $(i
+w^\prime, j h^\prime)$ relativo ao canto superior esquerdo de $A$ e
+$\textrm{dim}(A_{i,j}) = (\min\{w^\prime, w-i w^\prime\}, \min\{h^\prime, h-j
+h^\prime\})$. O \textit{offset} é um índice de deslocamento necessário para
+acessar os elementos de um \textit{tile}.
 
-A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto é,
-\textit{tiles} com uma borda maior, determinada por uma \textit{ghost zone}.
+A Figura~\ref{block2d} ilustra a técnica de \textit{tiling} trapezoidal. Um
+\textit{tile} lógico (linha sólida interna) é contido em uma matriz de dados 2D
+(linha pontilhada externa) com \textit{offsets} verticais e horizontais dados
+por $jh^\prime$ e $iw^\prime$. Se $t$ iterações de uma aplicação \stencil
+precisam ser realizadas, é possível computar $t^\prime$ iterações consecutivas
+sobre $A_{i,j}$ ($t^\prime \in \left[1,t\right]$) sem a necessidade de nenhuma
+troca de dados entre \textit{tiles} adjacentes, isto é, $t^\prime$ iterações
+internas. Para realizar iterações consecutivas é necessário utilizar um
+\textit{tile} lógico ($A_{i,j}$) alargado com uma \textit{ghost zone} (área
+entre a linha sólida interna e a linha sólida externa) que possui uma
+\textit{halo region} (área entre a linha sólida interna e a linha pontilhada
+interna). Seja $r$ o maior deslocamento necessário sobre a vizinhança de um
+elemento, determinado pela máscara \stencil. A área com alcance $r$ que contém a
+vizinhança é denominada \textit{halo region}. O número de \textit{halo regions}
+que compõem a \textit{ghost zone} é proporcional à $t^\prime$. Desta forma, o
+\textit{tile} alargado $A^\ast_{i,j}$ possui \textit{offset} $(\max\{iw^\prime -
+rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$. Portanto,
+existe um \textit{trade-off} entre o custo de computação redundante e o número
+de comunicações e sincronizações na \noc durante o processamento de computações
+\stencil iterativas no \mppa.
+
+\begin{figure}[!h]
+  \begin{minipage}[b]{0.9\textwidth}
+	\centering
+	\includegraphics[height=5cm]{figs/tile.pdf}
+	\caption{2D tiling~\cite{Rocha:2017}.}
+	\label{fig:gputile}
+  \end{minipage}
+\end{figure}
+
+
+
+% Na implementação da proposta será necessário modificar classes já existentes
+% no \fw para suportar as características do \mppa. Devido à subdivisão da matriz de entrada
+% e a comunicação serem diferentes para o \mppa em relação à comunicação
+% \cpu-\gpu, classes responsáveis por essas
+% operações devem ser modificadas, como, por exemplo, a classe que determina a estrutura
+% \textit{Stencil}. Além disso, a comunicação entre os processos mestre e escravo
+% do \mppa será feita utilizando portais de comunicação.
+
+% Mais especificamente, uma nova função responsável por subdividir a matriz
+% de entrada em pequenas partes (\textit{tiles}), será criada.
+% Os \textit{tiles} serão construídos seguindo uma técnica de \textit{tiling}
+% trapezoidal~\cite{meng11}, sendo enviados para o processo trabalhador seguindo um modelo de
+% escalonamento de tarefas do tipo \textit{round-robin}.
+% Para efetuar o envio dos \textit{tiles} será criado um portal de comunicação relacionado com
+% cada \textit{tile} da matriz de entrada.
+%
+% A técnica trapezoidal permite o mestre enviar \textit{tiles} aumentados, isto é,
+% \textit{tiles} com uma borda maior, determinada por uma \textit{ghost zone}.
 % Desta forma, o processo trabalhador poderá realizar mais de uma iteração sobre
 % cada \textit{tile}, diminuindo o número de sincronizações entre os processos.
-A Figura~\ref{fig:tiling} ilustra essa técnica, onde a \textit{ghost zone}
+A Figura~\ref{fig:tiling} ilustra as modificações sobre o \textit{tile} alargado
+em relação às iterações consecutivas. Mais especificamente, a \textit{ghost zone}
 agrupa as iterações em estágios. Cada estágio realiza
 operações sobre \textit{tiles} sobrepostos, denominados trapezóides.
 Por fim, os trapezóides irão produzir um dado sem sobreposição ao final da
 computação de todas as iterações.
-Com esta técnica, é possível realizar mais iterações sobre o mesmo
-\textit{tile}, diminuindo o número de comunicações entre processos.
 
-Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída a outro
-\textit{tile}, computações redundantes serão realizadas. O tamanho do
-\textit{tile} aumentado pode trazer perda em desempenho em troca de um menor
-número de comunicações entre os processos, isto é, quanto maior o número de
-computações redundantes, menor o número de comunicações. Desta forma, as \textit{ghost zones}
-fornecem uma relação custo-benefício entre computações redundantes e a redução de
-comunicações entre processos.
+% Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída a outro
+% \textit{tile}, computações redundantes serão realizadas. O tamanho do
+% \textit{tile} aumentado pode trazer perda em desempenho em troca de um menor
+% número de comunicações entre os processos, isto é, quanto maior o número de
+% computações redundantes, menor o número de comunicações. Desta forma, as \textit{ghost zones}
+% fornecem uma relação custo-benefício entre computações redundantes e a redução de
+% comunicações entre processos.
 
-\begin{figure}[h]
+\begin{figure}[!h]
 	\centering
     \caption{Esquemático da técnica de \textit{tiling} trapezoidal.}
     \includegraphics[width=0.6\textwidth]{figs/tiling.pdf}
@@ -61,18 +119,29 @@ comunicações entre processos.
     \label{fig:tiling}
 \end{figure}
 
-Os processos escravos deverão receber os
-\textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação \stencil
-sobre cada \textit{tile} e enviar o resultado ao mestre.
-Além disso, será possível efetuar iterações sobre o mesmo \textit{tile},
-buscando diminuir o número de comunicações. O \textit{kernel} da aplicação \stencil
-será executado em paralelo em cada \textit{cluster} do \mppa, através do uso da \api OpenMP.
 
-A implementação da proposta será focada em obter ganhos de desempenho e energia
-em relação a outras arquiteturas, como, por exemplo, o processador
-\textit{multicore} Intel Xeon. Desta forma, métodos escolhidos para efetuar a
-comunicação e a subdivisão dos dados serão testados, buscando o melhor método
-para cumprir o foco da proposta.
+% Os processos escravos deverão receber os
+% \textit{tiles} aumentados enviados pelo mestre, computar o \textit{kernel} da aplicação \stencil
+% sobre cada \textit{tile} e enviar o resultado ao mestre.
+% Além disso, será possível efetuar iterações sobre o mesmo \textit{tile},
+% buscando diminuir o número de comunicações. O \textit{kernel} da aplicação \stencil
+% será executado em paralelo em cada \textit{cluster} do \mppa, através do uso da \api OpenMP.
+%
+% A implementação da proposta será focada em obter ganhos de desempenho e energia
+% em relação a outras arquiteturas, como, por exemplo, o processador
+% \textit{multicore} Intel Xeon. Desta forma, métodos escolhidos para efetuar a
+% comunicação e a subdivisão dos dados serão testados, buscando o melhor método
+% para cumprir o foco da proposta.
+
+Após cada computação das $t^\prime$ iterações consecutivas,
+sincronizações devem ser realizadas para resolver as iterações restantes. Desta
+forma, $\lceil\frac{t}{t^\prime}\rceil$ sincronizações serão responsáveis por
+atualizar a matriz de entrada globalmente, isto é, para todos os
+\textit{clusters}.
+
+\section{Implementação}
+
+
 
 \section{Trabalhos Relacionados}
 
