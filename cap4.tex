@@ -31,7 +31,32 @@ de dependência com outros \textit{tiles} devido à máscara da computação.
 
 Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
-dados e computações~\cite{Rocha:2017}. A seguir, a técnica será ilustrada
+dados e computações~\cite{Rocha:2017}. Mais especificamente, \textit{tiling} é
+geralmente utilizado para particionar a computação de uma aplicação \stencil em
+"pedaços" menores, denominados \textit{tiles}, entre \textit{clusters}. Essa subdivisão
+tem como objetivo possibilitar a execução paralela da aplicação.
+
+Contudo, o processo de \textit{tiling} introduz problemas de dependência, pois,
+para computar os elementos daas bordas de um \textit{tile}, é necessário obter
+os valores resultantes em outros \textit{clusters}. A Figura~\ref{fig:tilingHalo} ilustra
+esse comportamento. As regiões que precisam ser resolvidas por sincronizações e
+comunicações entre \textit{clusters} é denominada região \textit{halo}. Dependendo do número
+de sincronizações e comunicações realizadas, a aplicação pode demorar um tempo
+considerável realizando o particionamento de dados entre \textit{clusters}, prejudicando o
+desempenho da aplicação.
+
+Para contornar essa sobrecarga após cada iteração, um \textit{tile} pode ser
+alargado para incluir uma \textit{ghost zone}. A Figura~\ref{fig:tiling} ilustra
+essa alternativa, onde a \textit{ghost zone} alarga o \textit{tile}, fazendo-o
+sobrepor \textit{tiles} vizinhos por meio de múltiplas regiões \textit{halo}.
+Desta forma, \textit{clusters} podem gerar mais sobreposições com quantidade proporcional ao
+número de iterações da aplicação. Além disso, a mesma figura ilustra o
+comportamento da \textit{ghost zone}, onde ela agrupa as iterações em estágios.
+Cada estágio realiza operações sobre \textit{tiles} sobrepostos, denominados
+trapezóides. Por fim, os trapezóides irão produzir um dado sem sobreposição ao
+final da computação de todas as iterações.
+
+A seguir, a técnica será ilustrada mais profundamente
 por meio de definições formais. Seja $A$ uma matriz de dados 2D, com dimensões
 $\textrm{dim}(A) = (h,w)$, onde $w$ e $h$ são largura e altura, respectivamente.
 Utilizando \textit{tiles} de dimensões ($w'$, $h'$), é possível obter
@@ -59,7 +84,7 @@ interna). Seja $r$ o maior deslocamento necessário sobre a vizinhança de um
 elemento, determinado pela máscara \stencil. A área com alcance $r$ que contém a
 vizinhança é denominada \textit{halo region}. O número de \textit{halo regions}
 que compõem a \textit{ghost zone} é proporcional à $t^\prime$. Desta forma, o
-\textit{tile} alargado $A^\ast_{i,j}$ possui \textit{offset} $(\max\{iw^\prime -
+\textit{tile} alargado $A^\ast_{i,j}$ possui um \textit{offset} $(\max\{iw^\prime -
 rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$. Portanto,
 existe um \textit{trade-off} entre o custo de computação redundante e o número
 de comunicações e sincronizações na \noc durante o processamento de computações
@@ -96,12 +121,9 @@ de comunicações e sincronizações na \noc durante o processamento de computa�
 % \textit{tiles} com uma borda maior, determinada por uma \textit{ghost zone}.
 % Desta forma, o processo trabalhador poderá realizar mais de uma iteração sobre
 % cada \textit{tile}, diminuindo o número de sincronizações entre os processos.
-A Figura~\ref{fig:tiling} ilustra as modificações sobre o \textit{tile} alargado
-em relação às iterações consecutivas. Mais especificamente, a \textit{ghost zone}
-agrupa as iterações em estágios. Cada estágio realiza
-operações sobre \textit{tiles} sobrepostos, denominados trapezóides.
-Por fim, os trapezóides irão produzir um dado sem sobreposição ao final da
-computação de todas as iterações.
+
+% A Figura~\ref{fig:tiling} ilustra as modificações sobre o \textit{tile} alargado
+% em relação às iterações consecutivas. Mais es
 
 % Devido ao \textit{tile} ser acrescido de uma parte da matriz atribuída a outro
 % \textit{tile}, computações redundantes serão realizadas. O tamanho do
