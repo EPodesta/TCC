@@ -27,43 +27,48 @@
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 
-\documentclass[
+\documentclass{ufscThesis}
 	% -- opções da classe memoir --
-	12pt,				% tamanho da fonte
-	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
-	twoside,			% para impressão em verso e anverso. Oposto a oneside
-	a4paper,			% tamanho do papel.
+	% 12pt,				% tamanho da fonte
+	% openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	% twoside,			% para impressão em verso e anverso. Oposto a oneside
+	% a4paper,			% tamanho do papel.
 	% -- opções da classe abntex2 --
 	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
 	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
 	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
 	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
 	% -- opções do pacote babel --
-	english,			% idioma adicional para hifenização
-	brazil				% o último idioma é o principal do documento
-	]{abntex2}
+	% english,			% idioma adicional para hifenização
+	% brazil				% o último idioma é o principal do documento
 
 % ---
 % Pacotes básicos
 % ---
-\usepackage{uarial}				% Usa a fonte Latin Modern			lmodern
-\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
-\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
-\usepackage{lastpage}			% Usado pela Ficha catalográfica
-\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
-\usepackage{color}				% Controle das cores
+% \usepackage{times}				% Usa a fonte Latin Modern			lmodern
+% \usepackage{mathptmx}
+% \usepackage{pslatex}
+% \usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+% \usepackage{sbc-template}
+% \usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+% \usepackage{fontspec}		% Selecao de codigos de fonte.
+% \usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+% \setmainfont{Times New Roman}
+% \usepackage{lastpage}			% Usado pela Ficha catalográfica
+% \usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+% \usepackage{color}				% Controle das cores
 \usepackage{graphicx}			% Inclusão de gráficos
-\usepackage{microtype} 			% para melhorias de justificação
+% \usepackage{microtype} 			% para melhorias de justificação
 \usepackage{xspace}
 \usepackage{pgfgantt}
-
+\usepackage[labelsep=enddash]{caption}
 % pacotes adicionados
-\usepackage{amsmath}
-\usepackage{amssymb,amsfonts,amsthm}
-\usepackage{setspace}
-\usepackage[acronym,nowarn]{glossaries}
-\usepackage{color}
-\usepackage{caption}
+% \usepackage{amsmath}
+% \usepackage{amssymb,amsfonts,amsthm}
+% \usepackage{setspace}
+\usepackage[acronym]{glossaries}
+% \usepackage{color}
+% \usepackage{caption}
 % Code Snippets
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Código}
@@ -103,14 +108,14 @@
 % ---
 % Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
 % ---
-\usepackage{lipsum}				% para geração de dummy text
+% \usepackage{lipsum}				% para geração de dummy text
 % ---
 \usepackage{todonotes}
 % ---
 % Pacotes de citações
 % ---
 \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
-\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% \usepackage[alf]{abntex2cite}	% Citações padrão ABNT
 
 
 \renewcommand{\bf}[1]{\mathbf{#1}}
@@ -118,18 +123,18 @@
 
 
 \usepackage{cite}
-\renewcommand\citeleft{[}
-\renewcommand\citeright{]}
+% \renewcommand\citeleft{[}
+% \renewcommand\citeright{]}
 
 % ---
 % CONFIGURAÇÕES DE PACOTES
 % ---
-\renewcommand{\imprimircapa}{
-\include{modelocapa}}
+% \renewcommand{\imprimircapa}{
+% \include{modelocapa}}
 
 
-\renewcommand{\imprimirfolhaderosto}{
-\include{folhaderosto}}
+% \renewcommand{\imprimirfolhaderosto}{
+% \include{folhaderosto}}
 
 
 % ---
@@ -148,7 +153,7 @@
 		Citado #1 vezes nas páginas #2.%
 	\fi}%
 % ---
-\include{capa}
+% \include{capa}
 
 % ---
 % Configurações de aparência do PDF final
@@ -170,20 +175,20 @@
 \definecolor{blue}{RGB}{41,5,195}
 
 % informações do PDF
-\makeatletter
-\hypersetup{
-     	%pagebackref=true,
-		colorlinks=true,       		% false: boxed links; true: colored links
-    	linkcolor=blue,          	% color of internal links
-    	citecolor=black,        		% color of links to bibliography
-    	filecolor=magenta,      		% color of file links
-		urlcolor=blue,
-		bookmarksdepth=4
-}
+% \makeatletter
+% \hypersetup{
+%      	%pagebackref=true,
+% 		colorlinks=true,       		% false: boxed links; true: colored links
+%     	linkcolor=black,          	% color of internal links
+%     	citecolor=black,        		% color of links to bibliography
+%     	filecolor=magenta,      		% color of file links
+% 		urlcolor=blue,
+% 		bookmarksdepth=4
+% }
 
 
 
-\makeatother
+% \makeatother
 % ---
 
 % ---
@@ -191,15 +196,15 @@
 % ---
 
 % O tamanho do parágrafo é dado por:
-\setlength{\parindent}{1.3cm}
+% \setlength{\parindent}{1.3cm}
 
 % Controle do espaçamento entre um parágrafo e outro:
-\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+% \setlength{\parskip}{0.2cm}  % tente também \onelineskip
 
 % ---
 % compila o indice
 % ---
-% \makeindex
+\makeindex
 % ---
 
 % Prepara acrônimos.
@@ -208,51 +213,147 @@
 % ---
 % compila o indice
 % ---
-\makeindex
+% \makeindex
 % ---
 
 % ----
 % Início do documento
 % ----
-\begin{document}
+% \begin{document}
 
 % Seleciona o idioma do documento (conforme pacotes do babel)
 %\selectlanguage{english}
-\selectlanguage{brazil}
+% \selectlanguage{brazil}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Identificadores do trabalho
+% Usados para preencher os elementos pré-textuais
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titulo{PSKEL-MPPA}
+\subtitulo{UMA ADAPTAÇÃO DO \textit{FRAMEWORK} PSKEL PARA O PROCESSADOR
+    \textit{MANYCORE} MPPA-256}                % Subtitulo do trabalho
+\autor{Emmanuel Podestá Junior}           % Nome do autor
+\data{01}{julho}{2018}                           % Data da publicaçăo do
+
+\orientador{Prof. Dr. Márcio Bastos Castro}                    % Nome do orientador e
+\coordenador{Prof. Dr. Renato Cislaghi \\ Universidade Federal de Santa Catarina}              % Nome do coordenador do curso
+\coorientador{Prof. Dr. Laércio Lima Pilla}     % Nome do membro da Banca
+
+
+%\departamento[a]{Faculdade de Cięncias do Mar}
+%\curso[a]{Atividade de Extensăo em Corte e Costura}
+
+
+%%% Sobre a Banca
+\numerodemembrosnabanca{1} % Isso decide se haverá uma folha adicional
+\orientadornabanca{sim} % Se faz parte da banca definir como sim
+\coorientadornabanca{sim} % Se faz parte da banca definir como sim
+
+\bancaMembroB{Prof. Dr. Frank Augusto Siqueira \\ Universidade Federal de Santa
+Catarina}       % Nome do membro da Banca
+
+\agradecimento{Agradecimentos opcionais, caso existam pessoas ou entidades a
+    quem se deve apoio ou suporte ao trabalho ora apresentado.}
+
+\epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+
+\textoResumo {
+Aplicações paralelas podem ser classificadas de acordo com o padrão de
+computação e coordenação. Dentre os padrões mais conhecidos destacam-se o
+\textit{map}, \textit{reduce}, \textit{pipeline}, \textit{scan} e \stencil.
+Este último é muito utilizado em diversas áreas, como
+simulação física partículas, previsão meteorológica, termodinâmica, resolução de
+funções diferenciais, manipulação de imagens, entre outras. O \pskel é um \fw de
+programação paralela desenvolvido para simplificar o desenvolvimento de
+aplicações que seguem o padrão \stencil. Utilizando uma abstração de alto nível, o
+programador define o \emph{kernel} da computação, enquanto o \fw se encarrega de
+executar a computação paralela em \textit{multicores} e em \textit{Graphics Processing Units}
+(GPUs) de maneira eficiente.
+%
+O objetivo deste trabalho é propor uma adaptação do \textit{framework} \pskel
+para o processador \textit{manycore} emergente \mppa, batizada de \pskel-MPPA. A
+motivação para tal adaptação está relacionada à dificuldade de desenvolvimento
+de aplicações do padrão \textit{stencil} para o \mppa, tendo em vista as suas
+características arquiteturais intrínsecas que tornam o desenvolvimento de
+aplicações paralelas onerosas e suscetíveis a erros. Dentre as principais dificuldades
+destacam-se a sua arquitetura de memória híbrida (memória compartilha e
+distribuída), comunicação explícita entre núcleos de processamento e ausência de coerência de
+\textit{cache}. A adaptação do \fw permitirá simplificar o desenvolvimento de
+aplicações \stencil para o \mppa, escondendo do desenvolvedor detalhes de
+implementação, tais como a comunicação e a distribuição de computações entre os
+núcleos de processamento, abstraindo as características que dificultam o
+desenvolvimento.
+%
+Serão efetuados diversos experimentos com a solução proposta para o \mppa
+e também em outras arquiteturas suportadas pelo PSkel
+(\textit{multicores} e GPUs). Esses resultados permitirão a realização de um
+estudo comparativo dos resultados obtidos. Como métricas, serão considerados o
+desempenho e a eficiência energética obtidos nessas arquiteturas, além de outras
+possíveis métricas que possam ser interessantes para o projeto.
+}
+
+\palavrasChave {\textit{manycores}, \mppa, \textit{stencil}, PSkel.}
+
+\textAbstract {Here is written the abstract of the document}
+
+\keywords {key 1. key 2. ... key n.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Início do documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%--------------------------------------------------------
+% Elementos pré-textuais
+\capa
+\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só năo usar o
+\folhaaprovacao
+% \include{dedicatoria}
+% \paginadedicatoria
+\paginaagradecimento
+\paginaepigrafe
+\paginaresumo
+\paginaabstract
+\listadefiguras
+% \listadetabelas
+% \listadeabreviaturas
+
+\printnoidxglossaries
+
+% \listadesimbolos
+\sumario
 % Retira espaço extra obsoleto entre as frases.
-\frenchspacing
+% \frenchspacing
 
 % ----------------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS
 % ----------------------------------------------------------
-\pretextual
+% \pretextual
 
 % ---
 % Capa
 % ---
-\imprimircapa
+% \imprimircapa
 % ---
 
 % ---
 % Folha de rosto
 % (o * indica que haverá a ficha bibliográfica)
 % ---
-\imprimirfolhaderosto
+% \imprimirfolhaderosto
 
-\include{ficha}
+% \include{ficha}
 %\include{errata}
 %\include{folhaaprova}
 %\include{dedicatoria}
 % \include{agradecimentos}
 %\include{epigrafe}
-\include{resumos}
+% \include{resumos}
 % ---
 % inserir lista de ilustrações
 % ---
-\pdfbookmark[0]{\listfigurename}{lof}
-\listoffigures*
-\cleardoublepage
+% \pdfbookmark[0]{\listfigurename}{lof}
+% \listoffigures*
+% \cleardoublepage
 %% ---
 
 % ---
@@ -262,14 +363,14 @@
 %\listoftables*
 %\cleardoublepage
 % ---
-\printnoidxglossaries
-\cleardoublepage
+% \printnoidxglossaries
+% \cleardoublepage
 % ---
 % inserir o sumario
 %% ---
-\pdfbookmark[0]{\contentsname}{toc}
-\tableofcontents*
-\cleardoublepage
+% \pdfbookmark{\contentsname}{toc}
+% \tableofcontents*
+% \cleardoublepage
 %% ---
 
 
@@ -277,9 +378,9 @@
 % ----------------------------------------------------------
 % ELEMENTOS TEXTUAIS
 % ----------------------------------------------------------
-\textual
+% \textual
 
-\glsresetall
+% \glsresetall
 
 \input{cap1}
 \input{cap2}
@@ -293,7 +394,7 @@
 % para que se inicie o bookmark na raiz
 % e adiciona espaço de parte no Sumário
 % ----------------------------------------------------------
-\phantompart
+% \phantompart
 
 % ---
 % Conclusão
@@ -304,7 +405,7 @@
 % ----------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
 % ----------------------------------------------------------
-\postextual
+% \postextual
 % ----------------------------------------------------------
 
 % ----------------------------------------------------------
@@ -327,8 +428,8 @@
 %---------------------------------------------------------------------
 % INDICE REMISSIVO
 %---------------------------------------------------------------------
-\phantompart
-\printindex
+% \phantompart
+% \printindex
 %---------------------------------------------------------------------
 
 \end{document}

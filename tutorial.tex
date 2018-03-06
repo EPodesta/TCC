@@ -1,0 +1,330 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Universidade Federal de Santa Catarina             
+% Biblioteca Universitária                     
+%                                                           
+% (c)2010 Roberto Simoni (roberto.emc@gmail.com)
+%         Carlos R Rocha (cticarlo@gmail.com)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\PassOptionsToPackage{abnt-etal-cite=1, abnt-etal-list=0}{abntcite}
+\documentclass{ufscThesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pacotes usados especificamente para este documento
+% Definidos pelo criador do documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+
+%\renewcommand{\theequation}{\arabic{equation}} %se desejar tirar o capitulo
+
+%\usepackage[labelsep=period]{caption} % O separador de legenda é um .
+\usepackage[labelsep=endash]{caption} % O separador de legenda é um -
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Identificadores do trabalho
+% Usados para preencher os elementos pré-textuais
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titulo{Elaboraçăo de documentos para a BU/UFSC} % Titulo do trabalho
+\subtitulo{Estilo \LaTeX~ padrăo}                % Subtitulo do trabalho (opcional)
+\autor{Roberto Simoni, Carlos R Rocha}           % Nome do autor
+\data{01}{julho}{2010}                           % Data da publicaçăo do trabalho
+
+\orientador{Prof. Dr. Fulano}                    % Nome do orientador e (opcional) seu título
+\coorientador{Prof. Dr. Beltrano}                % Nome do coorientador e seu título (opcional)
+\coordenador{Prof. Chefe, Dr. Eng.}              % Nome do coordenador do curso e (opcional) seu título
+
+%\departamento[a]{Faculdade de Cięncias do Mar}
+%\curso[a]{Atividade de Extensăo em Corte e Costura}
+
+
+%%% Sobre a Banca
+\numerodemembrosnabanca{5} % Isso decide se haverá uma folha adicional
+\orientadornabanca{sim} % Se faz parte da banca definir como sim
+\coorientadornabanca{sim} % Se faz parte da banca definir como sim
+\bancaMembroA{Prof. Presidente da banca} %Nome do presidente da banca
+\bancaMembroB{Prof. segundo membro}      % Nome do membro da Banca
+\bancaMembroC{Prof. terceiro membro}     % Nome do membro da Banca
+\bancaMembroD{Prof. quarto membro}       % Nome do membro da Banca
+\bancaMembroE{Prof. quinto membro}       % Nome do membro da Banca
+\bancaMembroF{Prof. sexto membro}        % Nome do membro da Banca
+\bancaMembroG{Prof. sétimo membro}       % Nome do membro da Banca
+
+\dedicatoria{A quem o trabalho é dedicado, se é que o é (opcional)}
+
+\agradecimento{Agradecimentos opcionais, caso existam pessoas ou entidades a quem se deve apoio ou suporte ao trabalho ora apresentado.}
+
+\epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+
+\textoResumo {Aqui é redigido o resumo do documento...  blabla blablablabla blabla ipsum loren e a sophia também blab ablablabl ablbalbalblab lablablbalb lab lab lab labl a blab lablablab la blab alballbalba lba lba }
+
+\palavrasChave {chave 1. chave 2. ... chave n.}
+
+\textAbstract {Here is written the abstract of the document}
+
+\keywords {key 1. key 2. ... key n.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Início do documento                                
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%--------------------------------------------------------
+% Elementos pré-textuais
+\capa  
+\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só năo usar o parâmetro
+\folhaaprovacao
+\paginadedicatoria
+\paginaagradecimento
+\paginaepigrafe
+\paginaresumo
+\paginaabstract
+\listadefiguras
+\listadetabelas 
+\listadeabreviaturas
+\listadesimbolos
+\sumario
+
+%-------------------------------------------------------------------------------
+% Para listagens de algoritmos e de código, recomenda-se consultar os
+% pacotes algorithms e lstlistings, que săo usados para definir esses
+% dois tipos de elementos de texto e possuem os comandos
+% \listofalgorithms e \lstlistoflistings, respectivamente.
+%-------------------------------------------------------------------------------
+
+%--------------------------------------------------------
+% Elementos textuais
+
+\chapter{Introduçăo}
+Os Anais do CONEM 2010 serăo publicados em CDROM, usando o formato Adobe$^{TM}$ PDF.
+
+Os artigos devem ser rigorosamente formatados de acordo com estas instruçőes e este arquivo texto pode ser usado como um template por usuários do Microsoft Word$^{TM}$ e, em qualquer caso, como um modelo para os usuários de outros softwares processadores de texto.
+
+Os artigos estăo limitados a um máximo de 10 páginas, incluindo tabelas e figuras. O arquivo final em formato pdf năo deve exceder 2,5 MB.
+
+A língua oficial do congresso é o Portuguęs, entretanto serăo aceitos manuscritos em Espanhol ou em Inglęs. Se o trabalho năo for escrito em inglęs, o autor deverá incluir o título, os nomes dos autores e afiliaçőes, o resumo e as palavras-chave, traduzidos para o inglęs, após a lista de referęncias, no fim do artigo.
+
+\section{Teste2}
+Texto de seçăo para teste
+
+\subsection{Teste3}
+Texto de subseçăo para teste
+\begin{citacao}
+ Este é um exemplo de citaçăo. Só utilize este ambiente se
+ a sua citaçăo tiver mais de 3 linhas.
+\end{citacao}
+
+
+\subsubsection{Teste4}
+Texto de subsubseçăo para teste
+
+\paragraph{Teste5}
+Texto de subsubsubseçăo para teste
+
+\paragraph{Teste6}
+
+aqui segue o barco do parágrafo normal
+
+
+\chapter{Formato do Texto}
+O artigo deve ser digitado em papel tamanho A4, usando a Fonte Times New Roman, tamanho 10, exceto para o título, nome de autores, instituiçăo, endereço, resumo e palavras-chave, que tęm formataçőes específicas indicadas acima. Espaço simples entre linhas deve ser usado ao longo do texto.
+
+O corpo de texto que contém o título deve ser centralizado, em parágrafo com recuo esquerdo de 0,1 cm e marcado com borda esquerda de largura 2 $\frac{1}{4}$ pontos.
+
+O corpo de texto que contém os nomes de autores e de instituiçőes devem ser alinhados ŕ esquerda, em parágrafo com recuo esquerdo de 0,1 cm e marcados com borda esquerda de largura 2 $\frac{1}{4}$ pontos.
+
+A primeira página tem margem superior igual a 5 cm, e todas as outras margens (esquerda, direita e inferior) iguais a 2 cm. Todas as demais páginas do trabalho devem ter todas as suas margens iguais a 2 cm.
+
+\section{Títulos e Subtítulos das Seçőes - Isso pode feder de uma forma nunca vista, se tu năo prestares atençăo}
+Os títulos e subtítulos das seçőes devem ser digitados em formato Times New Roman, tamanho 10, estilo negrito, e alinhados ŕ esquerda. Os títulos das seçőes săo com letras maiúsculas (Exemplo: \textbf{MODELO MATEMÁTICO}), enquanto que os subtítulos só tęm as primeiras letras maiúsculas (Exemplo: \textbf{Modelo Matemático}). Eles devem ser numerados, usando numerais arábicos separados por pontos, até o máximo de 3 subníveis. Uma linha em branco de espaçamento simples deve ser incluída acima e abaixo de cada título/subtítulo.
+
+\section{Corpo do Texto}
+O corpo do texto é justificado e com espaçamento simples. A primeira linha de cada parágrafo tem recuo de 0,6 cm contado a partir da margem esquerda.
+
+As equaçőes matemáticas săo alinhadas ŕ esquerda com recuo de 0,6 cm.  Elas săo referidas por Eq. (1) no meio da frase, ou por Equaçăo (1) quando usada no início de uma sentença. Os números das equaçőes săo numerais arábicos colocados entre paręnteses, e alinhados ŕ direita, como mostrado na Eq. (1).
+
+Os símbolos usados nas equaçőes devem ser definidos imediatamente antes ou depois de sua primeira ocorręncia no texto do trabalho.
+
+O tamanho da fonte usado nas equaçőes deve ser compatível com o utilizado no texto. Todos os símbolos devem ter suas unidades expressas no sistema S.I. (métrico).
+\abreviatura{SI}{Sistema Internacional de unidades}
+\begin{equation}
+\frac{\partial ^2 T}{\partial x^2} + \frac{\partial ^2 T}{\partial y^2} =0
+\end{equation}
+\simbolo{x,y}{Coordenadas do plano cartesiano}
+\simbolo{T}{Tensăo}
+
+As tabelas devem ser centralizadas. Elas săo referidas por Tab. (1) no meio da frase, ou por Tabela (1) quando usada no início de uma sentença. Sua legenda é centralizada e localizada imediatamente acima da tabela. Anotaçőes e valores numéricos nela incluídos devem ter tamanhos compatíveis com o da fonte usado no texto do trabalho, e todas as unidades devem ser expressas no sistema S.I. (métrico). As unidades săo incluídas apenas na primeira linha ou primeira coluna de cada tabela, conforme for apropriado. As tabelas devem ser colocadas tăo perto quanto possível de sua primeira citaçăo no texto. Deixe uma linha simples em branco entre a tabela, seu título e o texto.
+
+O estilo de borda da tabela é livre. As legendas das Figuras e das Tabelas năo devem exceder 3 linhas.
+
+\begin{table}[h]
+\begin{center}
+\caption{Exemplo de tabela}
+\begin{tabular}{c|c|c}
+\hline
+Propriedades do compósito & CFRC-TWILL & CFRC-4HS\\
+\hline
+Resistęncia ŕ Flexăo (MPa) & 209$\pm$ 10 & 180 $\pm$  15\\
+\hline
+Módulo de Flexăo  (GPa) & 57.0 $\pm$ 2.8 & 18.0 $\pm$  1.3\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+As figuras săo centralizadas. Elas săo referenciadas por Fig. (1) no meio da frase ou por Figura (1) quando usada no início de uma sentença. Sua legenda é centralizada e localizada imediatamente abaixo da figura. As anotaçőes e numeraçőes devem tem tamanhos compatíveis com o da fonte usada no texto, e todas as unidades devem ser expressas no sistema S.I. (métrico). As figuras devem ser colocadas o mais próximo possível de sua primeira citaçăo no texto. Deixe uma linha em branco entre as figuras e o texto.
+
+\begin{figure}[ht]
+\begin{center}
+%\includegraphics[scale=0.6]{figuras/figura.jpg}
+\includegraphics[scale=0.6]{figuras/logo.png}
+\caption{Exemplo de figura com legenda bem grande para ver o problema que pode ocorrer nas indentaçőes. Espero que seja o suficiente.}
+\end{center}
+\end{figure}
+
+Figuras coloridas e fotografias de alta qualidade podem ser incluídas no trabalho. Para reduzir o tamanho do arquivo e preservar a resoluçăo gráfica, converta os arquivos das imagens para o  formato GIFF (para figuras com até 16 cores) ou para o formato JPEG (alta densidade de cores), antes de inseri-los no trabalho.
+\sigla{GNU}{Gnu is Not Unix}
+A citaçăo das referęncias no corpo do texto pode ser feita nos formatos: \citeonline{Bordalo02}, mostra que o corpo..., ou: Vários trabalhos  \cite{Coimbra84,Clark86,Sparrow80} mostram que a rigidez da viga.
+
+Referęncias aceitas incluem: artigos de periódicos \cite{Soviero97}, dissertaçőes, teses \cite{Lee03}, artigos publicados em anais de congressos, livros, comunicaçőes privadas, publicaçőes na web \cite{ABCM04,MLA04} e artigos submetidos e aceitos (identificar a fonte)\cite{Autor04}.
+
+A lista de referęncias é uma nova seçăo denominada Referęncias, localizada no fim do artigo.
+
+A primeira linha de cada referęncia é alinhada ŕ esquerda; todas as outras linhas tęm recuo de 0,6 cm da margem esquerda. Todas as referęncias incluídas na lista devem aparecer como citaçőes no texto do trabalho.
+
+As referęncias devem ser postas < > em ordem alfabética, usando o último nome do primeiro autor, seguida do ano da publicaçăo. Exemplo da lista de referęncias é apresentado abaixo \cite{Rocha-2010-Teste}.
+
+\chapter{Agradecimentos}
+Esta seçăo, se houver, deve ser colocada antes da lista de referęncias.
+
+\chapter{Direitos Autorais}
+Os autores săo os únicos responsáveis pelo conteúdo do material impresso incluído no seu trabalho.
+
+
+\bibliographystyle{ufsc-alf}
+\bibliography{bibliografia}
+
+%--------------------------------------------------------
+% Elementos pós-textuais
+
+\apendice
+\chapter{Teste Apęndice}
+\section{Teste apęndice seçăo - como as coisas podem desandar quando năo olhamos direito para os detalhes}
+teste
+
+blablabla
+
+\anexo
+\chapter{Teste Anexo}
+conteúdo do anexo
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fim do documento                                
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Identificadores do trabalho
+% Usados para preencher os elementos pré-textuais
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------
+% Só preencher se năo for a UFSC - Se for uma instituiçăo "masculina",
+% como um Instituto Federal, usar o parâmetro opcional [] - v. exemplo
+%
+%\instituicao[o]{Instituto Federal do Rio Grande do Sul}
+
+%----------------------------------------------------------------------
+% Só preencher se năo for o departamento de Eng. Mecânica - o que deve 
+% ser quase que certo. Se for um departamento "feminino", usar o
+% parâmetro opcional [] - v. exemplo
+%
+%\departamento[a]{Faculdade de Cięncias do Mar}
+
+%----------------------------------------------------------------------
+% Só preencher se năo for o POSMEC - o que deve ser quase que certo.
+% Se for um curso "feminino", usar o parâmetro opcional [] - v. exemplo
+%
+%\curso[a]{Atividade de Extensăo em Corte e Costura}
+
+%----------------------------------------------------------------------
+% Só preencher se năo for tese
+% Se for um documento diferente de tese, dissertaçăo, tcc, monografia
+% ou relatório, indicar no parâmetro opcional o gęnero - v. exemplo
+%
+%\documento[o]{Laudo}
+
+%----------------------------------------------------------------------
+% Título é obrigatório, mas subtítulo é opcional
+%
+%\titulo{Elaboraçăo de documentos para a BU/UFSC}
+%\subtitulo{Estilo \LaTeX~ Padrăo}
+
+%----------------------------------------------------------------------
+% Autor é obrigatório. Năo se atreva a năo incluir ou vai ter surpresa
+%
+%\autor{Roberto Simoni, Carlos R Rocha}
+
+%----------------------------------------------------------------------
+%
+% Só preencher se năo for Doutor em Engenharia Mecânica
+%\grau{Descomentar se năo for Doutor em Engenharia Mecânica}
+
+%----------------------------------------------------------------------
+% Só preencher se năo for Florianópolis
+%
+%\local{Simcity}
+
+%----------------------------------------------------------------------
+% Data deve ter as tręs partes entre chaves
+%
+%\data{01}{julho}{2010}
+
+%----------------------------------------------------------------------
+% Orientador é obrigatório. Coorientador é opcional
+% Se o título for diferente (orientadora), indicar como no exemplo
+%
+%\orientador[Orientadora]{Profa. Dra. Fulana}
+%\coorientador{Prof. Dr. Beltrano}
+
+%----------------------------------------------------------------------
+% Coordenador do programa é obrigatório
+% Se o título for diferente (coordenadora), indicar como no exemplo
+%
+%\coordenador[Coordenadora]{Profa. Senhora, Dra. Eng.}
+
+%----------------------------------------------------------------------
+% Banca - Pode ter até 7 membros além de orientador e co-orientador
+% Se estes săo parte da banca, devem ser adicionados com os comandos
+% \orientadornabanca{sim} e \coorientadornabanca{sim}
+% do contrário, eles aparecerăo antes da designaçăo da banca
+% O MembroA da banca é por definiçăo o seu presidente
+% O numero total de membros na defesa decide se a folha de aprovaçăo
+% deverá ser duplicada. Se passar de 4, uma folha adicional de assinaturas
+% será gerada
+%
+%\numerodemembrosnabanca{4} % Isso decide se haverá uma folha adicional
+%\orientadornabanca{sim} % Se faz parte da banca definir como sim
+%\coorientadornabanca{sim} % Se faz parte da banca definir como sim
+%\bancaMembroA{Prof. Presidente da banca} %Nome do presidente da banca
+%\bancaMembroB{Prof. segundo membro}      % Nome do membro da Banca
+%\bancaMembroC{Prof. terceiro membro}     % Nome do membro da Banca
+%\bancaMembroD{Prof. quarto membro}       % Nome do membro da Banca
+%\bancaMembroE{Prof. quinto membro}       % Nome do membro da Banca
+%\bancaMembroF{Prof. sexto membro}        % Nome do membro da Banca
+%\bancaMembroG{Prof. sétimo membro}       % Nome do membro da Banca
+
+%----------------------------------------------------------------------
+% Firulas opcionais - Dedicatória, Agradecimento e Epígrafe
+%
+% \dedicatoria{Dedicatória para alguem}
+% \agradecimento{Agradecimentos, se for o caso...blabla blablablabla blabla ipsum loren e a sophia também blab ablablabl ablbalbalblab lablablbalb lab la}
+% \epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+
+%----------------------------------------------------------------------
+% Resumo e abstract - É só definir como mostra o exemplo abaixo
+% 
+% \textoResumo {Aqui é redigido o resumo do documento...  blabla blablablabla blabla ipsum loren e a sophia também blab ablablabl ablbalbalblab lablablbalb lab lab lab labl a blab lablablab la blab alballbalba lba lba }
+% \palavrasChave {chave 1. chave 2. ... chave n.}
+% 
+% \textAbstract {Here is written the abstract of the document}
+% \keywords {key 1. key 2. ... key n.}
