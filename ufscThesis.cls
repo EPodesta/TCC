@@ -27,7 +27,7 @@
 
 %---------------------------------------------------------------------------
 % Carrega classe ABNTex, com padrăo de página A5, fonte 10pt, frente e verso
-\LoadClass[cleardoublepage=plain,a5paper,10pt,twoside,capchap,capsec,openright,abntfigtabnum,espacosimples]{abnt}
+\LoadClass[cleardoublepage=plain,a5paper,12pt,twoside,capchap,capsec,openright,abntfigtabnum,espacosimples]{abnt}
 
 %---------------------------------------------------------------------------
 % Definicao da geometria da página
@@ -351,7 +351,7 @@
 %---------------------------------------------------------------------------
 % Apęndices e Anexos - Pós-Textuais
 \addto\captionsbrazil{
-\renewcommand\refname{REFERĘNCIAS}
+\renewcommand\refname{REFERÊNCIAS}
 }
 
 \renewcommand{\annexname}{ANEXO}
@@ -697,10 +697,10 @@
 	{%
 	{\ABNTorientadordata}:\ {\ABNTorientadorname}\protect\\
 	}
-    \ABNTifnotempty{\ABNTcoorientadordata}
-	{%
-	{\ABNTcoorientadordata}:\ {\ABNTcoorientadorname}
-	}
+    % \ABNTifnotempty{\ABNTcoorientadordata}
+	% {%
+	% {\ABNTcoorientadordata}:\ {\ABNTcoorientadorname}
+	% }
 \end{textodafolhaderosto}
 \vfill\vfill
 \begin{center}

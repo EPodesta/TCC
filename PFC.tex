@@ -59,28 +59,31 @@
 % \usepackage{color}				% Controle das cores
 \usepackage{graphicx}			% Inclusão de gráficos
 % \usepackage{microtype} 			% para melhorias de justificação
+% \usepackage{biblatex}
+
 \usepackage{xspace}
 \usepackage{pgfgantt}
-\usepackage[labelsep=enddash]{caption}
+\usepackage[labelsep=endash]{caption}
 % pacotes adicionados
 % \usepackage{amsmath}
 % \usepackage{amssymb,amsfonts,amsthm}
 % \usepackage{setspace}
-\usepackage[acronym]{glossaries}
+\usepackage[acronym,nopostdot,nonumberlist]{glossaries}
+
 % \usepackage{color}
 % \usepackage{caption}
 % Code Snippets
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Código}
 \lstset{
-	basicstyle=\scriptsize\ttfamily,
+	basicstyle=\tiny\ttfamily,
 	numbers=left,
 	stepnumber=1,
 	numbersep=-0.75em,
 	keywordstyle=\color{blue},
 	commentstyle=\color{black},
 	stringstyle=\color{black},
-	numberstyle=\scriptsize\ttfamily\color{black},
+	numberstyle=\tiny\ttfamily\color{black},
 	frame=single,
 	tabsize=2,
 	float,
@@ -101,10 +104,29 @@
 	emphstyle={\color{blue}}%
 }
 
-\input{acronyms.tex}
 
+% \newglossarystyle{dotglos}{%
+%     \setglossarystyle{list}%
+%     \renewcommand*{\glossentry}[2]{%
+%     \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]
+%         \ifglshassymbol{##1}{[\glossentrysymbol{##1}]\quad}{}%
+%         \glossentrydesc{##1}%
+%         \unskip\leaders\hbox to 2.9mm{\hss.}\hfill##2}%
+%     \renewcommand*{\glsgroupskip}{}%
+% }
+%
+% \setglossarystyle{dotglos}
 % ---
 
+\newglossarystyle{mystyle}{%
+    \setglossarystyle{list}% base this style on the list style
+    \renewcommand*{\glossentry}[2]{%
+    \item[\glsentryitem{##1}%
+        \glstarget{##1}{\glossentryname{##1} --}]
+        \glossentrydesc{##1}\glspostdescription\space ##2}
+}
+
+\setglossarystyle{mystyle}
 % ---
 % Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
 % ---
@@ -114,7 +136,7 @@
 % ---
 % Pacotes de citações
 % ---
-\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+% \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
 % \usepackage[alf]{abntex2cite}	% Citações padrão ABNT
 
 
@@ -122,7 +144,7 @@
 \renewcommand{\rm}[1]{\mathrm{#1}}
 
 
-\usepackage{cite}
+% \usepackage{cite}
 % \renewcommand\citeleft{[}
 % \renewcommand\citeright{]}
 
@@ -200,7 +222,7 @@
 
 % Controle do espaçamento entre um parágrafo e outro:
 % \setlength{\parskip}{0.2cm}  % tente também \onelineskip
-
+\input{acronyms.tex}
 % ---
 % compila o indice
 % ---
@@ -235,7 +257,8 @@
 \autor{Emmanuel Podestá Junior}           % Nome do autor
 \data{01}{julho}{2018}                           % Data da publicaçăo do
 
-\orientador{Prof. Dr. Márcio Bastos Castro}                    % Nome do orientador e
+\orientador{Prof. Dr. Márcio Bastos Castro \\ Universidade Federal de Santa
+    Catarina}                    % Nome do orientador e
 \coordenador{Prof. Dr. Renato Cislaghi \\ Universidade Federal de Santa Catarina}              % Nome do coordenador do curso
 \coorientador{Prof. Dr. Laércio Lima Pilla}     % Nome do membro da Banca
 
@@ -245,7 +268,7 @@
 
 
 %%% Sobre a Banca
-\numerodemembrosnabanca{1} % Isso decide se haverá uma folha adicional
+\numerodemembrosnabanca{2} % Isso decide se haverá uma folha adicional
 \orientadornabanca{sim} % Se faz parte da banca definir como sim
 \coorientadornabanca{sim} % Se faz parte da banca definir como sim
 
@@ -317,7 +340,7 @@ possíveis métricas que possam ser interessantes para o projeto.
 % \listadetabelas
 % \listadeabreviaturas
 
-\printnoidxglossaries
+\printnoidxglossary[type=\acronymtype]
 
 % \listadesimbolos
 \sumario
@@ -411,7 +434,10 @@ possíveis métricas que possam ser interessantes para o projeto.
 % ----------------------------------------------------------
 % Referências bibliográficas
 % ----------------------------------------------------------
-\bibliography{bibliography.bib}
+\bibliographystyle{ufsc-alf}
+\bibliography{bibliography}
+% \addbibresource{bibliography.bib}
+% \printbibliography
 
 % ----------------------------------------------------------
 % Glossário

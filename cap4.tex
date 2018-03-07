@@ -31,7 +31,7 @@ de dependência com outros \textit{tiles} devido à máscara da computação.
 
 Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
-dados e computações~\cite{Rocha:2017}. Mais especificamente, \textit{tiling} é
+dados e computações~\cite{rocha17}. Mais especificamente, \textit{tiling} é
 geralmente utilizado para particionar a computação de uma aplicação \stencil em
 partes menores (\textit{tiles}) entre \textit{clusters}. Essa subdivisão
 tem como objetivo possibilitar a execução paralela da aplicação.
@@ -48,7 +48,7 @@ desempenho da aplicação.
 \begin{figure}[!h]
 	\centering
     \caption{Esquemático ilustrando a região \textit{halo}.}
-    \includegraphics[width=0.6\textwidth]{figs/tilingHalo.pdf}
+    \includegraphics[width=0.6\textwidth]{figs/tilingHalo.pdf} \\
     Fonte:~\cite{meng11}.
     \label{fig:tilingHalo}
 \end{figure}
@@ -69,7 +69,7 @@ final da computação de todas as iterações.
 \begin{figure}[!h]
 	\centering
     \caption{Esquemático ilustrando a \textit{ghost zone}.}
-    \includegraphics[width=0.6\textwidth]{figs/tiling.pdf}
+    \includegraphics[width=0.6\textwidth]{figs/tiling.pdf} \\
     Fonte:~\cite{meng11}.
     \label{fig:tiling}
 \end{figure}
@@ -113,8 +113,9 @@ de comunicações e sincronizações na \noc durante o processamento de computa�
 \begin{figure}[!h]
   \begin{minipage}[b]{0.9\textwidth}
 	\centering
-	\caption{2D tiling~\cite{Rocha:2017}.}
-    \includegraphics[height=5cm]{figs/tile.pdf}
+    \caption{\textit{tiling} 2D.}
+    \includegraphics[height=5cm]{figs/tile.pdf} \\
+    Fonte:~\cite{rocha17}
 	\label{fig:block2d}
   \end{minipage}
 \end{figure}
@@ -287,8 +288,9 @@ Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{figs/stridesImage.pdf}
 	\caption{Exemplo do funcionamento do método \textit{strides} do \mppa.}
+	\includegraphics[width=0.7\textwidth]{figs/stridesImage.pdf} \\
+    Fonte: Desenvolvido pelo autor.
 	\label{fig:strides}
 \end{figure}
 

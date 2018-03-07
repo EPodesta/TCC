@@ -18,5 +18,7 @@ open: all
 
 
 clean:
-	rm -f ${filename}.{ps,pdf,out,bbl,blg,acn,glo,ist,}
+	rm -f ${filename}.ps ${filename}.pdf ${filename}.out ${filename}.bbl  \
+		  ${filename}.blg ${filename}.acn ${filename}.glo ${filename}.ist \
+		  ${filename}.lof ${filename}.log ${filename}.toc ${filename}.idx
 	rm -f *.aux *.dvi *.log *.fls *~
