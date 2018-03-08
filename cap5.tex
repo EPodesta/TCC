@@ -66,6 +66,14 @@ A Equação~\ref{eq:JacobiPoisson} define a computação em cada passo do métod
 	\label{fig:energyBox}
 \end{figure}
 
+\begin{figure}[t]
+    \centering
+    \subfigure[fig:comparisonTime][Tempo de execução.]{\includegraphics[width=0.4\columnwidth]{figs/ComparisonTimeTiles10.pdf}}
+    \qquad
+    \subfigure[fig:comparisonEnergy][Consumo de Energia.]{\includegraphics[width=0.4\textwidth]{figs/ComparisonEnergyTiles10.pdf}}
+    \caption{Comparação do tempo de execução e consumo de energia das aplicações \textit{Fur}, \textit{GoL} e \textit{Jacobi} em relação a arquitetura.}
+    \label{fig:comparison-time}
+\end{figure}
 
 \subsection{Impacto do Tamanho do \textit{Tile} no Desempenho do \mppa}
 
@@ -147,11 +155,4 @@ Xeon, respectivamente.
 %	\caption{Comparação do consumo de energia das aplicações \textit{Fur}, Gol e Jacobi.}
 %	\label{fig:comp-energy}
 %\end{figure}
-\begin{figure}[t]
-    \centering
-    \subfigure[fig:comparisonTime][Tempo de execução.]{\includegraphics[width=0.4\columnwidth]{figs/ComparisonTimeTiles10.pdf}}
-    \qquad
-    \subfigure[fig:comparisonEnergy][Consumo de Energia.]{\includegraphics[width=0.4\textwidth]{figs/ComparisonEnergyTiles10.pdf}}
-    \caption{Comparação do tempo de execução e consumo de energia das aplicações \textit{Fur}, \textit{GoL} e \textit{Jacobi} em relação a arquitetura.}
-    \label{fig:comparison-time}
-\end{figure}
+
