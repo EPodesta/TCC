@@ -27,11 +27,11 @@
 
 %---------------------------------------------------------------------------
 % Carrega classe ABNTex, com padrăo de página A5, fonte 10pt, frente e verso
-\LoadClass[cleardoublepage=plain,a4paper,12pt,twoside,capchap,capsec,openright,abntfigtabnum,espacosimples]{abnt}
+\LoadClass[cleardoublepage=plain,a5paper,10pt,twoside,capchap,capsec,openright,abntfigtabnum,espacosimples]{abnt}
 
 %---------------------------------------------------------------------------
 % Definicao da geometria da página
-\RequirePackage[a4paper,inner=3.0cm,outer=2.0cm,top=3.0cm,bottom=2.0cm,head=0.7cm,foot=0.7cm]{geometry}
+\RequirePackage[a5paper,inner=2.5cm,outer=1.5cm,top=2.0cm,bottom=1.5cm,head=0.7cm,foot=0.7cm]{geometry}
 % Se o cabecalho e o rodape estao dentro das margens, acrescentar as opcoes includehead e includefoot
 
 %---------------------------------------------------------------------------
