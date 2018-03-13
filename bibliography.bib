@@ -136,18 +136,19 @@ title = {{CAP Bench: A Benchmark Suite for Performance and Energy Evaluation of 
 year = {2016}
 }
 @article{Castro-PARCO:2016,
-abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
 author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Dupros, Fabrice and Aochi, Hideo and Navaux, Philippe O A and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1016/j.parco.2016.01.011},
-issn = {01678191},
 journal = {Parallel Computing},
-keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
+volume = {54},
 pages = {108--120},
 title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
-url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
-volume = {54},
-year = {2016}
+year = {2016},
+issn = {01678191},
+doi = {10.1016/j.parco.2016.01.011}
 }
+abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
+url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
+keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
+
 @inproceedings{papi12,
 author = {Weaver, V M and Johnson, M and Kasichayanula, K and Ralph, J and Luszczek, P and Terpstra, D and Moore, S},
 booktitle = {2012 41st International Conference on Parallel Processing Workshops},
@@ -175,6 +176,18 @@ title = {{A Distributed Run-Time Environment for the Kalray MPPA-256 Integrated 
 volume = {18},
 year = {2013}
 }
+@inproceedings{buono13,
+address = {Belfast, UK},
+author = {Buono, D and Danelutto, M and Lametti, S and Torquati, M},
+booktitle = {Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)},
+pages = {131--139},
+publisher = {IEEE Computer Society},
+title = {{Parallel Patterns for General Purpose Many-Core}},
+year = {2013},
+issn = {1066-6192}
+doi = {10.1109/PDP.2013.27},
+}
+
 @inproceedings{Castro-SBAC-PAD:2014,
 address = {Paris, France},
 author = {Castro, M{\'{a}}rcio and Dupros, Fabrice and Francesquini, Emilio and M{\'{e}}haut, Jean-Fran{\c{c}}ois and Navaux, Philippe Olivier Alexandre},
@@ -182,7 +195,9 @@ booktitle = {International Symposium on Computer Architecture and High Performan
 pages = {57--64},
 publisher = {IEEE Computer Society},
 title = {{Energy Efficient Seismic Wave Propagation Simulation on a Low-power Manycore Processor}},
-year = {2014}
+year = {2014},
+issn = {1550-6533},
+doi = {10.1109/SBAC-PAD.2014.28}
 }
 @inproceedings{Rahman:2011:USC:2016604.2016641,
 author = {Rahman, Shah M Faizur and Yi, Qing and Qasem, Apan},
@@ -208,12 +223,13 @@ year = {2013}
 }
 @article{Castro-IA3-JPDC:2014,
 author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1016/j.jpdc.2014.11.002},
-journal = {J. Parallel Distrib. Comput.},
+journal = {Journal of Parallel and Distributed Computing},
+volume = {76},
 pages = {32--48},
 title = {{On the Energy Efficiency and Performance of Irregular Applications on Multicore, NUMA and Manycore Platforms}},
-volume = {76},
-year = {2014}
+year = {2014},
+issn = {0743-7315},
+doi = {10.1016/j.jpdc.2014.11.002}
 }
 @inproceedings{MPPA-1:2013,
 address = {Barcelona, Spain},
@@ -286,10 +302,13 @@ volume = {223},
 year = {1970}
 }
 @book{demmel97,
+address = {Berkeley, EUA},
 author = {Demmel, James W},
 publisher = {SIAM},
 title = {{Applied numerical linear algebra}},
-year = {1997}
+year = {1997},
+isbn = {978-0-89871-389-3},
+doi = {10.1137/1.9781611971446}
 }
 @inproceedings{Varghese14,
 address = {Phoenix, USA},
@@ -380,32 +399,34 @@ title = {{Performance/Energy Trade-off in Scientific Computing: The Case of ARM 
 year = {2015}
 }
 @inproceedings{enmyren10,
-address = {New York, NY, USA},
+address = {Baltimore, USA},
 author = {Enmyren, Johan and Kessler, Christoph W},
-booktitle = {Proceedings of the Fourth International Workshop on High-level Parallel Programming and Applications},
-isbn = {978-1-4503-0254-8},
+booktitle = {International Workshop on High-level Parallel Programming and Applicationsi (HLPP)},
 keywords = {cuda,data parallelism,gpu,opencl,skeleton programming},
 pages = {5--14},
 publisher = {ACM},
-series = {HLPP '10},
 title = {{SkePU: A Multi-backend Skeleton Programming Library for multi-GPU Systems}},
-year = {2010}
+year = {2010},
+isbn = {978-1-4503-0254-8},
+doi = {10.1145/1863482.1863487}
 }
 @article{cole-skeleton:2004,
-address = {Amsterdam, The Netherlands, The Netherlands},
+address = {Amsterdam, The Netherlands},
 author = {Cole, Murray},
-doi = {10.1016/j.parco.2003.12.002},
-issn = {0167-8191},
-journal = {Parallel Comput.},
-keywords = {MPI,libraries,parallel programming,patterns,skeletons},
-number = {3},
+journal = {Parallel Computing},
+volume = {30},
 pages = {389--406},
+keywords = {MPI,libraries,parallel programming,patterns,skeletons},
 publisher = {Elsevier Science Publishers B. V.},
 title = {{Bringing Skeletons out of the Closet: A Pragmatic Manifesto for Skeletal Parallel Programming}},
-url = {http://dx.doi.org/10.1016/j.parco.2003.12.002},
-volume = {30},
-year = {2004}
+year = {2004},
+issn = {0167-8191},
+doi = {10.1016/j.parco.2003.12.002}
+
 }
+url = {http://dx.doi.org/10.1016/j.parco.2003.12.002},
+number = {3},
+
 @inproceedings{SCCEnergy:2012,
 address = {New Brunswick, Canada},
 author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
@@ -427,15 +448,7 @@ series = {IPDPSW '11},
 title = {{SkelCL - A Portable Skeleton Library for High-Level GPU Programming}},
 year = {2011}
 }
-@inproceedings{buono13,
-author = {Buono, D and Danelutto, M and Lametti, S and Torquati, M},
-booktitle = {2013 21st Euromicro International Conference on Parallel, Distributed, and Network-Based Processing},
-doi = {10.1109/PDP.2013.27},
-issn = {1066-6192},
-pages = {131--139},
-title = {{Parallel Patterns for General Purpose Many-Core}},
-year = {2013}
-}
+
 @inproceedings{mccool10,
 author = {McCool, Michael D},
 booktitle = {USENIX HotPar},
@@ -446,9 +459,10 @@ year = {2010}
 @inproceedings{Castro-IA3:2013,
 address = {Denver, EUA},
 author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Ngu{\'{e}}l{\'{e}}, Thomas M and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA{\^{}}3)},
-pages = {5:1----5:8},
+booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA$^3$)},
+pages = {5:1 -- 5:8},
 publisher = {ACM},
 title = {{Analysis of Computing and Energy Performance of Multicore, NUMA, and Manycore Platforms for an Irregular Application}},
-year = {2013}
+year = {2013},
+doi = {10.1145/2535753.2535757}
 }

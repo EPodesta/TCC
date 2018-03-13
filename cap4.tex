@@ -17,6 +17,17 @@ da utilização de meios de comunicação via \noc. Além disso, aplicações j�
 
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
+
+\begin{figure}[!h]
+	\centering
+    \caption{Esquemático ilustrando a implementação.}
+    \includegraphics[width=0.9\textwidth]{figs/visaoGeralPSKELMPPA.pdf} \\
+    Fonte: Desenvolvido pelo autor.
+    \label{fig:tilingHalo}
+\end{figure}
+
+
+
 A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
 mestre-trabalhador. O processo mestre é executado no subsistema de \es conectado
 à uma memória LPDDR3, alocando dados de entrada e saída. Por outro lado, o
@@ -28,6 +39,9 @@ o processo de subdivisão, cada \textit{tile} deverá considerar as dependência
 de vizinhança intrínsecas do padrão \stencil. Mais precisamente, a computação
 realizada sobre um elemento de um certo \textit{tile} poderá possuir uma relação
 de dependência com outros \textit{tiles} devido à máscara da computação.
+
+
+\section{Tiling}
 
 Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
@@ -173,6 +187,8 @@ sincronizações devem ser realizadas para resolver as iterações restantes. De
 forma, $\lceil\frac{t}{t^\prime}\rceil$ sincronizações serão responsáveis por
 atualizar a matriz de entrada globalmente, isto é, para todos os
 \textit{clusters}.
+
+
 
 \section{Implementação}
 
