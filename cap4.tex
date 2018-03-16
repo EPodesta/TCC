@@ -13,7 +13,8 @@ o \fw PSkel para esse processador trará benefícios claros, simplificando o des
 de aplicações \stencil para o \mppa. O \fw fornecerá uma transparência
 no particionamento de tarefas e dados para esse ambiente, liberando o desenvolvedor
 da utilização de meios de comunicação via \noc. Além disso, aplicações já desenvolvidas para o
-\fw poderão ser executadas no \mppa sem a necessidade de nenhuma alteração em seus códigos originais.
+\fw poderão ser executadas no \mppa sem a necessidade de nenhuma alteração em
+seus códigos originais.
 
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
@@ -21,43 +22,53 @@ da utilização de meios de comunicação via \noc. Além disso, aplicações j�
 \begin{figure}[!h]
 	\centering
     \caption{Esquemático ilustrando a implementação.}
-    \includegraphics[width=0.9\textwidth]{figs/visaoGeralPSKELMPPA.pdf} \\
+    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPA.pdf} \\
     Fonte: Desenvolvido pelo autor.
-    \label{fig:tilingHalo}
+    \label{fig:visaoGeral}
 \end{figure}
 
 
 
-A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
-mestre-trabalhador. O processo mestre é executado no subsistema de \es conectado
-à uma memória LPDDR3, alocando dados de entrada e saída. Por outro lado, o
-processo trabalhador é executado em cada \textit{cluster} com o
-objetivo de realizar a computação \stencil de forma paralela. Devido às
-limitações de memória no \mppa, o mestre deverá enviar para o trabalhador
-pequenas partições da matriz de entrada, denominadas de \textit{tiles}. Durante
-o processo de subdivisão, cada \textit{tile} deverá considerar as dependências
-de vizinhança intrínsecas do padrão \stencil. Mais precisamente, a computação
-realizada sobre um elemento de um certo \textit{tile} poderá possuir uma relação
-de dependência com outros \textit{tiles} devido à máscara da computação.
+A Figura~\ref{fig:visaoGeral} ilustra de forma simplificada a adaptação
+desenvolvida. A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
+mestre-trabalhador. Mais especificamente, é seguido o processo descrito na seção
+\ref{sec:prog-mppa}. O processo mestre é executado no subsistema de \es conectado
+à uma memória LPDDR3, alocando dados de entrada e saída. Além disso, o processo
+mestre irá enviar dados para o processo trabalhador e aguardará os resultados da
+computação. Por outro lado, o processo trabalhador é executado em cada
+\textit{cluster} com o objetivo de realizar a computação \stencil de forma
+paralela. Após a computação ser realizada, o resultado é enviado ao processo
+mestre. Por fim, toda a comunicação entre os dois processos será realizada por
+meio de portais, como especificado na seção \ref{sec:prog-mppa}.
+
+Devido às limitações de memória no \mppa, o mestre deverá enviar para o
+trabalhador pequenas partições da matriz de entrada, denominadas de
+\textit{tiles}. Durante o processo de subdivisão, cada \textit{tile} deverá
+considerar as dependências de vizinhança intrínsecas do padrão \stencil. Mais
+precisamente, a computação realizada sobre um elemento de um certo \textit{tile}
+poderá possuir uma relação de dependência com outros \textit{tiles} devido à
+máscara da computação.
 
 
-\section{Tiling}
+\section{Tiling Trapezoidal}
 
 Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
 dados e computações~\cite{rocha17}. Mais especificamente, \textit{tiling} é
 geralmente utilizado para particionar a computação de uma aplicação \stencil em
-partes menores (\textit{tiles}) entre \textit{clusters}. Essa subdivisão
-tem como objetivo possibilitar a execução paralela da aplicação.
+partes menores (\textit{tiles}) entre elementos de processamento\footnote{Nessa
+seção, esse termo é utilizado para representar elementos de processamento em
+geral, não, necessariamente, os elementos presentes dentro dos \textit{clusters}
+no \mppa.}. Essa subdivisão tem como objetivo possibilitar a execução paralela da aplicação.
 
 Contudo, o processo de \textit{tiling} introduz problemas de dependência, pois,
 para computar os elementos das bordas de um \textit{tile}, é necessário obter
-os valores resultantes em outros \textit{clusters}. A Figura~\ref{fig:tilingHalo} ilustra
+os valores resultantes em outros elementos de processamento. A Figura~\ref{fig:tilingHalo} ilustra
 esse comportamento. As regiões que precisam ser resolvidas por sincronizações e
-comunicações entre \textit{clusters} é denominada região \textit{halo}. Dependendo do número
+comunicações entre elementos de processamento é denominada região \textit{halo}. Dependendo do número
 de sincronizações e comunicações realizadas, a aplicação pode demorar um tempo
-considerável realizando o particionamento de dados entre \textit{clusters}, prejudicando o
-desempenho da aplicação.
+considerável realizando o particionamento de dados entre elementos de
+processamento, prejudicando o desempenho da aplicação.
 
 \begin{figure}[!h]
 	\centering
@@ -73,7 +84,7 @@ Para contornar essa sobrecarga após cada iteração, um \textit{tile} pode ser
 alargado para incluir uma \textit{ghost zone}. A Figura~\ref{fig:tiling} ilustra
 essa alternativa, onde a \textit{ghost zone} alarga o \textit{tile}, fazendo-o
 sobrepor \textit{tiles} vizinhos por meio de múltiplas regiões \textit{halo}.
-Desta forma, \textit{clusters} podem gerar mais sobreposições com quantidade proporcional ao
+Desta forma, elementos de processamento podem gerar mais sobreposições com quantidade proporcional ao
 número de iterações da aplicação. Além disso, a mesma figura ilustra o
 comportamento da \textit{ghost zone}, onde ela agrupa as iterações em estágios.
 Cada estágio realiza operações sobre \textit{tiles} sobrepostos, denominados
@@ -121,8 +132,9 @@ que compõem a \textit{ghost zone} é proporcional à $t^\prime$. Desta forma, o
 \textit{tile} alargado $A^\ast_{i,j}$ possui um \textit{offset} $(\max\{iw^\prime -
 rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$. Portanto,
 existe um \textit{trade-off} entre o custo de computação redundante e o número
-de comunicações e sincronizações na \noc durante o processamento de computações
-\stencil iterativas no \mppa.
+de comunicações e sincronizações.
+%na \noc durante o processamento de computações
+%\stencil iterativas no \mppa.
 
 \begin{figure}[!h]
   \begin{minipage}[b]{0.9\textwidth}
@@ -185,24 +197,28 @@ de comunicações e sincronizações na \noc durante o processamento de computa�
 Após cada computação das $t^\prime$ iterações consecutivas,
 sincronizações devem ser realizadas para resolver as iterações restantes. Desta
 forma, $\lceil\frac{t}{t^\prime}\rceil$ sincronizações serão responsáveis por
-atualizar a matriz de entrada globalmente, isto é, para todos os
-\textit{clusters}.
-
+atualizar a matriz de entrada de forma global.
 
 
 \section{Implementação}
-
 O processo de execução de uma aplicação no PSkel-MPPA segue a descrição na
-seção~\ref{sec:prog-mppa}. Durante a fase de inicialização, o processo mestre, executando sobre o
-subsistema de \es, será responsável por alocar: os dados de entrada e saída na
-memória LPDDR3, a máscara da computação e a estrutura \stencil. Esse processo
-é idêntico à fase de inicialização no \pskel, contudo o processo mestre não é
-responsável pela descrição do \textit{kernel} da computação. O
-código~\ref{cod:jacobiMestre} mostra a definição do processo mestre no \mppa.
-Na adaptação, a função \texttt{scheduleMPPA} foi implementada para realizar o controle de dados e
-a computação sobre o processador. Ela é encapsulada pela classe
+seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
+processo e como foi realizada a comunicação no \mppa.
+
+\subsection{Processo Mestre}
+O processo mestre, executando sobre o subsistema de \es, será responsável por
+alocar: os dados de entrada e saída na memória LPDDR3, a máscara da computação e
+a estrutura \stencil. A inicialização do processo mestre é idêntica à fase de inicialização no
+\pskel, contudo o processo mestre não é responsável pela descrição do
+\textit{kernel} da computação. O código~\ref{cod:jacobiMestre} mostra a
+definição do processo mestre no \mppa.  Na adaptação, a função
+\texttt{scheduleMPPA} foi implementada para realizar o controle de dados e a
+computação sobre o processador. Ela é encapsulada pela classe
 \texttt{Stencil2D}, sendo necessário realizar a passagem de parâmetros definidos
 pelo usuário.
+
+\newlength\someheight
+\setlength\someheight{3cm}
 
 \begin{figure}[t]
 	\begin{lstlisting}[
@@ -221,38 +237,64 @@ pelo usuário.
 
 		Stencil2D<Array2D<float>, Mask2D<int>, Arguments>
 			jacobi(A, B, args);
-		jacobi.scheduleMPPA(slave_bin, threadsNum, clustersNum, tileDim, iterations);
+		jacobi.scheduleMPPA(slave_bin, threadsNum, clustersNum, tileDim,
+                        iterations);
 
 		return(0);
 	}
 \end{lstlisting}
 \end{figure}
 
-
-
 Por meio da abstração proveniente do \pskel, o processo mestre irá iniciar a
-execução dos \textit{clusters}. A quantidade de \textit{clusters} utilizados na
-aplicação é determinada dinâmicamente em relação à quantidade de \textit{tiles}
-lógicos e o número de \textit{clusters} definido pelo usuário.  Mais
-precisamente, dado uma entrada $s$ e um tamanho de \textit{tile} lógico
-$s^\prime$, a quantidade de \textit{tiles} lógicos é determinada por
-$\lceil\frac{s}{s^\prime}\rceil$. Caso a quantidade de \textit{clusters}
-definida pelo usuário seja maior que o resultado da relação apresentada, não é
-necessário iniciar a execução de todos os \textit{clusters} definidos. Desta
-forma, apenas a quantidade de \textit{clusters} necessária será inciada. Caso
-contrário, a quantidade determinada pelo usuário será utilizada.
+execução dos processos trabalhadores dentro dos \textit{clusters} no \mppa. A
+quantidade de \textit{clusters} utilizados na aplicação é determinada
+dinâmicamente em relação à quantidade de \textit{tiles} lógicos e o número de
+\textit{clusters} definido pelo usuário.  Mais precisamente, dado uma entrada
+$s$ e um tamanho de \textit{tile} lógico $s^\prime$, a quantidade de
+\textit{tiles} lógicos é determinada por $\lceil\frac{s}{s^\prime}\rceil$. Caso
+a quantidade de \textit{clusters} definida pelo usuário seja maior que o
+resultado da relação apresentada, não é necessário iniciar a execução de todos
+os \textit{clusters} definidos. Desta forma, apenas a quantidade de
+\textit{clusters} necessária será inciada. Caso contrário, a quantidade
+determinada pelo usuário será utilizada.
 
-Em seguida, o processo mestre irá enviar os \textit{tiles} alargados para cada
-\textit{cluster} seguindo um escalonamento circular (\textit{round-robin}).
-Devido a isso, alguns \textit{clusters} podem receber mais \textit{tiles} que
-outros, dependendo do número de \textit{tiles} e \textit{clusters} utilizados na
-computação. Para determinar precisamente os endereços de memória de
-cada \textit{tile} alargado são necessários alguns fatores: i) parâmetros
-definidos pelo usuário, como o tamanho dos dados de entrada, tamanho dos
-\textit{tiles} lógicos e o número de iterações; ii) parâmetros do \stencil
-\textit{kernel}, como o tamanho da máscara. Por fim, o processo mestre espera os
-\textit{clusters} finalizarem a execução e agrupará os \textit{tiles}
-resultantes em um único \texttt{Array2D} de saída.
+Em seguida, o processo mestre irá utilizar a técnica de \textit{tiling}
+trapezoidal para subdividir a matriz de entrada em \textit{tiles} alargados, e
+enviar os \textit{tiles} alargados para cada \textit{cluster} seguindo um
+escalonamento circular (\textit{round-robin}).  Devido a isso, alguns
+\textit{clusters} podem receber mais \textit{tiles} que outros, dependendo do
+número de \textit{tiles} e \textit{clusters} utilizados na computação. Para
+determinar precisamente os endereços de memória de cada \textit{tile} alargado
+são necessários alguns fatores: i) parâmetros definidos pelo usuário, como o
+tamanho dos dados de entrada, tamanho dos \textit{tiles} lógicos e o número de
+iterações; ii) parâmetros do \stencil \textit{kernel}, como o tamanho da
+máscara. Por fim, o processo mestre espera os \textit{clusters} finalizarem a
+execução e agrupará os \textit{tiles} resultantes em um único \texttt{Array2D}
+de saída.
+
+
+\subsection{Processo Trabalhador}
+Os processos trabalhadores serão responsáveis pela
+execução do \textit{kernel} da computação. Essa fase pode ser dividida em
+etapas: i) Cada processo trabalhador irá receber os \textit{tiles} alargados.
+ii) $t^\prime$ iterações são computadas sobre o \textit{tile} alargado. iii)
+\textit{offsets} são utilizados para coletar o \textit{tile} lógico e enviá-lo
+ao processo mestre. Após cada \textit{tile}
+atribuído ao processo trabalhador ser computado, todos os processos
+trabalhadores precisam sincronizar em uma barreira. Para cumprir esse objetivo,
+são utilizadas funções de baixo nível do \mppa. Esse processo é repetido até
+todas as $t$ iterações serem processadas.
+
+O código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
+no \mppa. Este processo será responsável por descrever o \textit{kernel} da
+computação e, também, estruturas de dados de forma similar ao processo mestre.
+Devido aos valores de \textit{offsets} e variáveis importantes para a computação
+do \textit{kernel} serem geradas dinâmicamente, o processo trabalhador precisa
+receber do processo mestre, além do \textit{tile} alargado, variáveis
+responsáveis por controlar a comunicação. Dentre elas, temos variáveis indicando
+as dimensões do \textit{tile} a ser recebido, número de iterações totais e
+\textit{offsets} para auxiliar a comunicação do resultado.
+
 
 \begin{figure}[!h]
 	\begin{lstlisting}[
@@ -262,7 +304,8 @@ resultantes em um único \texttt{Array2D} de saída.
 	__parallel__ void
 	stencilKernel(Array2D<float> A, Array2D<float> B, Mask2D<int> mask,
 								struct Arguments args, int x, int y){
-		B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y) + A(x-1,y));
+		B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y)
+                           + A(x-1,y));
 	}
 
 	int main(int argc, char **argv) {
@@ -283,7 +326,14 @@ resultantes em um único \texttt{Array2D} de saída.
 \end{lstlisting}
 \end{figure}
 
+Para efetuar a computação, o processo trabalhador irá utilizar a biblioteca
+OpenMP para distribuir à computação de um \textit{tile} nos \pes dentro de cada
+\textit{cluster}. Por fim, o cálculo dos \textit{offsets} utilizados pelo processo
+trabalhador são encapsulados pela classe \texttt{StencilTiling}. Essa classe
+realiza os cálculos com base nas dimensões e \textit{offsets} do \textit{tile}
+lógico.
 
+\subsection{Comunicação}
 
 Para efetuar a comunicação, o processo mestre cria portais de escrita e leitura
 por meio de funções de baixo nível do \mppa. A criação dos portais são encapsulados pela
@@ -293,11 +343,16 @@ processo trabalhador irá criar estruturas \texttt{Array2D} temporárias para
 receber o \textit{tile} alargado.
 
 Devido à restrição da \api e \noc no \mppa, os dados armazenados em cada
-\textit{tile} precisam ser contíguos para serem transferidos pela \noc. Com o
-objetivo de evitar cópias locais de dados, o que desperdiçaria memória e tempo
-de processamento, utiliza-se o conceito de \textit{strides}. Cada stride é uma
+\textit{tile} precisam ser contíguos para serem transferidos pela \noc. Uma
+solução com cópias locais de dados é simples e contorna o problema, contudo o
+tempo para efetuar a cópia de um \textit{tile} cresce proporcionalmente com o
+seu tamanho e desperdiça memória. Desta forma, com o objetivo de evitar cópias
+locais de dados utiliza-se o conceito de \textit{strides}. Cada stride é uma
 parte contígua do \texttt{Array} original, sendo determinado por deslocamentos
-(\textit{offsets}) especificados durante a execução. Então, cada \textit{stride}
+(\textit{offsets}) especificados durante a execução. Os \textit{offsets} são
+dinâmicos e dependem dos \textit{tiles} sendo computados. Essas informações são
+conhecidas pelo processo trabalhador e mestre por meio da
+utilização da classe \texttt{StencilTiling}. Portanto, cada \textit{stride}
 é enviado, de forma contígua, ao processo trabalhador na posição correta. A
 Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
 \textit{strides}.
@@ -309,27 +364,6 @@ Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
     Fonte: Desenvolvido pelo autor.
 	\label{fig:strides}
 \end{figure}
-
-Na fase de computação, os processos trabalhadores serão responsáveis pela
-execução do \textit{kernel} da computação. Essa fase pode ser dividida em
-etapas: i) Cada processo trabalhador irá receber os \textit{tiles} alargados.
-ii) $t^\prime$ iterações são computadas sobre o \textit{tile} alargado. iii)
-\textit{offsets} são utilizados para coletar o \textit{tile} lógico e enviá-lo
-ao processo mestre. Após cada \textit{tile}
-atribuído ao processo trabalhador ser computado, todos os processos
-trabalhadores precisam sincronizar em uma barreira. Para cumprir esse objetivo,
-são utilizadas funções de baixo nível do \mppa. Esse processo é repetido até
-todas as $t$ iterações serem processadas.
-
-O código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
-no \mppa. Este processo será responsável por descrever o \textit{kernel} da
-computação e, também, estruturas de dados de forma similar ao processo mestre.
-Devido aos valores de \textit{offsets} e variáveis importantes para a computação
-do \textit{kernel} serem geradas dinâmicamente, o processo trabalhador precisa
-receber do processo mestre, além do \textit{tile} alargado, variáveis
-responsáveis por controlar a comunicação. Dentre elas, temos variáveis indicando
-as dimensões do \textit{tile} a ser recebido, número de iterações totais e
-\textit{offsets} para auxiliar a comunicação do resultado.
 
 Por fim, para fornecer uma maior facilidade ao usuário, a técnica de
 \textit{tiling} utilizada, as comunicações via \noc e adaptações foram

@@ -432,7 +432,8 @@ escalar é a soma (\texttt{+}).
 	{
 		int prod = 0;
 
-		#pragma omp parallel for private(i) shared(a, b) reduction(+:prod)
+		#pragma omp parallel for private(i) shared(a, b) \
+                                        reduction(+:prod)
 		for (int i = 0; i < tamanho; i++)
 			prod += a[i] * b[i];
 
@@ -541,8 +542,8 @@ realiza o recebimento da mensagem e a imprime na tela juntamente com seu \textit
 		}
 		else {
 			char mensagem[11];
-			MPI_Recv(&mensagem, 11, MPI_CHAR, 0, MPI_ANY_TAG, MPI_COMM_WORLD,
-							 MPI_STATUS_IGNORE);
+			MPI_Recv(&mensagem, 11, MPI_CHAR, 0, MPI_ANY_TAG,
+                             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			printf("Processo %d recebeu: %s\n", rank, mensagem);
 		}
 
@@ -760,7 +761,8 @@ previsão do tempo e processamento de imagens~\cite{pereira15}.
 		for (t = 0; t < tsteps; t++){
 			for (i = 1; i < N-1; i++)
 				for (j = 1; j < N-1; j++)
-					B[i,j] = c1 * (A[i,j] + A[i,j-1] + A[i,j+1] + A[i+1,j] + A[i-1,j]);
+					B[i,j] = c1 * (A[i,j] + A[i,j-1] + A[i,j+1] + A[i+1,j]
+                         + A[i-1,j]);
 
 			for (i = 1; i < N-1; i++)
 				for (j = 1; j < N-1; j++)
@@ -884,7 +886,8 @@ da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denomin
 	__parallel__ void
 	stencilKernel(Array2D<float> A, Array2D<float> B, Mask2D<int> mask,
 								struct Arguments args, int x, int y){
-		B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y) + A(x-1,y));
+		B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y)
+                           + A(x-1,y));
 	}
 
 	int main(int argc, char **argv) {
