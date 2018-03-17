@@ -29,7 +29,7 @@ seus códigos originais.
 
 
 
-A Figura~\ref{fig:visaoGeral} ilustra de forma simplificada a adaptação
+A Figura~\ref{fig:visaoGeral} ilustra, de forma simplificada, a adaptação
 desenvolvida. A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
 mestre-trabalhador. Mais especificamente, é seguido o processo descrito na seção
 \ref{sec:prog-mppa}. O processo mestre é executado no subsistema de \es conectado
@@ -56,7 +56,7 @@ Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
 dados e computações~\cite{rocha17}. Mais especificamente, \textit{tiling} é
 geralmente utilizado para particionar a computação de uma aplicação \stencil em
-partes menores (\textit{tiles}) entre elementos de processamento\footnote{Nessa
+partes menores (\textit{tiles}) entre elementos de processamento\footnote{Nesta
 seção, esse termo é utilizado para representar elementos de processamento em
 geral, não, necessariamente, os elementos presentes dentro dos \textit{clusters}
 no \mppa.}. Essa subdivisão tem como objetivo possibilitar a execução paralela da aplicação.
