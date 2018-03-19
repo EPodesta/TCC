@@ -77,6 +77,7 @@ pages = {278},
 title = {{ExaScale Computing Study: Technology Challenges in Achieving Exascale Systems}},
 year = {2008}
 }
+
 @inproceedings{Castro-Podesta-ERAD:2017,
 address = {Iju{\'{i}}, Brazil},
 author = {{Podest{\'{a}} Jr.}, Emmanuel and Pereira, Alyson D and Rocha, Rodrigo Caetano and Castro, M{\'{a}}rcio and G{\'{o}}es, Lu{\'{i}}s Fabr{\'{i}}cio Wanderley},
@@ -118,15 +119,16 @@ pages = {1--6},
 title = {{A clustered manycore processor architecture for embedded and accelerated applications}},
 year = {2013}
 }
-@article{lutz13,
+@inproceedings{lutz13,
 author = {Lutz, Thibaut and Fensch, Christian and Cole, Murray},
 journal = {ACM Trans. Archit. Code Optim.},
-number = {4},
+volume = {9},
 pages = {59:1--59:24},
 title = {{PARTANS: An Autotuning Framework for Stencil Computation on Multi-GPU Systems}},
-volume = {9},
-year = {2013}
+year = {2013},
+doi = {10.1145/2400682.2400718}
 }
+
 @article{Castro-Souza-CCPE:2016,
 author = {Souza, Matheus A and Penna, Pedro Henrique and Queiroz, Matheus M and Pereira, Alyson D and G{\'{o}}es, Lu{\'{i}}s Fabricio W and Freitas, Henrique C and Castro, M{\'{a}}rcio and Navaux, Philippe O A and M{\'{e}}haut, Jean‐Fran{\c{c}}ois},
 doi = {10.1002/cpe.3892},
@@ -159,13 +161,13 @@ title = {{Measuring Energy and Power with PAPI}},
 year = {2012}
 }
 @book{Charm:2012,
-edition = {1st},
-editor = {Kale, Laxmikant V and Bhatele, Abhinav},
-isbn = {1466504129},
+author = {Kale, Laxmikant V and Bhatele, Abhinav},
 publisher = {CRC Press},
 title = {{Parallel Science and Engineering Applications: The Charm++ Approach}},
-year = {2012}
+year = {2012},
+isbn = {1466504129}
 }
+
 @inproceedings{MPPA-2:2013,
 address = {Barcelona, Spain},
 author = {de Dinechin, Beno{\^{i}}t Dupont and de Massas, Pierre Guironnet and Lager, Guillaume and L{\'{e}}ger, Cl{\'{e}}ment and Orgogozo, Benjamin and Reybert, J{\'{e}}r{\^{o}}me and Strudel, Thierry},
@@ -258,15 +260,15 @@ year = {2010}
 }
 @article{meng11,
 author = {Meng, Jiayuan and Skadron, Kevin},
-issn = {0885-7458},
 journal = {International Journal of Parallel Programming},
-number = {1},
+volume = {39},
 pages = {115--142},
 publisher = {Springer US},
 title = {{A Performance Study for Iterative Stencil Loops on GPUs with Ghost Zone Optimizations}},
-volume = {39},
-year = {2011}
+year = {2011},
+issn = {0885-7458}
 }
+
 @article{sunway:2016,
 author = {Fu, Haohuan and Liao, Junfeng and Yang, Jinzhe and Wang, Lanning and Song, Zhenya and Huang, Xiaomeng and Yang, Chao and Xue, Wei and Liu, Fangfang and Qiao, Fang-Li and Zhao, Wei and Yin, Xunqiang and Hou, Chaofeng and Zhang, Chenglong and Ge, Wei and Zhang, Jian and Wang, Yangang and Zhou, Chunbo and Yang, Guangwen},
 journal = {SCIENCE CHINA Information Sciences},
@@ -281,11 +283,15 @@ issn = {1869-1919}
 number = {7},
 
 @inproceedings{holewinski12,
+address = {Venice, Italy},
 author = {Holewinski, Justin and Pouchet, Louis-No{\"{e}}l and Sadayappan, P},
 booktitle = {ACM ICS},
 pages = {311--320},
+publisher = {ACM},
 title = {{High-Performance Code Generation for Stencil Computations on GPU Architectures}},
-year = {2012}
+year = {2012},
+isbn = {978-1-4503-1316-2},
+doi = {10.1145/2304576.2304619}
 }
 @article{pereira15,
 author = {Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
@@ -331,11 +337,15 @@ title = {{Stencil Computation Optimization and Auto-Tuning on State-of-the-Art M
 year = {2008}
 }
 @inproceedings{gysi15,
+address = {California, USA},
 author = {Gysi, T and Grosser, T and Hoefler, T},
 booktitle = {ACM ICS},
 pages = {177--186},
+publisher = {ACM},
 title = {{MODESTO: Data-centric Analytic Optimization of Complex Stencil Programs on Heterogeneous Architectures}},
-year = {2015}
+year = {2015},
+isbn = {978-1-4503-3559-1},
+doi = {10.1145/2751205.2751223}
 }
 @article{rocha17,
 author = {Rocha, Rodrigo C O and Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
@@ -401,11 +411,40 @@ year = {2006}
 }
 @article{Castro-Padoin-IET:2015,
 author = {Padoin, Edson L and Pilla, La{\'{e}}rcio L and Castro, M{\'{a}}rcio and Boito, Francieli Z and Navaux, Philippe O A and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
-doi = {10.1049/iet-cdt.2014.0074},
 journal = {IET Computers {\&} Digital Techniques},
+pages = {1-9},
 title = {{Performance/Energy Trade-off in Scientific Computing: The Case of ARM big.LITTLE and Intel Sandy Bridge}},
-year = {2015}
+year = {2015},
+issn = {1751-8601},
+doi = {10.1049/iet-cdt.2014.0074}
 }
+author = {Francesquini, Emilio and Castro, M{\'{a}}rcio and Penna, Pedro H and Dupros, Fabrice and de Freitas, Henrique Cota and Navaux, Philippe Olivier Alexandre and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+journal = {Journal of Parallel and Distributed Computing},
+volume = {76},
+pages = {32--48},
+title = {{On the Energy Efficiency and Performance of Irregular Applications on Multicore, NUMA and Manycore Platforms}},
+year = {2014},
+issn = {0743-7315},
+doi = {10.1016/j.jpdc.2014.11.002}
+
+address = {Berkeley, EUA},
+author = {Demmel, James W},
+publisher = {SIAM},
+title = {{Applied numerical linear algebra}},
+year = {1997},
+isbn = {978-0-89871-389-3},
+doi = {10.1137/1.9781611971446}
+
+address = {Denver, EUA},
+author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Ngu{\'{e}}l{\'{e}}, Thomas M and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA$^3$)},
+pages = {5:1 -- 5:8},
+publisher = {ACM},
+title = {{Analysis of Computing and Energy Performance of Multicore, NUMA, and Manycore Platforms for an Irregular Application}},
+year = {2013},
+doi = {10.1145/2535753.2535757}
+
+
 @inproceedings{enmyren10,
 address = {Baltimore, USA},
 author = {Enmyren, Johan and Kessler, Christoph W},
