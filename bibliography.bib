@@ -8,13 +8,14 @@ title = {{Execu{\c{c}}{\~{a}}o Energeticamente Eficiente de Aplica{\c{c}}{\~{o}}
 year = {2017}
 }
 @book{Tanenbaum2015,
+address = {Boston, London},
 author = {Tanenbaum, Andrew S. and Bos, Herbert},
-edition = {Fourth},
-isbn = {978-0-13-359162-0},
-pages = {1137},
 publisher = {Pearson},
 title = {{Modern Operating Systems}},
-year = {2015}
+edition = {4},
+pages = {1137},
+year = {2015},
+isbn = {978-0-13-359162-0}
 }
 @article{Murarasu2011,
 abstract = {Multi-core parallelism and accelerators are becoming common features of today's computer systems, as they allow for computational power without sacrificing energy efficiency. Due to heterogeneity, tuning for each type of compute unit and adequate load balancing is essential. This paper proposes static and dynamic solutions for load balancing in the context of an application for visualizing high-dimensional simulation data. The application relies on the sparse grid technique for data compression. Its performance critical part is the interpolation routine used for decompression. Results show that our load balancing scheme allows for an efficient acceleration of interpolation on heterogeneous systems containing multi-core CPUs and GPUs.},
@@ -71,6 +72,7 @@ title = {{PSkel-MPPA: Uma Adapta{\c{c}}{\~{a}}o do Framework PSkel para o Proces
 year = {2016}
 }
 @techreport{Kogge2008,
+address = {},
 author = {Kogge, Peter and Bergman, Keren and Borkar, Shekhar and Campbell, Dan and Carlson, William and Dally, William and Denneau, Monty and Franzon, Paul and Harrod, William and Hill, Kerry and Hiller, Jon and Karp, Sherman and Keckler, Stephen and Klein, Dean and Lucas, Robert and Richards, Mark and Scarpelli, Al and Scott, Steven and Snavely, Allan and Sterling, Thomas and Williams, R. Stanley and Yelick, Katherine},
 institution = {University of Notre Dame},
 pages = {278},
@@ -120,12 +122,13 @@ year = {2013}
 }
 @article{lutz13,
 author = {Lutz, Thibaut and Fensch, Christian and Cole, Murray},
-journal = {ACM Trans. Archit. Code Optim.},
-number = {4},
+journal = {ACM Transactions on Architecture and Code Optimization (TACO)},
+volume = {9},
 pages = {59:1--59:24},
 title = {{PARTANS: An Autotuning Framework for Stencil Computation on Multi-GPU Systems}},
-volume = {9},
-year = {2013}
+year = {2013},
+issn = {1544-3566},
+doi = {10.1145/2400682.2400718}
 }
 @article{Castro-Souza-CCPE:2016,
 author = {Souza, Matheus A and Penna, Pedro Henrique and Queiroz, Matheus M and Pereira, Alyson D and G{\'{o}}es, Lu{\'{i}}s Fabricio W and Freitas, Henrique C and Castro, M{\'{a}}rcio and Navaux, Philippe O A and M{\'{e}}haut, Jean‐Fran{\c{c}}ois},
@@ -140,9 +143,10 @@ author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Dupros, Fabrice and 
 journal = {Parallel Computing},
 volume = {54},
 pages = {108--120},
-title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
+publisher = {Elsevier},
+    title = {{Seismic wave propagation simulations on low-power and performance-centric manycores}},
 year = {2016},
-issn = {01678191},
+issn = {0167-8191},
 doi = {10.1016/j.parco.2016.01.011}
 }
 abstract = {The large processing requirements of seismic wave propagation simulations make High Performance Computing (HPC) architectures a natural choice for their execution. However, to keep both the current pace of performance improvements and the power consumption under a strict power budget, HPC systems must be more energy efficient than ever. As a response to this need, energy-efficient and low-power processors began to make their way into the market. In this paper we employ a novel low-power processor, the MPPA-256 manycore, to perform seismic wave propagation simulations. It has 256 cores connected by a NoC, no cache-coherence and only a limited amount of on-chip memory. We describe how its particular architectural characteristics influenced our solution for an energy-efficient implementation. As a counterpoint to the low-power MPPA-256 architecture, we employ Xeon Phi, a performance-centric manycore. Although both processors share some architectural similarities, the challenges to implement an efficient seismic wave propagation kernel on these platforms are very different. In this work we compare the performance and energy efficiency of our implementations for these processors to proven and optimized solutions for other hardware platforms such as general-purpose processors and a GPU. Our experimental results show that MPPA-256 has the best energy efficiency, consuming at least 77{\%} less energy than the other evaluated platforms, whereas the performance of our solution for the Xeon Phi is on par with a state-of-the-art solution for GPUs.},
@@ -150,21 +154,26 @@ url = {http://www.sciencedirect.com/science/article/pii/S0167819116000417},
 keywords = {Energy efficiency,HPC,MPPA-256,Performance,Seismic wave propagation,Xeon Phi},
 
 @inproceedings{papi12,
+address = {Pittsburgh, USA},
 author = {Weaver, V M and Johnson, M and Kasichayanula, K and Ralph, J and Luszczek, P and Terpstra, D and Moore, S},
 booktitle = {2012 41st International Conference on Parallel Processing Workshops},
-doi = {10.1109/ICPPW.2012.39},
-issn = {0190-3918},
 pages = {262--268},
+publisher = {IEE},
 title = {{Measuring Energy and Power with PAPI}},
-year = {2012}
+year = {2012},
+isbn = {978-1-4673-2509-7},
+issn = {0190-3918},
+doi = {10.1109/ICPPW.2012.39},
 }
 @book{Charm:2012,
-edition = {1st},
-editor = {Kale, Laxmikant V and Bhatele, Abhinav},
-isbn = {1466504129},
+address = {Florida, USA},
+author = {Kale, Laxmikant V and Bhatele, Abhinav},
 publisher = {CRC Press},
-title = {{Parallel Science and Engineering Applications: The Charm++ Approach}},
-year = {2012}
+title = {Parallel Science and Engineering Applications: The Charm++ Approach},
+edition = {1st},
+pages = {314},
+year = {2013},
+isbn = {1466504129}
 }
 @inproceedings{MPPA-2:2013,
 address = {Barcelona, Spain},
@@ -237,11 +246,14 @@ annote = {From Duplicate 2 ( Extended Cyclostatic Dataflow Program Compilation a
 author = {Sirdey, Pascal Aubry and Beaucamps, Pierre-Edouard and Blanc, Fr{\'{e}}d{\'{e}}ric and Bobin, Bruno and Carpov, Sergiu and Cudennec, Lo{\"{i}}c and David, Vincent and Dore, Philippe and Dubrulle, Paul and de Dinechin, Beno{\^{i}}t Dupont and {Fran{\c{c}}ois Galea} and Goubier, Thierry and Harrand, Michel},
 booktitle = {International Conference on Computational Science (ICCS)},
 pages = {1624--1633},
-publisher = {Elsevier Science},
+publisher = {Elsevier},
 title = {{Extended Cyclostatic Dataflow Program Compilation and Execution for an Integrated Manycore Processor}},
-volume = {18},
-year = {2013}
+year = {2013},
+issn = {1877-0509},
+doi = {10.1016/j.procs.2013.05.330}
 }
+volume = {18},
+
 @inproceedings{kamil10,
 author = {Kamil, S and Chan, C and Oliker, L and Shalf, J and Williams, S},
 booktitle = {IEEE IPDPS},
@@ -281,20 +293,35 @@ issn = {1869-1919}
 number = {7},
 
 @inproceedings{holewinski12,
+    address = {Venice, Italy},
 author = {Holewinski, Justin and Pouchet, Louis-No{\"{e}}l and Sadayappan, P},
 booktitle = {ACM ICS},
 pages = {311--320},
+publisher = {ACM},
 title = {{High-Performance Code Generation for Stencil Computations on GPU Architectures}},
-year = {2012}
+year = {2012},
+isbn = {978-1-4503-1316-2},
+doi = {10.1145/2304576.2304619}
 }
+address = {Denver, EUA},
+author = {Castro, M{\'{a}}rcio and Francesquini, Emilio and Ngu{\'{e}}l{\'{e}}, Thomas M and M{\'{e}}haut, Jean-Fran{\c{c}}ois},
+booktitle = {Workshop on Irregular Applications: Architectures {\&} Algorithms (IA$^3$)},
+pages = {5:1 -- 5:8},
+publisher = {ACM},
+title = {{Analysis of Computing and Energy Performance of Multicore, NUMA, and Manycore Platforms for an Irregular Application}},
+year = {2013},
+isbn = {978-1-4503-2503-5},
+doi = {10.1145/2535753.2535757}
+
 @article{pereira15,
 author = {Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
 journal = {Concurrency and Computation: Practice and Experience},
-number = {17},
+volume = {27},
 pages = {4938--4953},
 title = {{PSkel: A Stencil Programming Framework for CPU-GPU Systems}},
-volume = {27},
-year = {2015}
+year = {2015},
+issn = {1532-0634},
+doi = {10.1002/cpe.3479}
 }
 @article{gardner70,
 author = {Gardner, Martin},
@@ -322,7 +349,10 @@ booktitle = {International Parallel Distributed Processing Symposium Workshops (
 pages = {984--992},
 publisher = {IEEE Computer Society},
 title = {{Programming the Adapteva Epiphany 64-Core Network-on-Chip Coprocessor}},
-year = {2014}
+year = {2014},
+isbn = {978-1-4799-4116-2},
+doi = {10.1109/IPDPSW.2014.112}
+
 }
 @inproceedings{datta08,
 author = {Datta, Kaushik and Murphy, Mark and Volkov, Vasily and Williams, Samuel and Carter, Jonathan and Oliker, Leonid and Patterson, David and Shalf, John and Yelick, Katherine},
@@ -331,30 +361,36 @@ title = {{Stencil Computation Optimization and Auto-Tuning on State-of-the-Art M
 year = {2008}
 }
 @inproceedings{gysi15,
+address = {California, USA},
 author = {Gysi, T and Grosser, T and Hoefler, T},
 booktitle = {ACM ICS},
 pages = {177--186},
+publisher = {ACM},
 title = {{MODESTO: Data-centric Analytic Optimization of Complex Stencil Programs on Heterogeneous Architectures}},
-year = {2015}
+year = {2015},
+isbn = {978-1-4503-3559-1},
+doi = {10.1145/2751205.2751223}
 }
 @article{rocha17,
 author = {Rocha, Rodrigo C O and Pereira, Alyson D and Ramos, Luiz and G{\'{o}}es, Lu{\'{i}}s F W},
-issn = {1532-0634},
 journal = {Concurrency and Computation: Practice and Experience},
-number = {8},
+volume = {29},
 pages = {e4053},
 title = {{TOAST: Automatic tiling for iterative stencil computations on GPUs}},
-volume = {29},
-year = {2017}
+year = {2017},
+issn = {1532-0634},
+doi = {10.1002/cpe.4053}
 }
 @inproceedings{Valero:2012,
 address = {New York, USA},
 author = {Morari, Alessandro and Tumeo, Antonino and Villa, Oreste and Secchi, Simone and Valero, Mateo},
 booktitle = {International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD)},
 pages = {171--178},
-publisher = {IEEE Computer Society},
+publisher = {IEEE},
 title = {{Efficient Sorting on the Tilera Manycore Architecture}},
-year = {2012}
+year = {2012},
+issn = {1550-6533},
+doi = {10.1109/SBAC-PAD.2012.41}
 }
 @inproceedings{christen11,
 author = {Christen, Matthias and Schenk, Olaf and Burkhart, Helmar},
@@ -385,13 +421,17 @@ year = {2006},
 isbn = {9780133356724}
 }
 @inproceedings{thoraransen16,
+address = {Heraklion, Greece},
 author = {Thorarensen, S and Cuello, R and Kessler, C and Li, L and Barry, B},
-booktitle = {2016 24th Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)},
-doi = {10.1109/PDP.2016.123},
+booktitle = {Euromicro International Conference on Parallel, Distributed, and Network-Based Processing (PDP)},
 pages = {398--402},
+publisher = {IEEE},
 title = {{Efficient Execution of SkePU Skeleton Programs on the Low-Power Multicore Processor Myriad2}},
-year = {2016}
+year = {2016},
+issn = {2377-5750},
+doi = {10.1109/PDP.2016.123},
 }
+
 @inproceedings{rosten06,
 author = {Rosten, Edward and Drummond, Tom},
 booktitle = {ECCV},
@@ -404,7 +444,8 @@ author = {Padoin, Edson L and Pilla, La{\'{e}}rcio L and Castro, M{\'{a}}rcio an
 doi = {10.1049/iet-cdt.2014.0074},
 journal = {IET Computers {\&} Digital Techniques},
 title = {{Performance/Energy Trade-off in Scientific Computing: The Case of ARM big.LITTLE and Intel Sandy Bridge}},
-year = {2015}
+year = {2015},
+issn = {1751-8601}
 }
 @inproceedings{enmyren10,
 address = {Baltimore, USA},
@@ -425,7 +466,7 @@ journal = {Parallel Computing},
 volume = {30},
 pages = {389--406},
 keywords = {MPI,libraries,parallel programming,patterns,skeletons},
-publisher = {Elsevier Science Publishers B. V.},
+publisher = {Elsevier},
 title = {{Bringing Skeletons out of the Closet: A Pragmatic Manifesto for Skeletal Parallel Programming}},
 year = {2004},
 issn = {0167-8191},
@@ -439,22 +480,24 @@ number = {3},
 address = {New Brunswick, Canada},
 author = {Totoni, Ehsan and Behzad, Babak and Ghike, Swapnil and Torrellas, Josep},
 booktitle = {IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
-doi = {10.1109/ISPASS.2012.6189208},
 pages = {78--87},
 publisher = {IEEE Computer Society},
 title = {{Comparing the Power and Performance of Intel's SCC to State-of-the-Art CPUs and GPUs}},
-year = {2012}
+year = {2012},
+isbn = {9781467311441},
+doi = {10.1109/ISPASS.2012.6189208}
 }
 @inproceedings{steuwer11,
-address = {Washington, DC, USA},
+address = {Shangai, China},
 author = {Steuwer, Michel and Kegel, Philipp and Gorlatch, Sergei},
-booktitle = {Proceedings of the 2011 IEEE International Symposium on Parallel and Distributed Processing Workshops and PhD Forum},
-isbn = {978-0-7695-4577-6},
+booktitle = {IEEE International Parallel and Distributed Processing  Symposium (IPDPSW)},
 pages = {1176--1182},
 publisher = {IEEE Computer Society},
-series = {IPDPSW '11},
 title = {{SkelCL - A Portable Skeleton Library for High-Level GPU Programming}},
-year = {2011}
+year = {2011},
+isbn = {978-0-7695-4577-6},
+issn = {1530-2075},
+doi = {10.1109/IPDPS.2011.269}
 }
 
 @inproceedings{mccool10,
@@ -472,5 +515,6 @@ pages = {5:1 -- 5:8},
 publisher = {ACM},
 title = {{Analysis of Computing and Energy Performance of Multicore, NUMA, and Manycore Platforms for an Irregular Application}},
 year = {2013},
+isbn = {978-1-4503-2503-5},
 doi = {10.1145/2535753.2535757}
 }
