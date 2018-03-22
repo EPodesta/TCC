@@ -31,15 +31,16 @@ seus códigos originais.
 
 A Figura~\ref{fig:visaoGeral} ilustra, de forma simplificada, a adaptação
 desenvolvida. A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
-mestre-trabalhador. Mais especificamente, é seguido o processo descrito na seção
-\ref{sec:prog-mppa}. O processo mestre é executado no subsistema de \es conectado
-à uma memória LPDDR3, alocando dados de entrada e saída. Além disso, o processo
-mestre irá enviar dados para o processo trabalhador e aguardará os resultados da
-computação. Por outro lado, o processo trabalhador é executado em cada
-\textit{cluster} com o objetivo de realizar a computação \stencil de forma
-paralela. Após a computação ser realizada, o resultado é enviado ao processo
-mestre. Por fim, toda a comunicação entre os dois processos será realizada por
-meio de portais, como especificado na seção \ref{sec:prog-mppa}.
+mestre-trabalhador descrito na seção \ref{sec:prog-mppa}. O processo mestre é
+executado no subsistema de \es conectado à uma memória LPDDR3, alocando dados de
+entrada e saída. Além disso, o processo mestre irá enviar dados para o processo
+trabalhador e aguardará os resultados da computação. Por outro lado, o processo
+trabalhador é executado em cada \textit{cluster} com o objetivo de realizar a
+computação \stencil de forma paralela. A computação será subdividida dentro dos
+\textit{clusters} por meio da biblioteca OpenMP, enviando pequenas partes de
+dados para cada \pe. Após a computação ser realizada, o resultado é enviado ao
+processo mestre. Por fim, toda a comunicação entre os dois processos será
+realizada por meio de portais, como especificado na seção \ref{sec:prog-mppa}.
 
 Devido às limitações de memória no \mppa, o mestre deverá enviar para o
 trabalhador pequenas partições da matriz de entrada, denominadas de
@@ -208,8 +209,8 @@ processo e como foi realizada a comunicação no \mppa.
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
 alocar: os dados de entrada e saída na memória LPDDR3, a máscara da computação e
-a estrutura \stencil. A inicialização do processo mestre é idêntica à fase de inicialização no
-\pskel, contudo o processo mestre não é responsável pela descrição do
+a estrutura \stencil. A inicialização do processo mestre é idêntica à fase de
+inicialização da versão original do \pskel, contudo o processo mestre não é responsável pela descrição do
 \textit{kernel} da computação. O código~\ref{cod:jacobiMestre} mostra a
 definição do processo mestre no \mppa.  Na adaptação, a função
 \texttt{scheduleMPPA} foi implementada para realizar o controle de dados e a
@@ -249,7 +250,7 @@ Por meio da abstração proveniente do \pskel, o processo mestre irá iniciar a
 execução dos processos trabalhadores dentro dos \textit{clusters} no \mppa. A
 quantidade de \textit{clusters} utilizados na aplicação é determinada
 dinâmicamente em relação à quantidade de \textit{tiles} lógicos e o número de
-\textit{clusters} definido pelo usuário.  Mais precisamente, dado uma entrada
+\textit{clusters} definidos pelo usuário.  Mais precisamente, dado uma entrada
 $s$ e um tamanho de \textit{tile} lógico $s^\prime$, a quantidade de
 \textit{tiles} lógicos é determinada por $\lceil\frac{s}{s^\prime}\rceil$. Caso
 a quantidade de \textit{clusters} definida pelo usuário seja maior que o
@@ -263,7 +264,9 @@ trapezoidal para subdividir a matriz de entrada em \textit{tiles} alargados, e
 enviar os \textit{tiles} alargados para cada \textit{cluster} seguindo um
 escalonamento circular (\textit{round-robin}).  Devido a isso, alguns
 \textit{clusters} podem receber mais \textit{tiles} que outros, dependendo do
-número de \textit{tiles} e \textit{clusters} utilizados na computação. Para
+número de \textit{tiles} e \textit{clusters} utilizados na computação. Ao
+finalizar a subdivisã́o dos dados, o processo mestre irá enviar os \textit{tiles}
+alargados para o processo trabalhador.
 determinar precisamente os endereços de memória de cada \textit{tile} alargado
 são necessários alguns fatores: i) parâmetros definidos pelo usuário, como o
 tamanho dos dados de entrada, tamanho dos \textit{tiles} lógicos e o número de
