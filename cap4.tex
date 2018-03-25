@@ -52,7 +52,7 @@ máscara da computação.
 
 
 \section{Tiling Trapezoidal}
-
+\label{sec:tiling}
 Para tratar os problemas de dependência foi utilizada a técnica de
 \textit{tiling} trapezoidal~\cite{meng11} na solução proposta, resultando em redundância de
 dados e computações~\cite{rocha17}. Mais especificamente, \textit{tiling} é
@@ -131,9 +131,18 @@ elemento, determinado pela máscara \stencil. A área com alcance $r$ que conté
 vizinhança é denominada \textit{halo region}. O número de \textit{halo regions}
 que compõem a \textit{ghost zone} é proporcional à $t^\prime$. Desta forma, o
 \textit{tile} alargado $A^\ast_{i,j}$ possui um \textit{offset} $(\max\{iw^\prime -
-rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$. Portanto,
-existe um \textit{trade-off} entre o custo de computação redundante e o número
-de comunicações e sincronizações.
+rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$.
+
+Devido às dependências de vizinhança presentes na computação \stencil, cada
+iteração sobre o \textit{tile} alargado adiciona valores incorretos na
+\textit{ghost zone}. A Figura~\ref{fig:errorPropagation} ilustra como que os
+valores incorretos se propagam sobre o \textit{tile} alargado. Após $t^\prime$
+iterações consecutivas, o \textit{tile} lógico será a região sem erros e sem
+valores redundantes. Desta forma, quanto maior for o a quantidade de iterações
+consecutivas, a \textit{ghost zone} será maior e, consequentemente, maior a
+quantidade de computações redundantes para computar corretamente o \textit{tile}
+lógico. Portanto, existe um \textit{trade-off} entre o custo de computação
+redundante e o número de comunicações e sincronizações realizadas.
 %na \noc durante o processamento de computações
 %\stencil iterativas no \mppa.
 
@@ -195,7 +204,7 @@ de comunicações e sincronizações.
 % comunicação e a subdivisão dos dados serão testados, buscando o melhor método
 % para cumprir o foco da proposta.
 
-Após cada computação das $t^\prime$ iterações consecutivas,
+Após a computação das $t^\prime$ iterações consecutivas,
 sincronizações devem ser realizadas para resolver as iterações restantes. Desta
 forma, $\lceil\frac{t}{t^\prime}\rceil$ sincronizações serão responsáveis por
 atualizar a matriz de entrada de forma global.
@@ -209,9 +218,9 @@ processo e como foi realizada a comunicação no \mppa.
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
 alocar: os dados de entrada e saída na memória LPDDR3, a máscara da computação e
-a estrutura \stencil. A inicialização do processo mestre é idêntica à fase de
-inicialização da versão original do \pskel, contudo o processo mestre não é responsável pela descrição do
-\textit{kernel} da computação. O código~\ref{cod:jacobiMestre} mostra a
+a estrutura \stencil. O código do processo mestre é idêntico ao código da versão
+original do \pskel, contudo o processo mestre não é responsável pela descrição
+do \textit{kernel} da computação. O código~\ref{cod:jacobiMestre} mostra a
 definição do processo mestre no \mppa.  Na adaptação, a função
 \texttt{scheduleMPPA} foi implementada para realizar o controle de dados e a
 computação sobre o processador. Ela é encapsulada pela classe
@@ -265,29 +274,94 @@ enviar os \textit{tiles} alargados para cada \textit{cluster} seguindo um
 escalonamento circular (\textit{round-robin}).  Devido a isso, alguns
 \textit{clusters} podem receber mais \textit{tiles} que outros, dependendo do
 número de \textit{tiles} e \textit{clusters} utilizados na computação. Ao
-finalizar a subdivisã́o dos dados, o processo mestre irá enviar os \textit{tiles}
-alargados para o processo trabalhador.
-determinar precisamente os endereços de memória de cada \textit{tile} alargado
-são necessários alguns fatores: i) parâmetros definidos pelo usuário, como o
+finalizar a subdivisão dos dados, o processo mestre irá enviar os \textit{tiles}
+alargados para o processo trabalhador. Para efetuar a subdivisão por meio da
+técnica de \textit{tiling} trapezoidal são necessários cálculos para determinar
+variáveis que são modificadas dinâmicamente, como, por exemplo, endereços de memória da
+\textit{ghost zone} e a posição do \textit{tile} lógico na matriz de entrada.
+Mais precisamente, esses cálculos serão realizados para fornecer os
+\textit{offsets} necessários para a função \texttt{tiling} da classe
+\texttt{StencilTiling}. Essa função é responsável por retornar os endereços de
+memória corretos de cada \textit{tile} alargado. Desta forma, para determinar
+precisamente os endereços de memória de cada \textit{tile} alargado são
+necessários alguns fatores: i) parâmetros definidos pelo usuário, como o
 tamanho dos dados de entrada, tamanho dos \textit{tiles} lógicos e o número de
 iterações; ii) parâmetros do \stencil \textit{kernel}, como o tamanho da
-máscara. Por fim, o processo mestre espera os \textit{clusters} finalizarem a
+máscara. iii) os \textit{offsets} do \textit{tile} lógico em relação à matriz de
+entrada. Por fim, processo mestre espera os \textit{clusters} finalizarem a
 execução e agrupará os \textit{tiles} resultantes em um único \texttt{Array2D}
-de saída.
+de saída. Caso existam mais iterações, será necessário armazenar os resultados
+enviados pelos \textit{clusters} em uma matriz auxiliar, permitindo a realização
+de sincroninzações entre o processo mestre e trabalhador.
+
+Mais precisamente, os processos trabalhadores irão realizar iterações internas
+($t^\prime$), enquanto o processo mestre irá realizar iterações externas
+($\lceil\frac{t}{t^\prime}\rceil$). Após a computação de todas as iterações
+internas pelos processos trabalhadores, será necessário uma sincronização entre
+o processo mestre e os processos trabaçhadores. Essa sincronização permitirá que
+o processo mestre atualize uma matriz auxiliar com resultados temporários,
+utilizando-a como base para os novos envios de \textit{tiles} alargados em uma
+nova iteração externa. Com isso, é possível remover valores incorretos
+calculados dentro da \textit{ghost zone} e atualizar os dados para todos os
+\textit{clusters}, eliminando problemas de dependência.
+
+A comunicação entre o processo mestre e o processo trabalhador é realizada por
+meio de portais de comunicação inicializados em cada processo. A
+seção~\ref{sec:comunicacao} descreve mais profudamente as características da
+comunicação na implementação.
+
+A Figura~\ref{fig:visaoGeralMestre} ilustra o esquemático atualizado da visão geral
+da proposta considerando as características do processo mestre.
+
+
+\begin{figure}[!h]
+	\centering
+    \caption{Esquemático ilustrando a implementação mais aprofundada do processo mestre.}
+    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPAMestre.pdf} \\
+    Fonte: Desenvolvido pelo autor.
+    \label{fig:visaoGeralMestre}
+\end{figure}
+
 
 
 \subsection{Processo Trabalhador}
 Os processos trabalhadores serão responsáveis pela
 execução do \textit{kernel} da computação. Essa fase pode ser dividida em
-etapas: i) Cada processo trabalhador irá receber os \textit{tiles} alargados.
+etapas: i) Cada processo trabalhador irá receber o \textit{tile} alargado.
 ii) $t^\prime$ iterações são computadas sobre o \textit{tile} alargado. iii)
-\textit{offsets} são utilizados para coletar o \textit{tile} lógico e enviá-lo
-ao processo mestre. Após cada \textit{tile}
-atribuído ao processo trabalhador ser computado, todos os processos
+cálculo de \textit{offsets} para determinar o espaço de endereçamento do
+\textit{tile} lógico e enviá-lo ao processo mestre. Após cada \textit{tile}
+alargado atribuído ao processo trabalhador ser computado, todos os processos
 trabalhadores precisam sincronizar em uma barreira. Para cumprir esse objetivo,
 são utilizadas funções de baixo nível do \mppa. Esse processo é repetido até
 todas as $t$ iterações serem processadas.
 
+Mais precisamente, o processo trabalhador irá receber o \textit{tile}
+alargado, atribuído pelo processo mestre, por meio de portais de comunicação.
+A computação será efetuada sobre os dados recebidos com o auxílio da biblioteca
+OpenMP. Desta forma, será possível distribuir a computação entre os \pes dentro
+do \textit{cluster}. Será realizada a computação do \textit{tile} alargado por
+$t^\prime$ iterações consecutivas. Após todas as iterações serem realizadas, o
+processo trabalhador terá que efetuar cálculos, com \textit{offsets} enviados
+pelo processo mestre, para determinar o endereço de memória do \textit{tile}
+lógico dentro do \textit{tile} alargado. Essa ação deve ser realizada para
+filtar os valores incorretos provenientes da computação do \textit{tile}
+alargado. Por fim, o \textit{cluster} irá enviar o \textit{tile} lógico para o
+processo mestre. Mais detalhes sobre a comunicação do processo trabalhador com o
+processo mestre serão abordados na seção~\ref{sec:comunicacao}.
+
+%  Como descrito na seção~\ref{}, a técnica de
+% \textit{tiling} trapezoidal auxilia a execução de iterações sobre um único
+% \textit{tile}, fornecendo um menor número de comunicações entre processos mestre
+% e trabalhador aumentando a carga da computação. Esse aumento de carga é devido a
+% região \textit{halo} que é acrescida ao \textit{tile} lógico. Desta forma,
+% devido à característica da computação \stencil
+
+% As ações descritas serão efetuadas para todos os \textit{tiles} alargados
+% atribuídos ao processo trabalhador. Além disso, ao finalizar o envio dos
+% \textit{tiles} resultantes, o processo trabalhador terá que efetuar uma
+% sincronização junto ao processo mestre.
+%
 O código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
 no \mppa. Este processo será responsável por descrever o \textit{kernel} da
 computação e, também, estruturas de dados de forma similar ao processo mestre.
@@ -296,11 +370,14 @@ do \textit{kernel} serem geradas dinâmicamente, o processo trabalhador precisa
 receber do processo mestre, além do \textit{tile} alargado, variáveis
 responsáveis por controlar a comunicação. Dentre elas, temos variáveis indicando
 as dimensões do \textit{tile} a ser recebido, número de iterações totais e
-\textit{offsets} para auxiliar a comunicação do resultado.
+\textit{offsets} para auxiliar a comunicação. Por fim, as ações de recebimento,
+computação e envio de \textit{tiles} foram encapsuladas pela função
+\texttt{runMPPA}, tornando todas as fases descritas para o processo
+trabalhador transparentes ao usuário.
 
 
 \begin{figure}[!h]
-	\begin{lstlisting}[
+    \begin{lstlisting}[
 		caption=Exemplo do código da aplicação Jacobi no processo trabalhador.,
 		label=cod:jacobiTrabalhador,
 	]
@@ -329,14 +406,20 @@ as dimensões do \textit{tile} a ser recebido, número de iterações totais e
 \end{lstlisting}
 \end{figure}
 
-Para efetuar a computação, o processo trabalhador irá utilizar a biblioteca
-OpenMP para distribuir à computação de um \textit{tile} nos \pes dentro de cada
-\textit{cluster}. Por fim, o cálculo dos \textit{offsets} utilizados pelo processo
-trabalhador são encapsulados pela classe \texttt{StencilTiling}. Essa classe
-realiza os cálculos com base nas dimensões e \textit{offsets} do \textit{tile}
-lógico.
+A Figura~\ref{fig:visaoGeralTrabalhador} ilustra a visão geral da implementação
+atualizada com as características do processo trabalhador.
+
+\begin{figure}[!h]
+	\centering
+    \caption{Esquemático ilustrando a implementação mais aprofundada do processo trabalhador.}
+    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
+    Fonte: Desenvolvido pelo autor.
+    \label{fig:visaoGeralTrabalhador}
+\end{figure}
+
 
 \subsection{Comunicação}
+\label{sec:comunicacao}
 
 Para efetuar a comunicação, o processo mestre cria portais de escrita e leitura
 por meio de funções de baixo nível do \mppa. A criação dos portais são encapsulados pela
@@ -345,28 +428,64 @@ portais de escrita e leitura podem ser vinculados à ele. Por sua vez, o
 processo trabalhador irá criar estruturas \texttt{Array2D} temporárias para
 receber o \textit{tile} alargado.
 
-Devido à restrição da \api e \noc no \mppa, os dados armazenados em cada
-\textit{tile} precisam ser contíguos para serem transferidos pela \noc. Uma
-solução com cópias locais de dados é simples e contorna o problema, contudo o
-tempo para efetuar a cópia de um \textit{tile} cresce proporcionalmente com o
-seu tamanho e desperdiça memória. Desta forma, com o objetivo de evitar cópias
-locais de dados utiliza-se o conceito de \textit{strides}. Cada stride é uma
-parte contígua do \texttt{Array} original, sendo determinado por deslocamentos
-(\textit{offsets}) especificados durante a execução. Os \textit{offsets} são
-dinâmicos e dependem dos \textit{tiles} sendo computados. Essas informações são
-conhecidas pelo processo trabalhador e mestre por meio da
-utilização da classe \texttt{StencilTiling}. Portanto, cada \textit{stride}
-é enviado, de forma contígua, ao processo trabalhador na posição correta. A
-Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
-\textit{strides}.
+Devido as operações sobre \textit{tiles} e matrizes serem realizadas sobre
+endereços de memória, quando o processo mestre ou trabalhador deseja enviar um
+dado, é necessário que ele se apresente contíguo na memória. Caso contrário,
+dados incorretos podem ser enviados devido à posição deles na memória. Mais
+precisamente, essa é uma restrição da \api e da \noc no \mppa, onde os dados
+armazenados em cada \textit{tile} precisam ser contíguos para serem transferidos
+pela \noc. Uma solução com cópias locais de dados é simples e contorna o
+problema, contudo o tempo para efetuar a cópia de um \textit{tile} cresce
+proporcionalmente com o seu tamanho e desperdiça memória. Desta forma, com o
+objetivo de evitar cópias locais de dados, utiliza-se o conceito de
+\textit{strides}. Cada stride é uma parte contígua do \texttt{Array} original,
+sendo determinado por deslocamentos (\textit{offsets}) especificados durante a
+execução. Os \textit{offsets} são dinâmicos e dependem dos \textit{tiles} sendo
+computados. Essas informações são conhecidas pelo processo mestre
+por meio da utilização da classe \texttt{StencilTiling}. Por outro lado, o
+processo trabalhador recebe essas informações do processo mestre.
+
+A Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
+\textit{strides}. Mais precisamente, ao determinar o endereço inicial do
+\textit{tile}, pode-se definir "saltos" que podem ser realizados sobre a
+memória local (\textit{source}). Utilizando como exemplo a figura~\ref{fig:strides}, o endereço inicial
+do \textit{tile} está em $init+(4 * size)$, onde $size$ é o tamanho, em bytes,
+do tipo armazenado pela matriz e $init$ é o endereço incial da matriz. O tamanho
+do "salto" realizado pelo método é determinado pela largura da matriz de
+entrada, enquanto a quantidade de "saltos" é determinada pela altura do
+\textit{tile}. Além disso, a quantidade de dados após o endereço inicial do
+\textit{tile} precisa ser determinada (\ie área útil), onde, no exemplo, o
+\textit{tile} possui $4$ elementos de área útil. O tamanho dos "saltos" é
+relativo ao endereço inicial do \textit{tile}, então, esse parâmetro deve
+contabilizar, também, a área útil do \textit{tile}. Ao realizar todos os
+"saltos", o método irá enviar diretamente, via portal, os dados especificados
+pelo endereço incial do \textit{tile} e saltos na memória com a área útil
+especificada. Com isso, é possível enviar de forma contígua e direta os
+\textit{tiles} à outro processo, sem a necessidade de cópias locais.
 
 \begin{figure}[!h]
 	\centering
-	\caption{Exemplo do funcionamento do método \textit{strides} do \mppa.}
+    \caption{Exemplo do funcionamento do método \textit{strides} no \mppa.}
 	\includegraphics[width=0.9\textwidth]{figs/stridesImage.pdf} \\
     Fonte: Desenvolvido pelo autor.
 	\label{fig:strides}
 \end{figure}
+
+Por outro lado, o processo trabalhador precisa enviar apenas o \textit{tile}
+lógico. desta forma, o endereço inicial para envio não será modificado, contudo
+é necessário especificar a quantidade e tamanho dos "saltos". a quantidade de
+"saltos" é determinada pela altura do \textit{tile}, enquanto o tamanho dos
+"saltos" e a área útil é igual à largura do \textit{tile}. Com o método
+\textit{strides} é possível determinar "saltos" no endereço de memória do
+processo destino (\textit{target}). O processo trabalhador precisa enviar o
+\textit{tile} resultante na posição de memória correta no processo mestre.
+Portanto, o processo trabalhador irá utilizar um deslocamento $(heightOffset *
+width) + widthOffset$ sobre o \textit{target}, onde
+$heightOffset$ é o deslocamento relativo à altura, $width$ é a largura do
+\textit{tile} e $widthOffset$ é o deslocamento ralativo à largura. No exemplo
+adotado, essas variáveis são, respectivamente, $0$, $4$ e $4$. O processo mestre
+não utiliza essa função do método, pois não é necessário inserir o \textit{tile}
+em uma posição de memória específica no processo trabalhador.
 
 Por fim, para fornecer uma maior facilidade ao usuário, a técnica de
 \textit{tiling} utilizada, as comunicações via \noc e adaptações foram
