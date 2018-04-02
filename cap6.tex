@@ -5,16 +5,42 @@ Este trabalho discutiu inicialmente a relação entre o aumento de núcleos e o 
 energia nos processadores atuais. Como mostrado, a energia necessária para alcançar supercomputadores
 \textit{Exascale} é muito alta, se tornando necessária a utilização de
 novas técnicas e processadores energeticamente eficientes. Contudo, esses
-processadores apresentam dificuldades de programação, trazendo problemas para o desenvolvimento
-de aplicações e motivando a utilização de \fws sobre esses ambientes.
+processadores apresentam dificuldades de programação, tais como a existência de
+um modelo de programação híbrido, capacidade limitada de memória no
+\textit{chip}, ausência de coerência de \textit{cache}, entre outros. Essas
+dificuldades trazem problemas para o desenvolvimento
+de aplicações e motivam a utilização de \fws sobre esses ambientes.
 
-A adaptação do \fw para o processador \textit{manycore} \mppa é uma
-tarefa desafiadora. Problemas de sincronização e comunicação deverão ser
-tratados de forma especial, considerando a relação do tempo que o \fw gasta
-comunicando e realizando a computação sobre os dados de entrada. Desta forma,
-encontrar o melhor balanceamento entre o número de comunicações e a
-quantidade de computação realizada \textit{clusters} é essencial.
+% A adaptação do \fw para o processador \textit{manycore} \mppa é uma
+% tarefa desafiadora. Problemas de sincronização e comunicação deverão ser
+% tratados de forma especial, considerando a relação do tempo que o \fw gasta
+% comunicando e realizando a computação sobre os dados de entrada. Desta forma,
+% encontrar o melhor balanceamento entre o número de comunicações e a
+% quantidade de computação realizada \textit{clusters} é essencial.
 
-Por fim, os experimentos realizados deverão abordar questões de desempenho e
-energia, verificando a viabilidade da proposta em relação a outros
-processadores.
+Neste trabalho foi proposta uma adaptação de um \textit{framework} para
+desenvolvimento de aplicações estêncil iterativas, denominado \pskel, para
+processador \mppa. A solução proposta permite esconder detalhes de baixo nível
+do \mppa, simplificando significativamente o desenvolvimento de aplicações
+estêncil nesse processador. Os resultados mostraram que a solução proposta
+apresenta boa escalabilidade. Além disso, foi observado uma redução
+significativa no tempo de execução e no consumo de energia das aplicações no
+\mppa ao se utilizar a técnica de \textit{tiling} trapezoidal. Isso se deve,
+principalmente, à redução do sobrecusto de comunicações e sincronizações de
+\textit{tiles}.
+
+A aplicação \textit{Fur} apresentou os melhores resultados de escalabilidade
+dentre as 3 aplicações estudas, obtendo um \textit{speedup} de $14$x em relação
+à apenas um \textit{cluster}. Analisando experimentos executados sobre a
+adaptação pôde-se perceber uma relação entre a quantidade de computação
+realizada pelo \textit{kernel} da aplicação e o \textit{speedup} obtido. Por
+fim, experimentos comparativos entre o \mppa e o processador Intel Broadwell
+mostraram que a solução proposta para o \mppa apresenta uma eficiência
+energética superior apesar de um tempo de execução superior.
+
+Como trabalhos futuros, pretende-se estudar formas de reduzir ainda mais os
+sobrecustos de comunicação através do uso de técnicas de \textit{sofware
+    prefetching}. Além disso, pretende-se realizar experimentos com outros
+\textit{benchmarks} e aplicações que utilizam estruturas tridimensionais. Por
+fim, pretende-se realizar comparações de desempenho e consumo de energia com
+outros processadores embarcados.

@@ -142,13 +142,15 @@ global.
 Devido às dependências de vizinhança presentes na computação \stencil, cada
 iteração sobre o \textit{tile} alargado adiciona valores incorretos na
 \textit{ghost zone}. A Figura~\ref{fig:errorPropagation} ilustra como que os
-valores incorretos se propagam sobre o \textit{tile} alargado. Após $t^\prime$
-iterações consecutivas, o \textit{tile} lógico será a região sem erros e sem
-valores redundantes. Desta forma, quanto maior for a quantidade de iterações
-consecutivas, a \textit{ghost zone} será maior e, consequentemente, maior a
-quantidade de computações redundantes para computar corretamente o \textit{tile}
-lógico. Portanto, existe um \textit{trade-off} entre o custo de computação
-redundante e o número de comunicações e sincronizações realizadas.
+valores incorretos se propagam sobre o \textit{tile} alargado. Ao realizar as
+iterações, a área útil da \textit{ghost zone} diminui proporcionalmente ao
+número de iterações realizadas. Após $t^\prime$ iterações consecutivas, o
+\textit{tile} lógico será a região sem erros e sem valores redundantes. Desta
+forma, quanto maior for a quantidade de iterações consecutivas, a \textit{ghost
+    zone} será maior e, consequentemente, maior a quantidade de computações
+redundantes para computar corretamente o \textit{tile} lógico. Portanto, existe
+um \textit{trade-off} entre o custo de computação redundante e o número de
+comunicações e sincronizações realizadas.
 %na \noc durante o processamento de computações
 %\stencil iterativas no \mppa.
 
@@ -162,7 +164,15 @@ redundante e o número de comunicações e sincronizações realizadas.
   \end{minipage}
 \end{figure}
 
-
+\begin{figure}[!h]
+  \begin{minipage}[b]{0.9\textwidth}
+	\centering
+    \caption{Propagação do erro sobre o \textit{tile} alargado.}
+    \includegraphics[height=5cm]{figs/tilingProp.pdf} \\
+    Fonte: Desenvolvido pelo autor.
+    \label{fig:errorPropagation}
+  \end{minipage}
+\end{figure}
 
 % Na implementação da proposta será necessário modificar classes já existentes
 % no \fw para suportar as características do \mppa. Devido à subdivisão da matriz de entrada
@@ -487,7 +497,7 @@ enviar o \textit{tile} resultante na posição de memória correta no processo
 mestre.  Portanto, ele irá utilizar um deslocamento $(heightOffset * width) +
 widthOffset$ sobre o \textit{target}, onde $heightOffset$ é o deslocamento
 relativo à altura, $width$ é a largura do \textit{tile} e $widthOffset$ é o
-deslocamento ralativo à largura. No exemplo adotado, essas variáveis são,
+deslocamento relativo à largura. No exemplo adotado, essas variáveis são,
 respectivamente, $0$, $4$ e $4$. O processo mestre não utiliza essa função do
 método, pois não é necessário inserir o \textit{tile} em uma posição de memória
 específica no processo trabalhador.
