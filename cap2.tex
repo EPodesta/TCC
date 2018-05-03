@@ -46,6 +46,9 @@ como acesso uniforme à memória. Máquinas com essa propriedade são chamadas d
 característica, como é o caso de multiprocessadores \numa, que apresentam um acesso
 não-uniforme à memória.
 
+\todo[inline]{\uma e \numa aparecem aqui pela primeira vez mas o nome não ficou por extenso.
+verificar o que está acontecendo...}
+
 A Figura~\ref{fig:uma} apresenta a arquitetura de sistemas multiprocessados \uma
 mais simplificados, onde existem várias \cpus que se
 comunicam com uma memória compartilhada por meio de um barramento. Quando uma
@@ -79,7 +82,7 @@ memória. Caso uma cópia exata do dado na memória esteja presente na
 \textit{cache}, ela pode ser descartada fazendo com que a \cpu acesse
 diretamente a memória.
 
-Além disso, é possível inserir mais \textit{caches} nas \cpus
+Além disso, é possível inserir mais níveis de \textit{cache} nas \cpus
 diminuindo o tráfego, e retirando a necessidade de mais acessos à memória
 principal. Contudo, devido ao limite arquitetural, uma quantidade muito grande
 de \textit{caches} é inviável. Além disso, um tamanho muito grande para
@@ -140,13 +143,14 @@ pequenas computações que podem ser paralelizadas. Contudo, a programação par
 \gpus é difícil, pois os seus \textit{cores} fazem a execução da mesma instrução
 com diferentes partes do dado, isto é, são máquinas \simd. Esse modelo de
 programação é interessante para abordar o paralelismo de dados, contudo, o
-desenvolvedor pode se deparar com dificuldades durante o desenvolvimento para
-essa máquina. Desta forma, linguagens de programação, como CUDA e \opencl,
-abstraem o desenvolvimento de aplicações para esses sistemas computacionais.
+desenvolvedor pode se deparar com dificuldades durante o desenvolvimento.
+Desta forma, linguagens de programação, como CUDA e \opencl,
+abstraem o desenvolvimento de aplicações para esses processadores.
 
 O \mppa é um processador \textit{manycore} diferente dos apresentados acima,
 pois os seus \textit{cores} são conectados atraves de uma \noc. Mais detalhes
-sobre o \mppa serão apresentados posteriormente na Seção~\ref{sec:mppa}.
+sobre o \mppa serão apresentados posteriormente na Seção~\ref{sec:mppa}, tendo
+em vista que ele possui também características relacionadas a multicomputadores.
 
 % Até a última década, o desempenho sobre computadores escalava de acordo com o
 % aumento da frequência dos processadores.
@@ -204,8 +208,9 @@ sobre o \mppa serão apresentados posteriormente na Seção~\ref{sec:mppa}.
 %
 Multiprocessadores de grande porte são difíceis de construir devido ao alto
 custo. Desta forma, devido à simplicidade de construção, multicomputadores
-começaram a surgir, que utilizam \cpus fortemente acopladas sem compartilhamento
-de memória~\cite{Tanenbaum2015}. Um \pc comum e uma placa de interface de rede formam um nó do
+começaram a surgir. A ideia principal de um multicomputador é agregar em um mesmo sistema diversos
+computadores, os quais muitas vezes possuem multiprocessadores~\cite{Tanenbaum2015}.
+Nesse sentido, um computador com sua placa de interface de rede é considerado como um nó do
 sistema multicomputado, onde um gerenciamento de forma inteligente da rede auxilia o desempenho
 do sistema.
 
@@ -285,7 +290,7 @@ dentro de cada \textit{cluster}.
 \begin{figure}[t]
 	\centering
 	\caption{Visão geral do \mppa.}
-	\includegraphics[width=0.6\textwidth]{figs/mppa-overall.pdf} \\
+	\includegraphics[width=0.9\textwidth]{figs/mppa-overall.pdf} \\
     Fonte:~\cite{Castro-IA3:2013}
 	\label{fig:mppa}
 \end{figure}
@@ -308,7 +313,7 @@ instruções. Porém, o processador não dispõe de coerência de \textit{caches
 que dificulta o desenvolvimento de aplicações para esse processador. Por outro
 lado, a finalidade dos \rmans é gerenciar \es, controlar comunicações entre
 \textit{clusters} e/ou subsistemas de \es e realizar comunicação com uma memória
-\ram. Na arquitetura utilizada, um dos subsistemas de \es está conectado a uma
+\ram. Na arquitetura utilizada neste trabalho, um dos subsistemas de \es está conectado a uma
 memória externa \lpddr de 2~\gb.
 
 A comunicação dos \textit{clusters} com o subsistema de \es e a comunicação
@@ -395,7 +400,7 @@ sincronizadas, e a execução irá continuar apenas com a \textit{master thread}
 	\centering
 	\caption{Esquemático do modelo \textit{fork-join}.}
 	\includegraphics[width=0.3\textwidth]{figs/forkjoin.pdf} \\
-    Fonte: desenvolvido pelo auto.
+    Fonte: desenvolvido pelo autor.
 	\label{fig:forkjoin}
 \end{figure}
 
@@ -494,10 +499,8 @@ APIs de mais alto nível, possibilitando uma maior abstração ao desenvolvedor.
 
 O \mpi é uma \api utilizada amplamente em multicomputadores fornecendo uma maior
 abstração em relação à programação sobre \textit{sockets}. A \api é baseada no
-modelo \spmd, onde todos os processos executam o mesmo código fonte com
-dados diferentes. Desta forma, com apenas um código fonte, processos diferentes
-serão responsáveis por realizar operações sobre dados diferentes, fornecendo uma abordagem
-paralela sobre código.
+modelo \spmd, onde todos os processos executam o mesmo programa, porém cada processo é responsável
+por realizar computações em dados distintos. 
 
 A \api fornece diversas funções aos desenvolvedores. A função \texttt{MPI\_Init()} permite inicializar o ambiente \mpi.
 Após a inicialização, cada processo \mpi possuirá um identificador único (de $0$ até $np-1$, onde $np$ é o número total
@@ -819,20 +822,27 @@ e o \textit{kernel} da computação \stencil (\texttt{stencilKernel()}). O
 descreve, especificamente, a computação que será executada para cada célula do
 \texttt{Array} de entrada com base nos valores de sua vizinhança (\texttt{Mask}).
 
-Desta forma, o desenvolvedor deverá identificar a dimensão do problema,
-construindo estruturas de acordo com os \textit{containers} especificados pelo
-\fw; definir o método \texttt{stencilKernel()} que descreve a computação executada
-sobre os elementos da máscara e do \texttt{Array} de entrada; instanciar um ou
-mais objetos \texttt{Stencil} para gerenciar os encapsulamentos, alocação de
-memória e chamadas para efetuar a computação determinada pelo método
-\texttt{stencilKernel()}. Mais especificamente, os \textit{containers} são
-estruturas que armazenam \texttt{Arrays} para leitura/escrita de dados. Eles são
-responsáveis por gerenciar a alocação de memória na \cpu e \gpu.
-Por fim, o desenvolvedor irá instanciar a classe de \textit{Runtime} que adota
-um padrão \textit{Facade} que efetua a abstração dos detalhes da implementação e
-configurações do padrão \stencil. Essa classe provê os métodos de execução para
-os padrões \stencil, além do particionamento transparente de tarefas e dados
-entre \cpu e \gpu.
+Desta forma, o desenvolvedor deverá seguir os seguintes passos para desenvolver
+uma aplicação \stencil com \pskel:
+
+\begin{enumerate}
+	\item Identificar a dimensão do problema, construindo estruturas de acordo com
+	os \textit{containers} especificados pelo \fw; 
+
+	\item Definir o método \texttt{stencilKernel()} que descreve a computação executada
+	sobre os elementos da máscara e do \texttt{Array} de entrada; 
+
+	\item Instanciar um ou mais objetos \texttt{Stencil} para gerenciar os encapsulamentos,
+	alocação de memória e chamadas para efetuar a computação determinada pelo método
+	\texttt{stencilKernel()}. Mais especificamente, os \textit{containers} são estruturas que
+	armazenam \texttt{Arrays} para leitura/escrita de dados. Eles são responsáveis por
+	gerenciar a alocação de memória na \cpu e \gpu de maneira transparente.
+	
+	\item Instanciar a classe de \textit{Runtime} que adota um padrão \textit{Facade} que
+	efetua a abstração dos detalhes da implementação e configurações do padrão \stencil.
+	Essa classe provê os métodos de execução para os padrões \stencil, além do
+	particionamento transparente de tarefas e dados entre \cpu e \gpu.
+\end{enumerate}
 
 % \begin{figure}[t]
 % \centering
@@ -846,37 +856,6 @@ entre \cpu e \gpu.
 % %\vspace{-4em}
 % \end{figure}
 %
-
-Em uma aplicação \stencil iterativa, cada iteração utiliza a máscara de
-vizinhança (\texttt{Mask}) sobre o \texttt{Array} de entrada para determinar o
-valor de cada célula do \texttt{Array} de saída. No exemplo da
-Figura~\ref{fig:stencil}, o valor de cada célula do \texttt{Array} de saída é
-determinado em função dos valores de cada uma das células vizinhas adjacentes.
-Esse processo é realizado para todas as células do \texttt{Array} de entrada,
-produzindo um \texttt{Array} de saída da computação \textit{stencil}. Ao final de uma
-iteração, o \texttt{Array} de saída será considerado como \texttt{Array} de
-entrada para a próxima iteração no caso de uma aplicação \textit{stencil} iterativa.
-
-O Código~\ref{cod:exemplo-pskel} apresenta um exemplo da aplicação Jacobi discutida na
-Seção~\ref{sec:stencil} (Código~\ref{cod:exemplo-stencil}), porém agora implementada no \fw \pskel.
-Nesse exemplo, a função \stencil principal da aplicação está implementada no método \texttt{stencilKernel()} nas linhas 1-5.
-As estruturas para efetuar a computação, como o \texttt{Array} de entrada (\texttt{input}) e de saída (\texttt{output}), são mostrados nas linhas 10-11.
-O formato da vizinhança é especificado na linha 12, sendo guardado na variável \texttt{neighbors}.
-Então, a máscara é construída na linha 13 com base na vizinhança definida anteriormente.
-Estruturas como \texttt{Array2D}, \texttt{Mask2D}, são exemplos dos
-\textit{containers} disponibilizados pelo \fw. A classe de \textit{Runtime} é
-determinada pela estrutura \texttt{Stencil2D} (linha 16), onde ao efetuar a chamada para
-função \texttt{runIterative()} (linha 18), a execução da computação irá iniciar.
-
-% \todo[inline]{Falar mais precisamente o que é feito em cada linha.}
-
-É possível notar que o \textit{kernel} da computação \stencil (linha 4) fica mais simplificado em relação ao
-código original do Jacobi mostrado anteriormente (Código~\ref{cod:exemplo-stencil}), pois as iterações da aplicação
-(\texttt{tsteps}) e os \textit{loops} de computação sobre as matrizes ficam implícitos, sendo
-gerenciados pelo \fw. Os elementos das matrizes são determinados pelos
-parâmetros \texttt{x} e \texttt{y} da função \texttt{stencilKernel()}. Além disso, o coeficiente
-da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denominada
-\texttt{Arguments} (linha 14).
 
 \begin{figure}[t]
 	\begin{lstlisting}[
@@ -907,3 +886,36 @@ da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denomin
 	}
 \end{lstlisting}
 \end{figure}
+
+Em uma aplicação \stencil iterativa, cada iteração utiliza a máscara de
+vizinhança (\texttt{Mask}) sobre o \texttt{Array} de entrada para determinar o
+valor de cada célula do \texttt{Array} de saída. No exemplo da
+Figura~\ref{fig:stencil}, o valor de cada célula do \texttt{Array} de saída é
+determinado em função dos valores de cada uma das células vizinhas adjacentes.
+Esse processo é realizado para todas as células do \texttt{Array} de entrada,
+produzindo um \texttt{Array} de saída da computação \textit{stencil}. Ao final de uma
+iteração, o \texttt{Array} de saída será considerado como \texttt{Array} de
+entrada para a próxima iteração no caso de uma aplicação \textit{stencil} iterativa.
+
+O Código~\ref{cod:exemplo-pskel} apresenta um exemplo da aplicação Jacobi discutida na
+Seção~\ref{sec:stencil} (Código~\ref{cod:exemplo-stencil}), porém agora implementada no \fw \pskel.
+Nesse exemplo, a função \stencil principal da aplicação está implementada no método \texttt{stencilKernel()} nas linhas 1-5.
+As estruturas para efetuar a computação, como o \texttt{Array} de entrada (\texttt{input}) e de saída (\texttt{output}), são mostrados nas linhas 10-11.
+O formato da vizinhança é especificado na linha 12, sendo guardado na variável \texttt{neighbors}.
+Então, a máscara é construída na linha 13 com base na vizinhança definida anteriormente.
+Estruturas como \texttt{Array2D}, \texttt{Mask2D}, são exemplos dos
+\textit{containers} disponibilizados pelo \fw. A classe de \textit{runtime} é
+determinada pela estrutura \texttt{Stencil2D} (linha 16), onde ao efetuar a chamada para
+função \texttt{runIterative()} (linha 18), a execução da computação irá iniciar.
+
+% \todo[inline]{Falar mais precisamente o que é feito em cada linha.}
+
+É possível notar que o \textit{kernel} da computação \stencil (linha 4) fica mais simplificado em relação ao
+código original do Jacobi mostrado anteriormente (Código~\ref{cod:exemplo-stencil}), pois as iterações da aplicação
+(\texttt{tsteps}) e os \textit{loops} de computação sobre as matrizes ficam implícitos, sendo
+gerenciados pelo \fw. Os elementos das matrizes são determinados pelos
+parâmetros \texttt{x} e \texttt{y} da função \texttt{stencilKernel()}. Além disso, o coeficiente
+da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denominada
+\texttt{Arguments} (linha 14).
+
+
