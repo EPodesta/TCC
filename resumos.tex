@@ -17,26 +17,24 @@ programador define o \emph{kernel} da computação, enquanto o \fw se encarrega 
 executar a computação paralela em \textit{multicores} e em \textit{Graphics Processing Units}
 (GPUs) de maneira eficiente.
 %
-O objetivo deste trabalho é propor uma adaptação do \textit{framework} \pskel
+O objetivo deste trabalho é propor uma adaptação do \fw \pskel
 para o processador \textit{manycore} emergente \mppa, batizada de \pskel-MPPA. A
 motivação para tal adaptação está relacionada à dificuldade de desenvolvimento
 de aplicações do padrão \textit{stencil} para o \mppa, tendo em vista as suas
 características arquiteturais intrínsecas que tornam o desenvolvimento de
-aplicações paralelas onerosas e suscetíveis a erros. Dentre as principais dificuldades
-destacam-se a sua arquitetura de memória híbrida (memória compartilha e
-distribuída), comunicação explícita entre núcleos de processamento e ausência de coerência de
-\textit{cache}. A adaptação do \fw permitirá simplificar o desenvolvimento de
-aplicações \stencil para o \mppa, escondendo do desenvolvedor detalhes de
+aplicações paralelas onerosas e suscetíveis a erros. A adaptação do \fw permite simplificar
+o desenvolvimento de aplicações \stencil para o \mppa, escondendo do desenvolvedor detalhes de
 implementação, tais como a comunicação e a distribuição de computações entre os
-núcleos de processamento, abstraindo as características que dificultam o
-desenvolvimento.
+núcleos de processamento do \mppa.
 %
-Serão efetuados diversos experimentos com a solução proposta para o \mppa
-e também em outras arquiteturas suportadas pelo PSkel
-(\textit{multicores} e GPUs). Esses resultados permitirão a realização de um
-estudo comparativo dos resultados obtidos. Como métricas, serão considerados o
-desempenho e a eficiência energética obtidos nessas arquiteturas, além de outras
-possíveis métricas que possam ser interessantes para o projeto.
+Foram efetuados diversos experimentos com o \pskel-MPPA utilizando-se como base
+três aplicações \stencil implementadas no \pskel. Os resultados mostraram que a solução
+proposta apresenta boa escalabilidade no \mppa, sendo significativamente impactada
+pela técnica de particionamento utilizada. Além disso, foram realizados experimentos
+comparativos com a solução original do \pskel em um processador Intel Broadwell.
+Os experimentos mostraram que a solução proposta no \mppa apresenta uma redução
+no consumo de energia de até 1.45x com relação a solução original no Intel Broadwell,
+apesar de apresentar uma perda de desempenho de até 3.3x.
 
  \textbf{Palavras-chave}: \textit{manycores}, \mppa, \textit{stencil}, PSkel.
 \end{resumo}

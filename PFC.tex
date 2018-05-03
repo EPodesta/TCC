@@ -299,21 +299,16 @@ para o processador \textit{manycore} emergente \mppa, batizada de \pskel-MPPA. A
 motivação para tal adaptação está relacionada à dificuldade de desenvolvimento
 de aplicações do padrão \textit{stencil} para o \mppa, tendo em vista as suas
 características arquiteturais intrínsecas que tornam o desenvolvimento de
-aplicações paralelas onerosas e suscetíveis a erros. Dentre as principais dificuldades
-destacam-se a sua arquitetura de memória híbrida (memória compartilha e
-distribuída), comunicação explícita entre núcleos de processamento e ausência de coerência de
-\textit{cache}. A adaptação do \fw permitirá simplificar o desenvolvimento de
+aplicações paralelas onerosas e suscetíveis a erros.
+A adaptação do \fw permite simplificar o desenvolvimento de
 aplicações \stencil para o \mppa, escondendo do desenvolvedor detalhes de
-implementação, tais como a comunicação e a distribuição de computações entre os
-núcleos de processamento, abstraindo as características que dificultam o
-desenvolvimento.
+implementação, tais como a necessidade de comunicação explícita entre as memórias
+do \textit{chip} e a distribuição de computações entre os núcleos de processamento.
 %
-Serão efetuados diversos experimentos com a solução proposta para o \mppa
-e também em outras arquiteturas suportadas pelo PSkel
-(\textit{multicores} e GPUs). Esses resultados permitirão a realização de um
-estudo comparativo dos resultados obtidos. Como métricas, serão considerados o
-desempenho e a eficiência energética obtidos nessas arquiteturas, além de outras
-possíveis métricas que possam ser interessantes para o projeto.
+Diversos experimentos foram efetuados com a solução proposta para o \mppa, comparando-a
+com a solução para \textit{multicores} já existente. Os resultados mostraram que a solução
+proposta para o \mppa permite reduzir o consumo de energia das aplicações \stencil
+em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 }
 
 \palavrasChave {\textit{manycores}, \mppa, \textit{stencil}, PSkel.}

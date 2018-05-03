@@ -7,17 +7,16 @@ desempenho de semicondutores e das arquiteturas por meio do aumento da
 frequência. Contudo, com o aumento da frequência, ocorre um maior consumo de
 energia e, consequentemente, a temperatura do \textit{chip} aumenta. Desta
 forma, as indústrias começaram a investir em outros meios para aumentar o
-desempenho de arquiteturas, como, por exemplo, os processadores \textit{manycore}.
+desempenho de arquiteturas, como, por exemplo, os processadores \textit{multicore}.
 
-Arquiteturas utilizadas na área de \hpc empregam processadores \textit{manycore} para atingir um
-processamento de uma imensa quantidade de dados ou para aplicações que precisam
-de um grande quantidade de tempo para serem executadas. Supercomputadores e
+Arquiteturas utilizadas na área de \hpc empregam processadores \textit{multicore} para atingir um
+processamento de uma imensa quantidade de dados em menos tempo. Supercomputadores e
 \textit{clusters} de computadores são utilizados para tornar a computação de
 aplicações ou dados tratável do ponto de vista computacional. Essas arquiteturas
 são utilizadas em aplicações científicas ou, mais atualmente, em áreas de Banco
 de Dados, devido aos problemas com \textit{Big Data}. Normalmente, arquiteturas
 \hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
-Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{manycore}
+Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{multicore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
 \textit{cores} do supercomputador em primeiro lugar no \textit{ranking} do
 TOP500\footnote{\url{http://top500.org}}, confirmando esse comportamento.
@@ -67,8 +66,8 @@ duas variáveis não é proporcional.
 
 
 Por essa razão, o estudo de técnicas que melhorem a eficiência energética em
-plataformas \hpc está se tornando muito importante.  Recentemente, novas
-classes de processadores \textit{manycore} de baixa potência, tais como, o Sunway
+plataformas \hpc está se tornando muito importante.  Recentemente, uma nova 
+classe de processadores \textit{manycore} de baixa potência, tais como, o Sunway
 SW26010~\cite{sunway:2016}, Mellanox TILE-Gx~\cite{Valero:2012} e Kalray
 \mppa~\cite{Castro-IA3:2013} foram desenvolvidos. Esses processadores possuem
 centenas de núcleos de processamento capazes de lidar com paralelismo de dados e
@@ -131,11 +130,11 @@ utilização de um \fw pode facilitar o desenvolvimento de aplicações para
 ambientes onerosos, como ambientes \textit{manycore}.
 
 Muitos \fws foram propostos para o auxílio no desenvolvimento de aplicações paralelas do
-padrão \stencil em ambientes \textit{multicore} e \gpu, como o
+padrão \stencil, como o
 PSkel~\cite{pereira15}, SkePU~\cite{enmyren10} e SkelCL~\cite{steuwer11}. Em
 particular, o PSkel é um \fw que fornece uma abstração em alto nível para o
 desenvolvimento em ambientes heterogêneos CPU-GPU, enquanto particiona tarefas e
-dados de forma transparente entre CPU e GPU.
+dados de forma transparente entre esses processadores.
 %\section{Motivação}
 
 \section{Objetivos}
@@ -145,9 +144,9 @@ do presente projeto.
 
 \subsection{Objetivo Geral}
 
-O objetivo principal deste TCC é propor uma adaptação do \fw \pskel para o processador \mppa,
-facilitando assim o desenvolvimento de aplicações \stencil neste processador \textit{manycore}.
-Além disso, a adaptação permitirá que aplicações já existentes do \pskel possam ser executadas
+O objetivo principal deste TCC é propor uma adaptação do \fw \pskel para o processador \textit{manycore}
+emergente denominado \mppa, facilitando assim o desenvolvimento de aplicações \stencil neste processador.
+A adaptação permitirá que aplicações já existentes do \pskel possam ser executadas
 no \mppa sem nenhuma necessidade de alteração de código.
 
 \subsection{Objetivos Específicos}
@@ -159,17 +158,28 @@ no \mppa sem nenhuma necessidade de alteração de código.
 	\item Adaptar as principais classes e abstrações existentes no \pskel para o processador \mppa;
 	\item Realizar uma análise do desempenho e do consumo de energia da solução proposta para o \mppa
 	utilizando-se diversas aplicações \stencil já implementadas no \pskel;
-	\item Realizar comparações de desempenho e consumo de energia com outros processadores \textit{multicore}
-	e \gpus.
+	\item Realizar comparações de desempenho e consumo de energia com um processador \textit{multicore} atual.
+\end{itemize}
+
+\section{Contribuições do Trabalho}
+
+As contribuições principais deste trabalho foram publicadas em diferentes eventos da área de Computação Paralela e Distribuída.
+Abaixo são apresentados os artigos publicados:
+
+\begin{itemize}
+	\item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO, MÁRCIO ; GOES, L. F. W. \textbf{Execução Energeticamente Eficiente de Aplicações Estêncil com o Processador Manycore MPPA-256}. In: Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD), 2017, Campinas. Anais do Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD). Porto Alegre: SBC, 2017. v. 1. p. 52-63.
+
+	\item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO, M. ; GOES, L. F. W. \textbf{Uma Implementação do Framework PSkel com Suporte a Aplicações Estêncil Iterativas para o Processador MPPA-256}. In: Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS), 2017, Ijuí. Anais da Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação, 2017. v. 1. p. 395-398.
+
+	\item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; PENNA, P. H. ; ROCHA, R. C. O. ; CASTRO, M. ; GOES, L. F. W. \textbf{PSkel-MPPA: Uma Adaptação do Framework PSkel para o Processador Manycore MPPA-256}. In: Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS), 2016, São Leopoldo. Anais da Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação (SBC), 2016.
 \end{itemize}
 
 \section{Organização do Texto}
-O texto deste trabalho será organizado da seguinte forma. O Capítulo
-~\ref{cha:fundTeorica} descreve a base conceitual utilizada para realizar este
-trabalho. O Capítulo~\ref{cha:proposta} apresenta a ideia inicial da proposta e
-os trabalhos relacionados. O Capítulo~\ref{cha:cronograma} apresenta um
-cronograma contendo as atividades planejadas para este trabalho. Por fim, o
-Capítulo~\ref{cha:conclusao} discute as ideias finais sobre o trabalho que será realizado.
+O texto deste trabalho será organizado da seguinte forma. O Capítulo~\ref{cha:fundTeorica} descreve a base conceitual
+utilizada para realizar este trabalho. O Capítulo~\ref{cha:trabalhos-relacionados} discute os principais trabalhos relacionados.
+O Capítulo~\ref{cha:proposta} apresenta a proposta de adaptação do \pskel para o \mppa.
+O Capítulo~\ref{cha:experimentos} apresenta a análise experimental dos resultados. Por fim, o
+Capítulo~\ref{cha:conclusao} conclui este trabalho.
 % Introduzir Figura
 %\begin{figure}
 %	   \centering
