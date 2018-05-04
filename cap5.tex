@@ -7,32 +7,35 @@ E5-2640 v4 com 10 núcleos de 2.4GHz e 64GB de \ram (Broadwell). As medições d
 foram feitas considerando todos os \textit{clusters}, a memória, os subsistemas
 de \es e a \noc, onde foram coletadas por meio dos sensores de potência e
 energia disponíveis no \mppa. Como o \mppa possui características intrínsecas do
-próprio processador que garante de baixa variabilidade entre as execuções, foram
+próprio processador que garantem uma baixa variabilidade entre as execuções, foram
 realizadas somente 5 repetições de cada experimento, computando-se a média
 aritmética dos valores. Todos os experimentos no \mppa consideraram 16
-\pes por \textit{cluster}. Por outro lado, as medições de energia e tempo no
-processador Intel com o uso do \rapl através da biblioteca PAPI~\cite{papi12}.
+\pes por \textit{cluster}. Por outro lado, as medições de energia e de tempo de execução no
+processador Intel foram feitas com auxílio do \rapl através da biblioteca PAPI~\cite{papi12}.
 Em cada experimento foram utilizadas 10 \textit{threads} sem uso de
 \textit{hyperthreading}. Os resultados mostram a média aritmética de 30
 execuções. Por fim, todos os resultados mostraram um desvio padrão menor que
 $1$\%.
 
 Devido às limitações de memória em cada \textit{cluster}, ao ser especificado
-uma quantidade muito grande de iterações, o \textit{tile} alargado pode ser
+uma quantidade muito grande de iterações, o \textit{tile} alargado não pode ser
 maior do que a memória presente em cada \textit{cluster}. Portanto, foi fixado
-uma quantidade de 10 iterações internas para cada \textit{cluster}. Além disso,
+uma quantidade de 10 iterações internas para cada \textit{cluster}, garantindo-se assim
+que a quantidade de memória utilizada fosse menor do que 2 MB (tamanho da memória
+local do \textit{cluster}). Além disso,
 para os experimentos terem uma quantidade significativa de sincronizações sobre
 a execução de cada aplicação, foi adotado 30 iterações para cada aplicação.
 
 \section{Aplicações \stencil}
 \label{cha:aplicacoes}
 
-Para a realização dos experimentos foram utilizadas as seguintes aplicações estêncil:
+Para a realização dos experimentos foram utilizadas as seguintes aplicações \stencil:
 
-\textbf{Fur:} modela a formação de padrões sobre a pele de animais\footnote{{http://ccl.northwestern.edu/netlogo/models/Fur}}. Nessa aplicação, a pele do animal é modelada por uma \textit{array} bidimensional de células de pigmento que podem estar em um dos dois estados: colorida ou não-colorida. As células coloridas secretam ativadores e inibidores. Ativadores fazem uma célula central se tornar colorida; inibidores, por outro lado, fazem uma célula central se tornar não colorida.
+\begin{description}
+	\item[\textbf{Fur}] Modela a formação de padrões sobre a pele de animais\footnote{{http://ccl.northwestern.edu/netlogo/models/Fur}}. Nessa aplicação, a pele do animal é modelada por uma \textit{array} bidimensional de células de pigmento que podem estar em um dos dois estados: colorida ou não-colorida. As células coloridas secretam ativadores e inibidores. Ativadores fazem uma célula central se tornar colorida; inibidores, por outro lado, fazem uma célula central se tornar não colorida.
 A diferença entre as potências dos ativadores e inibidores é responsável por decidir a coloração da célula central, onde mais ativadores resulta em uma célula colorida e mais inibidores resulta em uma célula não colorida. Nos casos em que as potências dos ativadores e inibidores forem iguais, a cor da célula permanece inalterada. A máscara contém células adjacentes à célula central e seu tamanho é parametrizável. Neste trabalho foi utilizado $2$ vizinhos adjacentes em cada direção.
 
-\textbf{Jacobi:} método iterativo para resolver equações matriciais~\cite{demmel97}.
+	\item[\textbf{Jacobi}] Método iterativo para resolver sistemas de equações lineares~\cite{demmel97}.
 O método converge garantidamente se a matriz de entrada é restrita ou irredutívelmente dominante diagonalmente, i.e., $|u_{i,i}| > \sum_{j\neq i}{|u_{i,j}|}$, para todo $i$.
 A Equação~\ref{eq:JacobiPoisson} define a computação em cada passo do método iterativo de Jacobi para resolver a equação discreta elíptica de Poisson~\cite{demmel97}. A solução aproximada é computada discretizando o problema na matriz em pontos espaçados de forma equivalente por $n\times n$.\\
  \begin{equation}
@@ -42,45 +45,39 @@ A Equação~\ref{eq:JacobiPoisson} define a computação em cada passo do métod
  A cada passo, o novo valor de $u_{i,j}$ é obtida fazendo a média $h^2f_{i,j}$ dos seus vizinhos, onde $h = \frac{1}{n+1}$ e $f_{i,j} = f(ih,jh)$,
  para uma dada função $f$.
 
-\textbf{GoL:} autômato celular que implementa o Jogo da Vida de Conway \cite{gardner70}. O autômato é representado por um \textit{array} bidimensional, onde cada elemento representa um indivíduo vivo ou um indivíduo morto. A máscara do estêncil, a qual determina a interação entre o indivíduo e seus vizinhos, considera as $8$ células vizinhas adjacentes à célula central. Dependendo dos valores dos vizinhos, o elemento pode modificar seu estado entre vivo e morto.\\
+	\item[\textbf{GoL}] Autômato celular que implementa o Jogo da Vida de Conway \cite{gardner70}. O autômato é representado por um \textit{array} bidimensional, onde cada elemento representa um indivíduo vivo ou um indivíduo morto. A máscara do \stencil, a qual determina a interação entre o indivíduo e seus vizinhos, considera as $8$ células vizinhas adjacentes à célula central. Dependendo dos valores dos vizinhos, o elemento pode modificar seu estado entre vivo e morto.\\
+
+\end{description}
 
 \begin{figure}[t]
 	\centering
-	\subfigure{\label{fig:furTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotfurTimeTiles.pdf}}
-	\qquad
-	\subfigure{\label{fig:golTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotgolTimeTiles.pdf}}
-    \qquad
-	\subfigure{\label{fig:jacobiTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotjacobiTimeTiles.pdf}}
+	\subfigure{\label{fig:furTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotfurTimeTiles.pdf}}
+	\quad
+	\subfigure{\label{fig:golTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotgolTimeTiles.pdf}}
+	\quad
+	\subfigure{\label{fig:jacobiTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotjacobiTimeTiles.pdf}}
 	\caption{Tempos de execução das aplicações para diferentes tamanhos de \textit{tile} e \texttt{Array2D} no \mppa.}
 	\label{fig:timeBox}
 \end{figure}
 
 \begin{figure}[t]
 	\centering
-	\subfigure{\label{fig:furTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotfurEnergyTiles.pdf}}
-	\qquad
-	\subfigure{\label{fig:golTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotgolEnergyTiles.pdf}}
-    \qquad
-	\subfigure{\label{fig:jacobiTileTime} \includegraphics[width=0.4\textwidth]{figs/MPPAPlotjacobiEnergyTiles.pdf}}
+	\subfigure{\label{fig:furTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotfurEnergyTiles.pdf}}
+	\quad
+	\subfigure{\label{fig:golTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotgolEnergyTiles.pdf}}
+    	\quad
+	\subfigure{\label{fig:jacobiTileTime} \includegraphics[width=0.42\textwidth]{figs/MPPAPlotjacobiEnergyTiles.pdf}}
 	\caption{Consumo de energia das aplicações para diferentes tamanhos de \textit{tile} e \texttt{Array2D} no \mppa.}
 	\label{fig:energyBox}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-    \subfigure[fig:comparisonTime][Tempo de execução.]{\includegraphics[width=0.4\columnwidth]{figs/ComparisonTimeTiles10.pdf}}
-    \qquad
-    \subfigure[fig:comparisonEnergy][Consumo de Energia.]{\includegraphics[width=0.4\textwidth]{figs/ComparisonEnergyTiles10.pdf}}
-    \caption{Comparação do tempo de execução e consumo de energia das aplicações \textit{Fur}, \textit{GoL} e \textit{Jacobi} em relação a arquitetura.}
-    \label{fig:comparison-time}
-\end{figure}
 
 \subsection{Impacto do Tamanho do \textit{Tile} no Desempenho do \mppa}
 
 O primeiro experimento tem por objetivo verificar o impacto do tamanho dos
 \textit{tiles} no desempenho e consumo energético das aplicações. As
 Figuras~\ref{fig:timeBox} e \ref{fig:energyBox} mostram, respectivamente, os
-tempos de execução e consumo de energia de três aplicações estêncil, variando-se
+tempos de execução e consumo de energia de três aplicações \stencil, variando-se
 o tamanho do \texttt{Array2D} de entrada (de $2048^2$ até $12288^2$) e os
 tamanhos do \textit{tile} (de $32^2$ até $128^2$). \textit{Arrays} de entrada
 maiores que $12288^2$ e \textit{tiles} maiores que $128^2$ extrapolam às
@@ -134,7 +131,17 @@ baixa que as demais, pois seu \textit{kernel} apresenta baixa complexidade.
     \label{fig:scalability}
 \end{figure}
 
+\begin{figure}[t]
+    \centering
+    \subfigure[fig:comparisonTime][Tempo de execução.]{\includegraphics[width=0.4\columnwidth]{figs/ComparisonTimeTiles10.pdf}}
+    \qquad
+    \subfigure[fig:comparisonEnergy][Consumo de Energia.]{\includegraphics[width=0.4\textwidth]{figs/ComparisonEnergyTiles10.pdf}}
+    \caption{Comparação do tempo de execução e consumo de energia das aplicações \textit{Fur}, \textit{GoL} e \textit{Jacobi} em relação a arquitetura.}
+    \label{fig:comparison-time}
+\end{figure}
+
 \subsection{Kalray \mppa vs. Intel Broadwell}
+
 
 Por fim, foram efetuados experimentos comparativos entre o processador Intel
 Xeon e o \mppa, como pode-se ver na Figura~\ref{fig:comparison-time}. Nesses
@@ -148,6 +155,8 @@ geral, o consumo de energia das aplicações \textit{Fur}, \textit{GoL} e
 que no Intel Xeon, respectivamente. Por outro lado, o tempo de execução dessas
 aplicações obtido no \mppa foi  $3.30$x, $2.83$x e $2.69$x maior que no Intel
 Xeon, respectivamente.
+
+\todo[inline]{Por que o tempo ficou pior do que no Intel? Faltou explicar isso.}
 
 %\begin{figure}[t]
 %	\centering

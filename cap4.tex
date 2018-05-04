@@ -1,7 +1,7 @@
 \chapter{PSkel-MPPA}
 \label{cha:proposta}
 
-Esta seção apresenta as ideias fundamentais que irão embasar a proposta e implementação
+Esta seção apresenta as ideias fundamentais da proposta e implementação
 da adaptação do \fw \pskel para o processador \mppa.
 
 \section{Visão Geral}
@@ -19,10 +19,10 @@ seus códigos originais.
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
 
-\begin{figure}[!h]
+\begin{figure}[t]
 	\centering
     \caption{Esquemático ilustrando a implementação.}
-    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPA.pdf} \\
+    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPA.pdf} \\
     Fonte: Desenvolvido pelo autor.
     \label{fig:visaoGeral}
 \end{figure}
@@ -30,17 +30,17 @@ seus códigos originais.
 
 
 A Figura~\ref{fig:visaoGeral} ilustra, de forma simplificada, a adaptação
-desenvolvida. A nova adaptação do \fw suporta matrizes \stencil 2D, adotando o modelo
-mestre-trabalhador descrito na seção \ref{sec:prog-mppa}. O processo mestre é
+desenvolvida. A nova adaptação do \fw suporta matrizes 2D, adotando o modelo
+mestre-trabalhador descrito na Seção \ref{sec:prog-mppa}. O processo mestre é
 executado no subsistema de \es conectado à uma memória LPDDR3, alocando dados de
-entrada e saída. Além disso, o processo mestre irá enviar dados para o processo
-trabalhador e aguardará os resultados da computação. Por outro lado, o processo
-trabalhador é executado em cada \textit{cluster} com o objetivo de realizar a
+entrada e saída. Além disso, o processo mestre irá enviar dados para os processos
+trabalhadores e aguardará os resultados da computação. Por outro lado, cada processo
+trabalhador é executado em um \textit{cluster} com o objetivo de realizar a
 computação \stencil de forma paralela. A computação será subdividida dentro dos
-\textit{clusters} por meio da biblioteca OpenMP, enviando pequenas partes de
-dados para cada \pe. Após a computação ser realizada, o resultado é enviado ao
-processo mestre. Por fim, toda a comunicação entre os dois processos será
-realizada por meio de portais, como especificado na seção \ref{sec:prog-mppa}.
+\textit{clusters} por meio da biblioteca OpenMP, fazendo com que cada \pe realize uma parte
+da computação. Após a computação ser realizada, o resultado é enviado ao
+processo mestre. Por fim, toda a comunicação entre os processos metre e trabalhadores é
+realizada por meio de portais, como especificado na Seção \ref{sec:prog-mppa}.
 
 Devido às limitações de memória no \mppa, o mestre deverá enviar para o
 trabalhador pequenas partições da matriz de entrada, denominadas de
@@ -115,6 +115,16 @@ $\textrm{dim}(A_{i,j}) = (\min\{w^\prime, w-i w^\prime\}, \min\{h^\prime, h-j
 h^\prime\})$. O \textit{offset} é um índice de deslocamento necessário para
 acessar os elementos de um \textit{tile}.
 
+\begin{figure}[t]
+  \begin{minipage}[b]{0.9\textwidth}
+	\centering
+    \caption{\textit{tiling} 2D.}
+    \includegraphics[height=5cm]{figs/tile.pdf} \\
+    Fonte:~\cite{rocha17}
+	\label{fig:block2d}
+  \end{minipage}
+\end{figure}
+
 A Figura~\ref{fig:block2d} ilustra a técnica de \textit{tiling} trapezoidal. Um
 \textit{tile} lógico (linha sólida interna) é contido em uma matriz de dados 2D
 (linha pontilhada externa) com \textit{offsets} verticais e horizontais dados
@@ -154,17 +164,8 @@ comunicações e sincronizações realizadas.
 %na \noc durante o processamento de computações
 %\stencil iterativas no \mppa.
 
-\begin{figure}[!h]
-  \begin{minipage}[b]{0.9\textwidth}
-	\centering
-    \caption{\textit{tiling} 2D.}
-    \includegraphics[height=5cm]{figs/tile.pdf} \\
-    Fonte:~\cite{rocha17}
-	\label{fig:block2d}
-  \end{minipage}
-\end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[t]
   \begin{minipage}[b]{0.9\textwidth}
 	\centering
     \caption{Propagação do erro sobre o \textit{tile} alargado.}
@@ -222,17 +223,17 @@ comunicações e sincronizações realizadas.
 
 \section{Implementação}
 O processo de execução de uma aplicação no PSkel-MPPA segue a descrição na
-seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
+Seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
 processo e como foi realizada a comunicação no \mppa.
 
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
-alocar: os dados de entrada e saída na memória LPDDR3, a máscara da computação e
-a estrutura \stencil. O código do processo mestre é idêntico ao código da versão
+alocar na memória \lpddr os seguintes dados: (i) os dados de entrada e saída; (ii) a máscara do \stencil a ser utilizada para a computação; e
+(iii) a estrutura \stencil. O código do processo mestre é idêntico ao código da versão
 original do \pskel, contudo o processo mestre não é responsável pela descrição
-do \textit{kernel} da computação. O código~\ref{cod:jacobiMestre} mostra a
+do \textit{kernel} da computação. O Código~\ref{cod:jacobiMestre} mostra a
 definição do processo mestre no \mppa.  Na adaptação, a função
-\texttt{scheduleMPPA} foi implementada para realizar o controle de dados e a
+\texttt{scheduleMPPA()} foi implementada para realizar o controle de dados e a
 computação sobre o processador. Ela é encapsulada pela classe
 \texttt{Stencil2D}, sendo necessário realizar a passagem de parâmetros definidos
 pelo usuário.
@@ -266,9 +267,9 @@ pelo usuário.
 \end{figure}
 
 Por meio da abstração proveniente do \pskel, o processo mestre irá iniciar a
-execução dos processos trabalhadores dentro dos \textit{clusters} no \mppa. A
+execução dos processos trabalhadores nos \textit{clusters} no \mppa. A
 quantidade de \textit{clusters} utilizados na aplicação é determinada
-dinâmicamente em relação à quantidade de \textit{tiles} lógicos e o número de
+dinamicamente em relação à quantidade de \textit{tiles} lógicos e o número de
 \textit{clusters} definidos pelo usuário.  Mais precisamente, dado uma entrada
 $s$ e um tamanho de \textit{tile} lógico $s^\prime$, a quantidade de
 \textit{tiles} lógicos é determinada por $\lceil\frac{s}{s^\prime}\rceil$. Caso
@@ -280,14 +281,12 @@ determinada pelo usuário será utilizada.
 
 Em seguida, o processo mestre irá utilizar a técnica de \textit{tiling}
 trapezoidal para subdividir a matriz de entrada em \textit{tiles} alargados, e
-enviar-los para cada \textit{cluster} seguindo um escalonamento circular
+irá enviá-los aos processos trabalhadores seguindo um escalonamento circular
 (\textit{round-robin}).  Devido a isso, alguns \textit{clusters} podem receber
 mais \textit{tiles} que outros, dependendo do número de \textit{tiles} e
-\textit{clusters} utilizados na computação. Ao finalizar a subdivisão dos dados,
-o processo mestre irá enviar os \textit{tiles} alargados para o processo
-trabalhador. Para efetuar a subdivisão por meio da técnica de \textit{tiling}
+\textit{clusters} utilizados na computação. Para efetuar a subdivisão por meio da técnica de \textit{tiling}
 trapezoidal são necessários cálculos para determinar variáveis que são
-modificadas dinâmicamente, como, por exemplo, endereços de memória da
+modificadas dinamicamente, como, por exemplo, endereços de memória da
 \textit{ghost zone} e a posição do \textit{tile} lógico na matriz de entrada.
 Mais precisamente, esses cálculos serão realizados para fornecer os
 \textit{offsets} necessários para a função \texttt{tiling} da classe
@@ -296,13 +295,13 @@ memória corretos de cada \textit{tile} alargado. Desta forma, para determinar
 precisamente os endereços de memória de cada \textit{tile} alargado são
 necessários alguns fatores: i) parâmetros definidos pelo usuário, como o tamanho
 dos dados de entrada, tamanho dos \textit{tiles} lógicos e o número de
-iterações; ii) parâmetros do \stencil \textit{kernel}, como o tamanho da
-máscara. iii) os \textit{offsets} do \textit{tile} lógico em relação à matriz de
-entrada. Por fim, processo mestre espera os \textit{clusters} finalizarem a
-execução e agrupará os \textit{tiles} resultantes em um único \texttt{Array2D}
+iterações; ii) parâmetros do \textit{kernel} \stencil, como o tamanho da
+máscara; e iii) os \textit{offsets} do \textit{tile} lógico em relação à matriz de
+entrada. Por fim, o processo mestre espera os processos trabalhadores finalizarem a
+execução para, então, agrupar os \textit{tiles} resultantes em um único \texttt{Array2D}
 de saída. Caso existam mais iterações, será necessário armazenar os resultados
-enviados pelos \textit{clusters} em uma matriz auxiliar, permitindo a realização
-de sincroninzações entre o processo mestre e trabalhador.
+enviados pelos processos trabalhadores em uma matriz auxiliar, permitindo a realização
+de sincronizações entre os processos mestre e trabalhadores.
 
 Mais precisamente, os processos trabalhadores irão realizar iterações internas
 ($t^\prime$), enquanto o processo mestre irá realizar iterações externas
@@ -313,11 +312,11 @@ o processo mestre atualize uma matriz auxiliar com resultados temporários,
 utilizando-a como base para os novos envios de \textit{tiles} alargados em uma
 nova iteração externa. Com isso, é possível remover valores incorretos
 calculados dentro da \textit{ghost zone} e atualizar os dados para todos os
-\textit{clusters}, eliminando problemas de dependência.
+processos trabalhadores, eliminando problemas de dependência.
 
-A comunicação entre o processo mestre e o processo trabalhador é realizada por
+As comunicações entre os processos mestre e trabalhadores são realizadas por
 meio de portais de comunicação inicializados em cada processo. A
-seção~\ref{sec:comunicacao} descreve mais profudamente as características da
+Seção~\ref{sec:comunicacao} descreve mais profundamente as características da
 comunicação na implementação.
 
 A Figura~\ref{fig:visaoGeralMestre} ilustra o esquemático atualizado da visão geral
@@ -327,7 +326,7 @@ da proposta considerando as características do processo mestre.
 \begin{figure}[!h]
 	\centering
     \caption{Esquemático ilustrando a implementação mais aprofundada do processo mestre.}
-    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPAMestre.pdf} \\
+    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPAMestre.pdf} \\
     Fonte: Desenvolvido pelo autor.
     \label{fig:visaoGeralMestre}
 \end{figure}
@@ -336,11 +335,11 @@ da proposta considerando as características do processo mestre.
 
 \subsection{Processo Trabalhador}
 Os processos trabalhadores serão responsáveis pela
-execução do \textit{kernel} da computação. Essa fase pode ser dividida em
-etapas: i) Cada processo trabalhador irá receber o \textit{tile} alargado.
-ii) iterações internas são computadas sobre o \textit{tile} alargado. iii)
+execução do \textit{kernel} da computação \stencil. Em resumo, cada processo
+trabalhador executa os seguintes passos: i) recebe o \textit{tile} alargado do processo mestre;
+ii) computa as iterações internas sobre o \textit{tile} alargado; iii) realiza o
 cálculo de \textit{offsets} para determinar o espaço de endereçamento do
-\textit{tile} lógico e enviá-lo ao processo mestre. Após cada \textit{tile}
+\textit{tile} lógico; e iv) envia o \textit{tile} resultante ao processo mestre. Após cada \textit{tile}
 alargado atribuído ao processo trabalhador ser computado, todos os processos
 trabalhadores precisam sincronizar em uma barreira. Para cumprir esse objetivo,
 são utilizadas funções de baixo nível do \mppa. A sincronização é realizada
@@ -348,22 +347,21 @@ junto com o mestre, com o objetivo de atualizar a matriz auxiliar para uma nova
 sequência de envios de \textit{tiles}. Esse processo é repetido até
 todas as sincronizações (iterações externas) serem realizadas.
 
-Mais precisamente, o processo trabalhador irá receber o \textit{tile}
-alargado, atribuído pelo processo mestre, por meio de portais de comunicação.
-A computação será efetuada sobre os dados recebidos com o auxílio da biblioteca
-OpenMP. Desta forma, será possível distribuir a computação entre os \pes dentro
-do \textit{cluster}. Será realizada a computação do \textit{tile} alargado por
+A computação do \textit{tile} em cada processo trabalhador é efetuada com o auxílio da biblioteca
+OpenMP, a qual instanciará 16 \textit{threads} (uma para cada \pe do \textit{cluster}).
+Desta forma, é possível realizar a computação de maneira paralela em
+cada \textit{cluster}. Será realizada a computação do \textit{tile} alargado por
 $t^\prime$ iterações internas. Após todas as iterações serem realizadas, o
 processo trabalhador terá que efetuar cálculos, com \textit{offsets} enviados
 pelo processo mestre, para determinar o endereço de memória do \textit{tile}
 lógico dentro do \textit{tile} alargado. Essa ação deve ser realizada para
 filtar os valores incorretos provenientes da computação do \textit{tile}
-alargado. Por fim, o \textit{cluster} irá enviar o \textit{tile} lógico para o
+alargado. Por fim, o processo trabalhador irá enviar o \textit{tile} lógico para o
 processo mestre. Ao completar o envio, os processos trabalhadores terão que
 sincronizar com o processo mestre e outros processos trabalhadores por meio de
 uma barreira, caracterizando uma iteração externa. Mais detalhes sobre a
 comunicação do processo trabalhador com o processo mestre serão abordados na
-seção~\ref{sec:comunicacao}.
+Seção~\ref{sec:comunicacao}.
 
 %  Como descrito na seção~\ref{}, a técnica de
 % \textit{tiling} trapezoidal auxilia a execução de iterações sobre um único
@@ -377,21 +375,21 @@ seção~\ref{sec:comunicacao}.
 % \textit{tiles} resultantes, o processo trabalhador terá que efetuar uma
 % sincronização junto ao processo mestre.
 %
-O código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
+O Código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
 no \mppa. Este processo será responsável por descrever o \textit{kernel} da
-computação e, também, estruturas de dados de forma similar ao processo mestre.
+computação e, também, as estruturas de dados de forma similar ao processo mestre.
 Devido aos valores de \textit{offsets} e variáveis importantes para a computação
-do \textit{kernel} serem geradas dinâmicamente, o processo trabalhador precisa
+do \textit{kernel} serem geradas dinamicamente, o processo trabalhador precisa
 receber do processo mestre, além do \textit{tile} alargado, variáveis
 responsáveis por controlar a comunicação. Dentre elas, temos variáveis indicando
 as dimensões do \textit{tile} a ser recebido, número de iterações totais e
 \textit{offsets} para auxiliar a comunicação. Por fim, as ações de recebimento,
 computação e envio de \textit{tiles} foram encapsuladas pela função
-\texttt{runMPPA}, tornando todas as fases descritas para o processo
+\texttt{runMPPA()}, tornando todas as fases descritas para o processo
 trabalhador transparentes ao usuário.
 
 
-\begin{figure}[!h]
+\begin{figure}[t]
     \begin{lstlisting}[
 		caption=Exemplo do código da aplicação Jacobi no processo trabalhador.,
 		label=cod:jacobiTrabalhador,
@@ -424,10 +422,10 @@ trabalhador transparentes ao usuário.
 A Figura~\ref{fig:visaoGeralTrabalhador} ilustra a visão geral da implementação
 atualizada com as características do processo trabalhador.
 
-\begin{figure}[!h]
+\begin{figure}[t]
 	\centering
     \caption{Esquemático ilustrando a implementação mais aprofundada do processo trabalhador.}
-    \includegraphics[width=1.2\textwidth, height=7cm]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
+    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
     Fonte: Desenvolvido pelo autor.
     \label{fig:visaoGeralTrabalhador}
 \end{figure}
@@ -439,7 +437,7 @@ atualizada com as características do processo trabalhador.
 Para efetuar a comunicação, o processo mestre cria portais de escrita e leitura
 por meio de funções de baixo nível do \mppa. A criação dos portais são encapsulados pela
 estrutura \texttt{Array2D}. Desta forma, ao ser criado um \texttt{Array2D},
-portais de escrita e leitura podem ser vinculados à ele. Por sua vez, o
+portais de escrita e leitura são vinculados a ele de maneira transparente. Por sua vez, o
 processo trabalhador irá criar estruturas \texttt{Array2D} temporárias para
 receber o \textit{tile} alargado.
 
@@ -460,25 +458,29 @@ computados. Essas informações são conhecidas pelo processo mestre
 por meio da utilização da classe \texttt{StencilTiling}. Por outro lado, o
 processo trabalhador recebe essas informações do processo mestre.
 
+\todo[inline]{Não entendi o texto abaixo. Me pareceu que tu está falando de outra figura, pois
+não fez sentido para mim o $4*size$, 4 elementos na área útil, etc...}
+
 A Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
-\textit{strides}. Mais precisamente, ao determinar o endereço inicial do
-\textit{tile}, pode-se definir "saltos"{} que podem ser realizados sobre a
-memória local (\textit{source}). Utilizando como exemplo a figura~\ref{fig:strides}, o endereço inicial
+\textit{strides} para o caso de uma matriz de entrada de tamanho 6x6, \textit{tiles} de tamanho 3x3
+e somente 4 \textit{clusters}. Ao determinar o endereço inicial do
+\textit{tile}, pode-se definir ``saltos'' que podem ser realizados sobre a
+memória local. Utilizando como exemplo a Figura~\ref{fig:strides}, o endereço inicial
 do \textit{tile} está em $init+(4 * size)$, onde $size$ é o tamanho, em bytes,
-do tipo armazenado pela matriz e $init$ é o endereço incial da matriz. O tamanho
-do "salto"{} realizado pelo método é determinado pela largura da matriz de
-entrada, enquanto a quantidade de "saltos"{} é determinada pela altura do
+do tipo armazenado pela matriz e $init$ é o endereço inicial da matriz. O tamanho
+do salto realizado pelo método é determinado pela largura da matriz de
+entrada, enquanto a quantidade de saltos é determinada pela altura do
 \textit{tile}. Além disso, a quantidade de dados após o endereço inicial do
-\textit{tile} precisa ser determinada (\ie área útil), onde, no exemplo, o
-\textit{tile} possui $4$ elementos de área útil. O tamanho dos "saltos"{} é
+\textit{tile} precisa ser determinada (área útil), onde, no exemplo, o
+\textit{tile} possui $4$ elementos de área útil. O tamanho dos saltos é
 relativo ao endereço inicial do \textit{tile}, então, esse parâmetro deve
 contabilizar, também, a área útil do \textit{tile}. Ao realizar todos os
-"saltos"{}, o método irá enviar diretamente, via portal, os dados especificados
-pelo endereço incial do \textit{tile} e pelos "saltos"{} na memória com a área útil
+saltos, o método irá enviar diretamente, via portal, os dados especificados
+pelo endereço inicial do \textit{tile} e pelos saltos na memória com a área útil
 especificada. Com isso, é possível enviar de forma contígua e direta os
 \textit{tiles} à outro processo, sem a necessidade de cópias locais.
 
-\begin{figure}[!h]
+\begin{figure}[t]
 	\centering
     \caption{Exemplo do funcionamento do método \textit{strides} no \mppa.}
 	\includegraphics[width=0.9\textwidth]{figs/stridesImage.pdf} \\
@@ -488,10 +490,10 @@ especificada. Com isso, é possível enviar de forma contígua e direta os
 
 Por outro lado, o processo trabalhador precisa enviar apenas o \textit{tile}
 lógico. Desta forma, o endereço inicial para envio não será modificado, contudo
-é necessário especificar a quantidade e tamanho dos "saltos"{}. A quantidade de
-"saltos"{} é determinada pela altura do \textit{tile}, enquanto o tamanho dos
-"saltos"{} e a área útil é igual à largura do \textit{tile}. Com o método
-\textit{strides} é possíveli, também, determinar "saltos"{} no endereço de
+é necessário especificar a quantidade e tamanho dos saltos. A quantidade de
+saltos é determinada pela altura do \textit{tile}, enquanto o tamanho dos
+saltos e a área útil é igual à largura do \textit{tile}. Com o método
+\textit{strides} é possível, também, determinar saltos no endereço de
 memória do processo destino (\textit{target}). O processo trabalhador precisa
 enviar o \textit{tile} resultante na posição de memória correta no processo
 mestre.  Portanto, ele irá utilizar um deslocamento $(heightOffset * width) +

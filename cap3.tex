@@ -1,8 +1,9 @@
 \chapter{Trabalhos Relacionados}
+\label{cha:trabalhos-relacionados}
 
 A proposta deste trabalho está diretamente relacionada a diversos outros trabalhos de pesquisa.
 A seguir, serão citados alguns trabalhos de pesquisa que fazem uso de esqueletos paralelos em
-arquiteturas \textit{manycore}. Além disso, serão destacados alguns trabalhos de pesquisa sobre
+arquiteturas \textit{multicore} e \textit{manycore}. Além disso, serão destacados alguns trabalhos de pesquisa sobre
 o \mppa.
 
 % \todo[inline]{Aqui, acho que poderia subdividir os trabalhos relacionados em subseções, de acordo com os assuntos que eles tratam.}
@@ -11,7 +12,7 @@ o \mppa.
 \emph{Buono}~\etal~\cite{buono13} portaram um \fw baseado em esqueletos paralelos,
 chamado de \emph{FastFlow}, para o processador \textit{manycore} \emph{TilePro64}.
 Esse processador possui 64 núcleos de processamento idênticos, interconectados
-por uma malha da \noc. O \fw \emph{FastFlow} provê padrões de \textit{design}
+por uma \noc no formato de malha. O \fw \emph{FastFlow} provê padrões de \textit{design}
 customizáveis, como, por exemplo, \textit{pipelines} e \textit{task farms},
 que podem ser compostas para formar outros esqueletos, como \textit{map} e
 \textit{reduce}.
@@ -22,7 +23,7 @@ de baixa potência \emph{Myriad2}. Esse processador possui uma arquitetura
 heterogênea, tendo como alvo dispositivos com limites em questão de energia.
 O \fw \emph{SkePU} provê uma interface de programação para esqueletos paralelos
 como o \textit{map}, \textit{reduce}, e \textit{stencil}, com suporte para
-diferentes \textit{back-ends}, incluindo processadores multicores e \gpus.
+diferentes \textit{back-ends}, incluindo processadores \textit{multicores} e \gpus.
 
 %------Trabalho relacionado sobre técnicas de tiling sobre o padrão estêncil.
 %------Deixar para mencionar sobre trabalhos relacionados à isso.
@@ -37,7 +38,7 @@ situadas em um ambiente híbrido \cpu{}-\gpu.
 
 \section{Processadores \textit{manycore} de baixo consumo de energia}
 Alguns trabalhos surgiram recentemente com intuito de avaliar o uso de
-processadores \emph{manycore} em CAD, além de discutir os desafios do
+processadores \emph{manycore} em \hpc, além de discutir os desafios do
 desenvolvimento de aplicações para esses processadores.
 Em~\cite{SCCEnergy:2012}, os autores compararam o desempenho e o consumo
 energético de um processador \emph{manycore} experimental da Intel denominado
