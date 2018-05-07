@@ -154,9 +154,13 @@ geral, o consumo de energia das aplicações \textit{Fur}, \textit{GoL} e
 \textit{Jacobi} no \mppa foi aproximadamente $1.45$x, $1.38$x e $1.27$x menor
 que no Intel Xeon, respectivamente. Por outro lado, o tempo de execução dessas
 aplicações obtido no \mppa foi  $3.30$x, $2.83$x e $2.69$x maior que no Intel
-Xeon, respectivamente.
+Xeon, respectivamente. O experimento mostrou que o \mppa possui
+um menor desempenho em relação ao processador da Intel. Esse comportamento é
+devido ao processo de construção de um \textit{tile} alargado, onde é necessário
+realizar manualmente cálculos de \textit{offsets}, e envios prévios de dados de
+controle ao processo trabalhador.
 
-\todo[inline]{Por que o tempo ficou pior do que no Intel? Faltou explicar isso.}
+%\todo[inline]{Por que o tempo ficou pior do que no Intel? Faltou explicar isso.}
 
 %\begin{figure}[t]
 %	\centering

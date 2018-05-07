@@ -458,21 +458,21 @@ computados. Essas informações são conhecidas pelo processo mestre
 por meio da utilização da classe \texttt{StencilTiling}. Por outro lado, o
 processo trabalhador recebe essas informações do processo mestre.
 
-\todo[inline]{Não entendi o texto abaixo. Me pareceu que tu está falando de outra figura, pois
-não fez sentido para mim o $4*size$, 4 elementos na área útil, etc...}
+% \todo[inline]{Não entendi o texto abaixo. Me pareceu que tu está falando de outra figura, pois
+% não fez sentido para mim o $4*size$, 4 elementos na área útil, etc...}
 
 A Figura~\ref{fig:strides} ilustra o processo de comunicação com o método
 \textit{strides} para o caso de uma matriz de entrada de tamanho 6x6, \textit{tiles} de tamanho 3x3
 e somente 4 \textit{clusters}. Ao determinar o endereço inicial do
-\textit{tile}, pode-se definir ``saltos'' que podem ser realizados sobre a
+\textit{tile}, pode-se definir ``saltos'' que serão realizados sobre a
 memória local. Utilizando como exemplo a Figura~\ref{fig:strides}, o endereço inicial
-do \textit{tile} está em $init+(4 * size)$, onde $size$ é o tamanho, em bytes,
-do tipo armazenado pela matriz e $init$ é o endereço inicial da matriz. O tamanho
+do \textit{tile} está em $init+(offset * size)$, onde $size$ é o tamanho, em bytes,
+do tipo armazenado pela matriz, $init$ é o endereço inicial da matriz e $offset$
+é o deslocamento do \textit{tile} relativo à matriz de entrada. O tamanho
 do salto realizado pelo método é determinado pela largura da matriz de
 entrada, enquanto a quantidade de saltos é determinada pela altura do
 \textit{tile}. Além disso, a quantidade de dados após o endereço inicial do
-\textit{tile} precisa ser determinada (área útil), onde, no exemplo, o
-\textit{tile} possui $4$ elementos de área útil. O tamanho dos saltos é
+\textit{tile} precisa ser determinada (área útil). O tamanho dos saltos é
 relativo ao endereço inicial do \textit{tile}, então, esse parâmetro deve
 contabilizar, também, a área útil do \textit{tile}. Ao realizar todos os
 saltos, o método irá enviar diretamente, via portal, os dados especificados
@@ -499,8 +499,7 @@ enviar o \textit{tile} resultante na posição de memória correta no processo
 mestre.  Portanto, ele irá utilizar um deslocamento $(heightOffset * width) +
 widthOffset$ sobre o \textit{target}, onde $heightOffset$ é o deslocamento
 relativo à altura, $width$ é a largura do \textit{tile} e $widthOffset$ é o
-deslocamento relativo à largura. No exemplo adotado, essas variáveis são,
-respectivamente, $0$, $4$ e $4$. O processo mestre não utiliza essa função do
+deslocamento relativo à largura. O processo mestre não utiliza essa função do
 método, pois não é necessário inserir o \textit{tile} em uma posição de memória
 específica no processo trabalhador.
 

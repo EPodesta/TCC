@@ -46,8 +46,8 @@ como acesso uniforme à memória. Máquinas com essa propriedade são chamadas d
 característica, como é o caso de multiprocessadores \numa, que apresentam um acesso
 não-uniforme à memória.
 
-\todo[inline]{\uma e \numa aparecem aqui pela primeira vez mas o nome não ficou por extenso.
-verificar o que está acontecendo...}
+%\todo[inline]{\uma e \numa aparecem aqui pela primeira vez mas o nome não ficou por extenso.
+%verificar o que está acontecendo...}
 
 A Figura~\ref{fig:uma} apresenta a arquitetura de sistemas multiprocessados \uma
 mais simplificados, onde existem várias \cpus que se
@@ -500,7 +500,7 @@ APIs de mais alto nível, possibilitando uma maior abstração ao desenvolvedor.
 O \mpi é uma \api utilizada amplamente em multicomputadores fornecendo uma maior
 abstração em relação à programação sobre \textit{sockets}. A \api é baseada no
 modelo \spmd, onde todos os processos executam o mesmo programa, porém cada processo é responsável
-por realizar computações em dados distintos. 
+por realizar computações em dados distintos.
 
 A \api fornece diversas funções aos desenvolvedores. A função \texttt{MPI\_Init()} permite inicializar o ambiente \mpi.
 Após a inicialização, cada processo \mpi possuirá um identificador único (de $0$ até $np-1$, onde $np$ é o número total
@@ -827,17 +827,17 @@ uma aplicação \stencil com \pskel:
 
 \begin{enumerate}
 	\item Identificar a dimensão do problema, construindo estruturas de acordo com
-	os \textit{containers} especificados pelo \fw; 
+	os \textit{containers} especificados pelo \fw;
 
 	\item Definir o método \texttt{stencilKernel()} que descreve a computação executada
-	sobre os elementos da máscara e do \texttt{Array} de entrada; 
+	sobre os elementos da máscara e do \texttt{Array} de entrada;
 
 	\item Instanciar um ou mais objetos \texttt{Stencil} para gerenciar os encapsulamentos,
 	alocação de memória e chamadas para efetuar a computação determinada pelo método
 	\texttt{stencilKernel()}. Mais especificamente, os \textit{containers} são estruturas que
 	armazenam \texttt{Arrays} para leitura/escrita de dados. Eles são responsáveis por
 	gerenciar a alocação de memória na \cpu e \gpu de maneira transparente.
-	
+
 	\item Instanciar a classe de \textit{Runtime} que adota um padrão \textit{Facade} que
 	efetua a abstração dos detalhes da implementação e configurações do padrão \stencil.
 	Essa classe provê os métodos de execução para os padrões \stencil, além do

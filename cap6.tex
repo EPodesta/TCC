@@ -39,7 +39,13 @@ mostraram que a solução proposta para o \mppa apresenta uma eficiência
 energética superior apesar de um tempo de execução superior.
 
 Como trabalhos futuros, pretende-se estudar formas de reduzir ainda mais os
-sobrecustos de comunicação através do uso de técnicas de \textit{software prefetching}.
+sobrecustos de comunicação através do uso de técnicas de \textit{software
+    prefetching}. Esta técnica possibilitará a construção de \textit{tiles}
+alargados durante as computações de outros \textit{tiles} pelos
+\textit{clusters}. Portanto, ao terminar a computação, outro \textit{tile}
+alargado estará esperando para ser computado. Desta forma, será possível
+diminuir o impacto da construção de \textit{tiles} alargados e seu envio sobre o
+desempenho.
 Além disso, pretende-se realizar experimentos com outros
 \textit{benchmarks} e aplicações que utilizam estruturas tridimensionais. Por
 fim, pretende-se realizar comparações de desempenho e consumo de energia com
