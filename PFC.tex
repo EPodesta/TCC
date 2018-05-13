@@ -276,8 +276,13 @@
 \bancaMembroB{Prof. Dr. Frank Augusto Siqueira \\ Universidade Federal de Santa
 Catarina}       % Nome do membro da Banca
 
-\agradecimento{Agradecimentos opcionais, caso existam pessoas ou entidades a
-    quem se deve apoio ou suporte ao trabalho ora apresentado.}
+\agradecimento{Agradeço a todos que contribuíram de alguma forma para a
+    realização do presente Trabalho de Conclusão de Curso. Em especial, agradeço
+    meu orientador, Márcio Bastos Castro, e os colegas do grupo de pesquisa que
+    estiveram envolvidos diretamente no presente trabalho. Também agradeço ao
+    Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) pela
+    concessão da bolsa de Iniciação Científica (PIBIC), cujas atividades
+    relacionadas fomentaram o desenvolvimento deste trabalho.}
 
 \epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
 
@@ -313,9 +318,31 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 
 \palavrasChave {\textit{manycores}, \mppa, \textit{stencil}, PSkel.}
 
-\textAbstract {Here is written the abstract of the document}
+\textAbstract { Parallel applications can be classified according to computation
+    and coordination patterns. Among the most well-known patterns are the map,
+    reduce, pipeline, scan and stencil patterns. The latter is widely used in
+    several areas, such as physical particle simulation, weather forecasting,
+    thermodynamics, resolution of differential functions, manipulation of
+    images, among others. The \pskel is a parallel programming framework
+    designed to simplify the development of applications that follow the stencil
+    pattern. Using a high level abstraction, the programmer defines the
+    computing \emph{kernel}, while the framework executes the parallel computing
+    efficiently on multicores and on Graphic Processing Units (GPUs).
+    The objective of this work is to propose an adaptation of the \pskel
+    framework for the emerging manycore processor \mppa, called \pskel-MPPA. The
+    motivation for such work is related to the difficulty of stencil pattern
+    based applications development on \mppa, caused by intrinsic architectural
+    features that make the development of applications costly and error prone.
+    The framework adaptation allows to simplify the development of stencil
+    applications for \mppa, hiding implementations details from the developer,
+    such as the need for explicit communication between chip memories and
+    computation distribution between processing cores.
+    Several experiments were carried out with the proposed solution for the
+    \mppa, comparing the existing multicore solution. The results showed that
+    the proposed solution allows to reduce the stencil application energy
+    consumption up to 1.45x, despite a performance loss up to 3.3x.}
 
-\keywords {key 1. key 2. ... key n.}
+\keywords {\textit{manycores}, \mppa, \textit{stencil}, PSkel.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Início do documento

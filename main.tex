@@ -1,0 +1,151 @@
+\documentclass[12pt]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage{sbc-template}
+\usepackage{times}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xspace}
+
+\usepackage[acronym,nowarn]{glossaries}
+\input{acronyms.tex}
+\makeglossaries
+
+\usepackage{todonotes}
+
+\sloppy
+
+\title{Uma Implementação do Framework PSkel com Suporte a Aplicações Estêncil Iterativas para o Processador MPPA-256}
+
+\author{Emmanuel Podestá Jr.\inst{1}, Alyson D. Pereira\inst{1}, Rodrigo C. O. Rocha\inst{2},\\Márcio Castro\inst{1}, Luís F. W. Góes\inst{2}}
+
+\address{
+	Laboratório de Pesquisa em Sistemas Distribuídos (LaPeSD)\\
+	Universidade Federal de Santa Catarina (UFSC) -- SC, Brasil
+\nextinstitute{}
+	Grupo de Computação Criativa e Paralela (CreaPar)\\
+	Pontifícia Universidade Católica de Minas Gerais (PUC Minas) -- MG, Brasil
+\email{emmanuel.podesta@grad.ufsc.br, alyson.pereira@posgrad.ufsc.br,}\\\vspace{-2em}\email{rcor@pucminas.br, marcio.castro@ufsc.br, lfwgoes@pucminas.br}}
+
+\newcommand{\Fw}{\textit{Framework}\xspace}
+\newcommand{\fw}{\textit{framework}\xspace}
+\newcommand{\Fws}{\textit{Frameworks}\xspace}
+\newcommand{\fws}{\textit{frameworks}\xspace}
+
+\newcommand{\pskel}{{\small \textsf{PSkel}}\xspace}
+\newcommand{\mppa}{{\small \textsf{MPPA-256}}\xspace}
+
+\linespread{0.95}
+
+\begin{document} 
+
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+     
+\begin{resumo} 
+%Resumo de até 6 linhas.
+Neste artigo é proposta uma adaptação do framework PSkel para o processador \textit{manycore} \mppa. O \fw permite simplificar o desenvolvimento de aplicações estêncil iterativas para o \mppa, escondendo do desenvolvedor detalhes de implementação tais como a comunicação e a distribuição de computações entre os núcleos de processamento. Os resultados mostraram um peso significativo da comunicação no desempenho da solução.
+\end{resumo}
+
+\section{Introdução}
+
+Diversos padrões de computação paralela são conhecidos na literatura, tais como \textit{map}, \textit{reduce}, \textit{pipeline}, \textit{scan} e \textit{estêncil}. Dentre eles, o padrão estêncil é um dos padrões mais utilizados em aplicações como simulação de física de partículas, previsão meteorológica, termodinâmica, resolução de funções diferenciais, manipulação de imagens, entre outras~\cite{Rahman:2011:USC:2016604.2016641}. O \pskel é um \fw de programação paralela desenvolvido para simplificar o desenvolvimento de aplicações estêncil~\cite{pereira15}. Utilizando uma abstração de alto nível, o programador define o \emph{kernel} da computação estêncil, enquanto o \fw se encarrega de executar a computação paralela em \textit{multicores} e \textit{Graphics Processing Units} (GPUs) de maneira eficiente. 
+
+Recentemente, uma adaptação preliminar do \pskel foi proposta para o processador \mppa, um processador \textit{manycore} de baixo consumo de energia~\cite{Castro-Podesta-ERAD:2016}. Devido às suas diversas características peculiares e ao baixo nível de abstração requerido, desenvolver aplicações paralelas para esse tipo de processador é uma tarefa desafiadora. Neste sentido, a adaptação do \pskel para o \mppa permite que detalhes de baixo nível dessa arquitetura possam ser abstraídos, além de permitir que aplicações já existentes em \pskel possam ser portadas para essa nova plataforma sem a necessidade de modificações de código.
+
+O presente trabalho apresenta uma adaptação completa do \pskel para o processador \mppa, suprindo assim as limitações da solução proposta em~\cite{Castro-Podesta-ERAD:2016}. Essa nova versão permite: (i) execução de aplicações estêncil iterativas; (ii) flexibilidade no particionamento dos dados; e (iii) otimizações na computação do \textit{kernel}. Além da proposta, são discutidos os resultados de desempenho e consumo de energia obtidos da execução de três aplicações estêncil implementadas no \pskel. Os resultados mostram que a forma de particionamento dos dados afeta o desempenho e que a comunicação ainda é um fator limitante da solução proposta.
+
+O restante desse trabalho está organizado da seguinte forma. A Seção~\ref{sec:fundamentacao} apresenta
+os principais conceitos do processador \textit{manycore} \mppa e do \fw \ \pskel.
+A Seção~\ref{sec:pskelMPPA} discute a adaptação do \pskel para oferecer suporte ao \mppa.
+Os resultados são apresentados na Seção~\ref{sec:resultados} e as conclusões são apresentadas na Seção~\ref{sec:conclusao}.
+
+\begin{figure}[t]
+	\begin{center}
+		\begin{tabular}{ccc}
+			\includegraphics[width=0.4\textwidth]{figs/mppa_overall.pdf} & & \includegraphics{figs/stencil.pdf} \\
+			(a) \mppa. & \hspace{1cm} & (b) Diagrama do padrão estêncil. \\
+		\end{tabular}
+      \vspace{-1ex}
+		\caption{Visão geral do \mppa e ilustração do padrão estêncil.}
+	\end{center}
+   \vspace{-2ex}
+\label{fig:mppa-pskel}
+\end{figure}
+
+\section{Fundamentação Teórica}
+\label{sec:fundamentacao}
+
+%Essa seção apresenta de maneira geral o processador \mppa (Seção~\ref{subsec:mppa}) e o \fw \ \pskel (Seção~\ref{subsec:pskel}).
+
+
+\subsection{MPPA-256}
+\label{subsec:mppa}
+
+O processador \mppa é composto por 256 núcleos de processamento de 400 MHz denominados \pes. Como mostrado na Figura~\ref{fig:mppa-pskel}a, esses núcleos são organizados em 16 \emph{clusters} contendo 16 \pes cada um. Cada \textit{cluster} possui uma memória local de 2 MB (compartilhada entre todos os \pes do \textit{cluster}) e um núcleo de sistema denominado \rman. \rmans são responsáveis por tarefas de gerência do sistema operacional e comunicação. Além dos \textit{clusters}, o processador apresenta 4 subsistemas de \io, sendo um deles conectado a uma memória externa \lpddr de 2 GB. \emph{Clusters} e subsistemas de \io se comunicam por uma \noc \textit{torus} 2D.
+
+
+
+Estudos anteriores mostraram que desenvolver aplicações paralelas otimizadas para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns fatores importantes tais como: \textbf{(i) modelo de programação híbrido}: \textit{threads} em um mesmo \textit{cluster} se comunicam através de uma memória compartilhada local, porém a comunicação entre \textit{clusters} é feita explicitamente via \noc, em um modelo de memória distribuída; \textbf{(ii) comunicação}: é necessário a utilização de uma \api específica para a comunicação via \noc, similar ao modelo clássico POSIX de baixo nível para \ipc; \textbf{(iii) memória}: cada \textit{cluster} possui apenas 2 MB de memória local de baixa latência, portanto aplicações reais precisam constantemente realizar comunicações entre o subsistema de \io (conectado à memória \lpddr); e \textbf{(iv) coerência de \textit{cache}}: cada \pe possui uma
+memória \textit{cache} privada sem coerência com as \textit{caches} dos demais \pes, sendo necessário o uso explícito de instruções do tipo \textit{flush} para atualizar a \textit{cache} de um \pe em determinados casos.
+
+\subsection{PSkel}
+\label{subsec:pskel}
+
+O \pskel é um \fw de programação em alto nível para o padrão estêncil, baseado nos conceitos de esqueletos paralelos, que oferece suporte para execução paralela em ambientes heterogêneos incluindo CPU e GPU.  Utilizando uma única interface de programação escrita em C++, o usuário é responsável apenas por definir o \textit{kernel} principal da computação estêncil, enquanto o \fw se encarrega de gerar código executável para as diferentes plataformas paralelas, realizando de maneira transparente todo o gerenciamento de memória e transferência de dados entre dispositivos~\cite{pereira15}.
+
+A Figura~\ref{fig:mppa-pskel}b ilustra o funcionamento da computação estêncil em aplicações iterativas. Em cada iteração, uma máscara de vizinhança é utilizada na matriz de entrada para determinar o valor de cada célula da matriz de saída. Nesse exemplo, o valor de cada célula da matriz de saída é determinado em função dos valores das células vizinhas em todas as direções. Esse processo é realizado para todos os pontos da matriz de entrada, produzindo uma matriz saída da computação estêncil. Ao final de uma iteração, a matriz de saída será considerada como sendo a matriz de entrada da próxima iteração, gerando assim uma nova matriz de saída ao final da próxima iteração.
+
+\section{PSkel-MPPA}
+\label{sec:pskelMPPA}
+
+A implementação do \pskel para o processador \mppa segue um modelo mestre/escravo. Um processo mestre é executado no subsistema de \io conectado à memória \lpddr de 2~GB, sendo responsável por alocar os dados de entrada, distribuir as tarefas e controlar processos escravos. São criados 16 processos escravos, um para cada \textit{cluster} de computação. Devido às limitações de memória dos \textit{clusters}, o mestre subdivide a matriz de entrada em porções menores denominadas \textit{tiles} e as envia para os processos escravos. O escalonamento dos \textit{tiles} em cada iteração é feito sob demanda: cada processo escravo recebe um \textit{tile}, realiza a computação do mesmo utilizando o \textit{kernel} de computação estêncil definido pelo usuário e então devolve o resultado para o mestre. A paralelização da computação dentro do \textit{cluster} é feita com auxílio da \api OpenMP (uma \textit{thread} é criada para cada \pe). Ao ficar ocioso, um processo escravo recebe um novo \textit{tile} a ser computado (caso ainda existam \textit{tiles} a serem computados). Toda a comunicação entre os processos mestre e escravos é feita utilizando-se a \api de comunicação do \mppa. 
+
+\begin{figure}[t]
+	\begin{center}
+		\begin{tabular}{ccc}
+			\includegraphics[width=0.314\textwidth]{figs/fur-bars-time.pdf} & \includegraphics[width=0.3\textwidth]{figs/gol-bars-time.pdf} & \includegraphics[width=0.3\textwidth]{figs/jacobi-bars-time.pdf} \\
+% 			&\includegraphics[width=0.3\textwidth]{figs/bars-time-subtitle.pdf} \\
+		\end{tabular}
+      \vspace{-2ex}
+	    \caption{Tempos de execução com diferentes tamanhos de \textit{tile} e matrizes.}\label{fig:results-bar}
+	\end{center}
+   \vspace{-2ex}
+
+\end{figure}
+Para reduzir a quantidade de comunicações na NoC, é possível que um processo escravo compute diversas iterações do estêncil antes de enviar o resultado para o processo mestre. 
+Para isso, devido as dependências entre as células vizinhas do padrão estêncil, os \textit{tiles} necessitam ser enviados juntamente com uma margem extra de vizinhança aos escravos.
+%Para isso, os \textit{tiles} necessitam ser enviados juntamente com a sua vizinhança aos escravos.
+O tamanho da vizinhança enviado é proporcional à quantidade de iterações da computação estêncil que poderão ser feitas no escravo sem a necessidade de comunicação com o processo mestre. Todavia, essa técnica exige que computações redundantes sejam feitas pelos escravos, além de aumentar a quantidade de memória ocupada nos mesmos.
+
+\section{Resultados}
+\label{sec:resultados}
+
+Foram utilizadas três aplicações estêncil para a realização dos experimentos. A aplicação \textbf{Fur} tem como objetivo modelar a formação de padrões sobre a pele de animais. A aplicação \textbf{Jacobi} implementa o método iterativo de Jacobi para resolução de equações matriciais. Por fim, a aplicação \textbf{GoL} é um autômato celular que implementa o Jogo da Vida de Conway. A descrição completa dessas aplicações pode ser encontrada em~\cite{pereira15, Castro-Podesta-ERAD:2016}.
+
+\begin{figure}[t]
+	\begin{center}
+		\begin{tabular}{ccc}
+	        \includegraphics[width=0.35\textwidth]{figs/mppa-execTime.pdf} & & \includegraphics[width=0.35\textwidth]{figs/mppa-energy.pdf}
+			%(a) Tempo de execução. & \hspace{1cm} & (b) Energia.
+		\end{tabular}
+      \vspace{-2ex}
+        \caption{Desempenho e consumo de energia em três aplicações estêncil.}\label{fig:results-line}
+	\end{center}
+  \vspace{-2ex}
+\end{figure}
+
+Os resultados de tempo e energia foram obtidos através de ferramentas disponíveis no \mppa. Os experimentos foram executados sobre matrizes de entrada de 512x512, 1024x1024, 2048x2048 e 4096x4096, alterando-se o tamanho dos \textit{tiles} em 32x32, 64x64 e 128x128 (Figura~\ref{fig:results-bar}). Além disso, foram feitos testes de escalabilidade, fixando-se o tamanho da matriz de entrada em 2048x2048 e do \textit{tile} em 128x128 e alterando-se o número de \textit{clusters} utilizados (Figura~\ref{fig:results-line}). Os valores representam médias de 5 execuções, com um coeficiente de variação máximo inferior à 0,4\%. Os resultados mostram um \textit{speedup} que varia entre 1,2x e 2,7x à medida que aumenta-se o tamanho dos \textit{tiles}. Porém, a solução proposta apresenta problemas de escalabilidade devido ao tempo de comunicação ser muito grande em relação ao tempo total de execução da computação nos \textit{clusters}. Esse impacto também é observado no consumo de energia obtido quando aumenta-se o número de \textit{clusters}.
+
+\section{Conclusão}
+\label{sec:conclusao}
+
+Neste trabalho foi proposta uma adaptação completa do \textit{framework} \pskel para o processador \textit{manycore} \mppa. Os resultados mostraram que mesmo obtendo resultados razoáveis ao aumentar o tamanho dos  \textit{tiles} da computação, com um ganho de até 2,7x. A comunicação é um grande problema na computação, tendo que ser otimizada para uma melhor utilização das características do \mppa. Como trabalhos futuros, pretende-se otimizar a comunicação e comparar os resultados de tempo e energia com outros processadores (CPU e GPU).
+
+\bibliographystyle{sbc}
+\bibliography{bibliografia}
+
+\end{document}
