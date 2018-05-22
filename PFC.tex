@@ -64,6 +64,7 @@
 \usepackage{xspace}
 \usepackage{pgfgantt}
 \usepackage{adjustbox}
+\usepackage{pdfpages}
 \usepackage[labelsep=endash]{caption}
 % pacotes adicionados
 % \usepackage{amsmath}
@@ -284,7 +285,8 @@ Catarina}       % Nome do membro da Banca
     concessão da bolsa de Iniciação Científica (PIBIC), cujas atividades
     relacionadas fomentaram o desenvolvimento deste trabalho.}
 
-\epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+\epigrafe{"Whether you think that you can, or that you can't, you are usually
+    right."}{Henry Ford (1863-1947)}
 
 \textoResumo {
 Aplicações paralelas podem ser classificadas de acordo com o padrão de
@@ -471,10 +473,12 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 %
 %\glossary
 
-%\include{apendices}
 
-%\include{anexos}
+\anexo
+\chapter{Artigo científico}
 
+\includepdf[pages=-]{artigo}
+%\input{cap7}
 %---------------------------------------------------------------------
 % INDICE REMISSIVO
 %---------------------------------------------------------------------
