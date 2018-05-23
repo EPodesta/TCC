@@ -8,7 +8,7 @@
 \usepackage{xspace}
 
 \usepackage[acronym,nowarn]{glossaries}
-\input{acronyms.tex}
+\input{acronymsArtigo.tex}
 \makeglossaries
 
 \usepackage{todonotes}
@@ -18,7 +18,7 @@
 \title{Uma Implementação do Framework PSkel com Suporte a Aplicações Estêncil
 Iterativas para o Processador MPPA-256}
 
-\author{Emmanuel Podestá Jr.\inst{1},\\Márcio Castro\inst{1}}
+\author{Emmanuel Podestá Jr., Márcio Castro}
 
 \address{
         Laboratório de Pesquisa em Sistemas Distribuídos (LaPeSD)\\
@@ -39,19 +39,25 @@ Iterativas para o Processador MPPA-256}
 
 \maketitle
 
-%\begin{abstract}
-%
-%\end{abstract}
+\begin{abstract}
+    In this paper is proposed an adaptation of the PSkel framework to the
+    low-power manycore processor \mppa. The framework simplifies the stencil applications
+    development for the \mppa, hiding from the developer implementation details
+    cores. The results on \mppa showed an energy consumption reduction on
+    iterative stencil applications up to 1.45x in comparison with the multicore
+    processor Intel Broadwell.
+\end{abstract}
 
 \begin{resumo}
 %Resumo de até 6 linhas.
 Neste artigo é proposta uma adaptação do framework PSkel para o processador
-\textit{manycore} \mppa. O \fw permite simplificar o desenvolvimento de
-aplicações estêncil iterativas para o \mppa, escondendo do desenvolvedor
-detalhes de implementação tais como a comunicação e a distribuição de
-computações entre os núcleos de processamento. Os resultados mostraram um peso
-significativo da comunicação no desempenho da solução.
+\textit{manycore} de baixa potência \mppa. O \fw permite simplificar o
+desenvolvimento de aplicações estêncil iterativas para o \mppa, escondendo do
+desenvolvedor detalhes de implementação. Os resultados obtidos no \mppa
+mostraram uma redução do consumo de energia de aplicações estêncil iterativas de
+até 1.45x em comparação com um processador \textit{multicore} Intel Broadwell.
 \end{resumo}
+
 
 \section{Introdução}
 
@@ -67,19 +73,15 @@ programador define o \emph{kernel} da computação estêncil, enquanto o \fw se
 encarrega de executar a computação paralela em \textit{multicores} e
 \textit{Graphics Processing Units} (GPUs) de maneira eficiente.
 
-Recentemente, uma adaptação preliminar do \pskel foi proposta para o processador
-\mppa, um processador \textit{manycore} de baixo consumo de
-energia~\cite{Castro-Podesta-ERAD:2016}. Devido às suas diversas características
-peculiares e ao baixo nível de abstração requerido, desenvolver aplicações
-paralelas para esse tipo de processador é uma tarefa desafiadora. Neste sentido,
-a adaptação do \pskel para o \mppa permite que detalhes de baixo nível dessa
-arquitetura possam ser abstraídos, além de permitir que aplicações já existentes
-em \pskel possam ser portadas para essa nova plataforma sem a necessidade de
-modificações de código.
+Devido às suas diversas características peculiares e ao baixo nível de abstração
+requerido, desenvolver aplicações paralelas para esse tipo de processador é uma
+tarefa desafiadora. Neste sentido, a adaptação do \pskel para o \mppa permite
+que detalhes de baixo nível dessa arquitetura possam ser abstraídos, além de
+permitir que aplicações já existentes em \pskel possam ser portadas para essa
+nova plataforma sem a necessidade de modificações de código.
 
 O presente trabalho apresenta uma adaptação completa do \pskel para o
-processador \mppa, suprindo assim as limitações da solução proposta
-em~\cite{Castro-Podesta-ERAD:2016}. Essa nova versão permite: (i) execução de
+processador \mppa. A adaptação permite: (i) execução de
 aplicações estêncil iterativas; (ii) flexibilidade no particionamento dos dados;
 e (iii) otimizações na computação do \textit{kernel}. Além da proposta, são
 discutidos os resultados de desempenho e consumo de energia obtidos da execução

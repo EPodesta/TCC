@@ -354,7 +354,8 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 %--------------------------------------------------------
 % Elementos pré-textuais
 \capa
-\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só năo usar o
+\folhaderosto % Se nao quiser imprimir a ficha, é só năo usar o
+\includepdf{fichaCatalografica}
 \folhaaprovacao
 % \include{dedicatoria}
 % \paginadedicatoria
@@ -477,7 +478,7 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 \anexo
 \chapter{Artigo científico}
 
-\includepdf[pages=-]{artigo}
+\includepdf[pages=-]{artigo/main}
 %\input{cap7}
 %---------------------------------------------------------------------
 % INDICE REMISSIVO
