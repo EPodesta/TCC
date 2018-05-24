@@ -486,5 +486,27 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 % \phantompart
 % \printindex
 %---------------------------------------------------------------------
+\lstset{language=C++,
+    basicstyle=\scriptsize,
+    breaklines=true,
+    tabsize=4,
+	frame=single,
+	stepnumber=1,
+	numbersep=0.75em,
+    keywordstyle=\color{blue}\ttfamily,
+    rulecolor=\color{black},
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{green}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#}
+}
+\anexo
+\chapter{Código Fonte}
+
+\lstinputlisting[language=C++, label=l1,caption=PSkelArray.h]{./anexos/PSkelArray.h}
+\lstinputlisting[language=C++, label=l2,caption=PSkelArray.hpp]{./anexos/PSkelArray.hpp}
+\lstinputlisting[language=C++, label=l3,caption=PSkelStencil.h]{./anexos/PSkelStencil.h}
+\lstinputlisting[language=C++, label=l4,caption=PSkelStencil.hpp]{./anexos/PSkelStencil.hpp}
+\lstinputlisting[language=C++, label=l5,caption=interface\_mppa.h]{./anexos/interface_mppa.h}
+\lstinputlisting[language=C++, label=l6,caption=interface\_mppa.c]{./anexos/interface_mppa.c}
 
 \end{document}
