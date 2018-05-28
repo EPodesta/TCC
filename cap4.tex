@@ -458,6 +458,14 @@ computados. Essas informações são conhecidas pelo processo mestre
 por meio da utilização da classe \texttt{StencilTiling}. Por outro lado, o
 processo trabalhador recebe essas informações do processo mestre.
 
+\begin{figure}[t]
+	\centering
+    \caption{Exemplo do funcionamento do método \textit{strides} no \mppa.}
+	\includegraphics[width=0.9\textwidth]{figs/stridesImage.pdf} \\
+    Fonte: Desenvolvido pelo autor.
+	\label{fig:strides}
+\end{figure}
+
 % \todo[inline]{Não entendi o texto abaixo. Me pareceu que tu está falando de outra figura, pois
 % não fez sentido para mim o $4*size$, 4 elementos na área útil, etc...}
 
@@ -479,14 +487,6 @@ saltos, o método irá enviar diretamente, via portal, os dados especificados
 pelo endereço inicial do \textit{tile} e pelos saltos na memória com a área útil
 especificada. Com isso, é possível enviar de forma contígua e direta os
 \textit{tiles} à outro processo, sem a necessidade de cópias locais.
-
-\begin{figure}[t]
-	\centering
-    \caption{Exemplo do funcionamento do método \textit{strides} no \mppa.}
-	\includegraphics[width=0.9\textwidth]{figs/stridesImage.pdf} \\
-    Fonte: Desenvolvido pelo autor.
-	\label{fig:strides}
-\end{figure}
 
 Por outro lado, o processo trabalhador precisa enviar apenas o \textit{tile}
 lógico. Desta forma, o endereço inicial para envio não será modificado, contudo
