@@ -293,7 +293,7 @@ Aplicações paralelas podem ser classificadas de acordo com o padrão de
 computação e coordenação. Dentre os padrões mais conhecidos destacam-se o
 \textit{map}, \textit{reduce}, \textit{pipeline}, \textit{scan} e \stencil.
 Este último é muito utilizado em diversas áreas, como
-simulação física partículas, previsão meteorológica, termodinâmica, resolução de
+simulação física de partículas, previsão meteorológica, termodinâmica, resolução de
 funções diferenciais, manipulação de imagens, entre outras. O \pskel é um \fw de
 programação paralela desenvolvido para simplificar o desenvolvimento de
 aplicações que seguem o padrão \stencil. Utilizando uma abstração de alto nível, o
@@ -322,27 +322,27 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 
 \textAbstract { Parallel applications can be classified according to computation
     and coordination patterns. Among the most well-known patterns are the map,
-    reduce, pipeline, scan and stencil patterns. The latter is widely used in
+    reduce, pipeline, scan and stencil. The latter is widely used in
     several areas, such as physical particle simulation, weather forecasting,
     thermodynamics, resolution of differential functions, manipulation of
-    images, among others. The \pskel is a parallel programming framework
+    images, among others. \pskel is a parallel programming framework
     designed to simplify the development of applications that follow the stencil
     pattern. Using a high level abstraction, the programmer defines the
-    computing \emph{kernel}, while the framework executes the parallel computing
+    compute \emph{kernel}, while the framework executes the parallel computation
     efficiently on multicores and on Graphic Processing Units (GPUs).
     The objective of this work is to propose an adaptation of the \pskel
     framework for the emerging manycore processor \mppa, called \pskel-MPPA. The
-    motivation for such work is related to the difficulty of stencil pattern
-    based applications development on \mppa, caused by intrinsic architectural
-    features that make the development of applications costly and error prone.
+    motivation for such work is related to the difficulty of developing  parallel
+    stencil applications on \mppa. The intrinsic architectural
+    features of \mppa make the development of efficient parallel applications a costly and error-prone task.
     The framework adaptation allows to simplify the development of stencil
     applications for \mppa, hiding implementations details from the developer,
-    such as the need for explicit communication between chip memories and
-    computation distribution between processing cores.
+    such as the need for explicit communication between on-chip memories and
+    task distribution between processing cores.
     Several experiments were carried out with the proposed solution for the
-    \mppa, comparing the existing multicore solution. The results showed that
-    the proposed solution allows to reduce the stencil application energy
-    consumption up to 1.45x, despite a performance loss up to 3.3x.}
+    \mppa, comparing it to the existing multicore counterpart. The results showed that
+    the proposed solution allows to reduce energy consumption of stencil applications
+    in up to 1.45x, despite the performance loss of up to 3.3x.}
 
 \keywords {\textit{manycores}, \mppa, \textit{stencil}, PSkel.}
 
