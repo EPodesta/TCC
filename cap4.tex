@@ -39,7 +39,7 @@ trabalhador é executado em um \textit{cluster} com o objetivo de realizar a
 computação \stencil de forma paralela. A computação será subdividida dentro dos
 \textit{clusters} por meio da biblioteca OpenMP, fazendo com que cada \pe realize uma parte
 da computação. Após a computação ser realizada, o resultado é enviado ao
-processo mestre. Por fim, toda a comunicação entre os processos metre e trabalhadores é
+processo mestre. Por fim, toda a comunicação entre os processos mestre e trabalhadores é
 realizada por meio de portais, como especificado na Seção \ref{sec:prog-mppa}.
 
 Devido às limitações de memória no \mppa, o mestre deverá enviar para o
@@ -225,7 +225,7 @@ comunicações e sincronizações realizadas.
 O processo de execução de uma aplicação no PSkel-MPPA segue a descrição na
 Seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
 processo e como foi realizada a comunicação no \mppa. O código da implementação
-é aberto e pode ser acessada pelo seguinte link: \url{https://github.com/pskel/pskel/tree/mppaWidth}.
+é aberto e pode ser acessado pelo seguinte link: \url{https://github.com/pskel/pskel/tree/mppaWidth}.
 
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
