@@ -198,12 +198,77 @@
 \begin{frame}\frametitle{Padrão Estêncil}
     \subsection{Padrão Estêncil}
     \begin{itemize}
-        \item {Cada célula da matriz é computada em função dos valores de 			seus vizinhos}
+        \item {Cada célula da matriz é computada em função dos valores de seus vizinhos}
         \item {Computação Iterativa}
     \end{itemize}
     \begin{figure}
         \includegraphics[width=0.6\textwidth]{26}
     \end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Padrão Estêncil}
+    \begin{lstlisting}[style=highlight, gobble=4]
+	    void jacobi(int tsteps, int N, float *A, float *B){
+		    int t, i, j;
+		    float c1 = 0.2;
+
+		    for (t = 0; t < tsteps; t++){
+		    	for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			B[i,j] = c1 * (A[i,j] + A[i,j-1] + A[i,j+1]
+                          + A[i+1,j] + A[i-1,j]);
+
+		    	for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			A[i,j] = B[i,j]
+		    }
+	    }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Padrão Estêncil}
+    \begin{lstlisting}[style=base, gobble=4]
+	    @void jacobi(int tsteps, int N, float *A, float *B)@{
+		    int t, i, j;
+		    @float c1 = 0.2;@
+
+		    @for (t = 0; t < tsteps; t++)@{
+		    	@for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			B[i,j] = c1 * (A[i,j] + A[i,j-1] + A[i,j+1]
+                          + A[i+1,j] + A[i-1,j]);@
+
+		    	@for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			A[i,j] = B[i,j]@
+		    }
+	    }
+    \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Padrão Estêncil}
+    \begin{lstlisting}[style=base, gobble=4]
+	    void jacobi(int tsteps, int N, float *A, float *B){
+		    int t, i, j;
+		    float c1 = 0.2;
+
+		    @for (t = 0; t < tsteps; t++){
+		    	for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			B[i,j] = c1 * (A[i,j] + A[i,j-1] + A[i,j+1]
+                          + A[i+1,j] + A[i-1,j]);
+
+		    	for (i = 1; i < N-1; i++)
+		    		for (j = 1; j < N-1; j++)
+		    			A[i,j] = B[i,j]
+		    }@
+	    }
+    \end{lstlisting}
 \end{frame}
 
 % \begin{frame}\frametitle{Padrões Paralelos}
@@ -327,20 +392,78 @@
     \begin{itemize}
         \item \textbf{Comunicação via NoC}: toda a comunicação é feita através de uma API proprietária de baixo nível similar a \textit{POSIX Interprocess Communication (IPC)}
         \item \textbf{Memória limitada nos \textit{clusters}}: cada \textit{cluster} possui somente uma memória local de 2MB
-        \item \textbf{Baixo nível de abstração}: toda a comunicação é geranciada pelo desenvolvedor de maneira explícita
+        \item \textbf{Baixo nível de abstração}: toda a comunicação é gerenciada pelo desenvolvedor de maneira explícita
     \end{itemize}
 \end{frame}
 
 
 \section{Proposta}
 \begin{frame}\frametitle{Proposta}
-    \textbf{Adaptar o \Fw PSkel para o processador MPPA-256}
+    \textbf{Objetivo Geral}
     \begin{itemize}
-        \item {Simplificar o desenvolvimento para MPPA-256}
-        \item {Desenvolvedor poderá aproveitar os benefícios do processador}
-        \item {Aplicações desenvolvidas poderão ser portadas sem alteração}
+        \item {Adaptar o \Fw PSkel para o processador MPPA-256}
+            % \begin{itemize}
+                \item {Simplicar o desenvolvimento para o MPPA-256}
+                \item {Desenvolvedor poderá aproveitar os benefícios do processador}
+                \item {Aplicações desenvolvidas poderão ser portadas sem alteração}
+            % \end{itemize}
     \end{itemize}
 \end{frame}
+
+
+\section{Proposta}
+\begin{frame}\frametitle{Proposta}
+    \textbf{Objetivos Específicos}
+    \begin{itemize}
+        \item {Definir uma estratégia de distribuição de dados entre os \textit{clusters} do MPPA-256}
+        \item {Propor e implementar técnicas que permitam reduzir os custos de coomunicação na NoC}
+        \item {Adaptar as principais classes e abstrações existentes no PSkel para o processador MPPA-256}
+        \item {Realizar uma análise de desempenho e energia sobre a solução proposta}
+        \item {Realizar comparações de desempenho e consumo de energia com um processador \textit{multicore} atual}
+    \end{itemize}
+\end{frame}
+
+
+\section{Contribuições}
+\begin{frame}\frametitle{Contribuições}
+    % \begin{thebibliography}{1}
+    % \setbeamertemplate{bibliography item}[text]
+    % {\tiny \bibitem{E}
+    %     PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO,
+    %         MÁRCIO ; GOES, L. F. W. \textbf{Execução Energeticamente Eficiente
+    %             de Aplicações Estêncil com o Processador Manycore MPPA-256}. In:
+    %         Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD),
+    %         2017, Campinas, São Paulo.
+    %     }
+    % \end{thebibliography}
+    \begin{itemize}
+    {\tiny
+        \item PODESTA JUNIOR, E. ; MARQUES, B. ; CASTRO, M. \textbf{Energy
+                Efficient Stencil Computations on the Low-Power Manycore
+                MPPA-256 Processor}. In: Conferência Européia Internacional de
+            Computação Paralela e Distribuída (EURO-PAR), 2018, Turin, Itália.
+        \item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO,
+            MÁRCIO ; GOES, L. F. W. \textbf{Execução Energeticamente Eficiente
+                de Aplicações Estêncil com o Processador Manycore MPPA-256}. In:
+            Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD),
+            2017, Campinas, São Paulo.
+
+        \item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO, M.
+            ; GOES, L. F. W. \textbf{Uma Implementação do Framework PSkel com
+                Suporte a Aplicações Estêncil Iterativas para o Processador
+                MPPA-256}. In: Escola Regional de Alto Desempenho do Estado do
+            Rio Grande do Sul (ERAD/RS), 2017, Ijuí, Rio Grande do Sul.
+
+        \item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; PENNA, P. H. ; ROCHA, R. C.
+            O. ; CASTRO, M. ; GOES, L. F. W. \textbf{PSkel-MPPA: Uma Adaptação
+                do Framework PSkel para o Processador Manycore MPPA-256}. In:
+            Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul
+            (ERAD/RS), 2016, São Leopoldo, Rio Grande do Sul.
+
+    }
+    \end{itemize}
+\end{frame}
+
 % \item {Implementação completa do \textit{framework} PSkel para o processador \textit{manycore} MPPA-256}
 % \item {Suporte a aplicações estêncil iterativas}
 % \item {Particionamento flexível dos dados entre os \textit{clusters} (\textit{tiles} de dimensão arbitrária)}
@@ -353,28 +476,44 @@
                 \item {Subdivide a matriz de entrada em \textit{tiles} e os envia sob demanda aos trabalhadores (\textit{clusters})}
                 \item {Envio feito de acordo com o modelo \textit{Round-Robin}}
                 \item {Particionamento flexível dos dados entre os \textit{clusters} (\textit{tiles} de dimensão arbitrária)}
-                \item {Computações redundantes devido à técnica de \textit{tiling} trapezoidal}
-                \item {Redução no número de comunicações}
+                % \item {Computações redundantes devido à técnica de \textit{tiling} trapezoidal}
+                % \item {Redução no número de comunicações}
             \end{itemize}
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{\textit{Tiling} Trapezoidal}
-    \begin{figure}[t]
-        \centering
-        \includegraphics[width=0.80\textwidth]{tiling.pdf}
-    \end{figure}
-\end{frame}
 
 \begin{frame}\frametitle{Implementação}
     \textbf{Trabalhador (\textit{cluster})}
     \begin{itemize}
-        \item {Recebe um \textit{tile} aumentado, realiza a computação do \textit{kernel} estêncil sobre o \textit{tile} e envia a reposta ao mestre}
+        \item {Recebe o \textit{tile}, realiza a computação do \textit{kernel} estêncil sobre o \textit{tile} e envia a reposta ao mestre}
             \item {Computação realizada por meio de diretivas OpenMP}
         \item {Repete a computação para cada \textit{tile} atribuído pelo mestre}
-        \item {Possibilidade de realizar várias iterações sobre o mesmo \textit{tile}}
-        \item {Melhoria do desempenho}
+        % \item {Possibilidade de realizar várias iterações sobre o mesmo \textit{tile}}
+        % \item {Melhoria do desempenho}
     \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Problema}
+    \begin{itemize}
+        \item {No padrão estêncil temos computações iterativas}
+        \item {Grande número de comunicações entre o processo mestre e trabalhador}
+        \item {Atribuir parte das iterações para o processo trabalhador}
+        \item {Redução no número de comunicações}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{\textit{Tiling} Trapezoidal}
+    \begin{flushleft}
+        \only<1>{\includegraphics[width=0.80\textwidth]{tiling1.pdf}}
+        \only<2>{\includegraphics[width=0.80\textwidth]{tiling2.pdf}}
+        \only<3>{\includegraphics[width=0.80\textwidth]{tiling3.pdf}}
+        \only<4>{\includegraphics[width=0.80\textwidth]{tiling4.pdf}}
+        \only<5>{\includegraphics[width=0.80\textwidth]{tiling5.pdf}}
+        \only<6>{\includegraphics[width=0.80\textwidth]{tiling6.pdf}}
+        \only<7>{\includegraphics[width=0.80\textwidth]{tiling7.pdf}}
+        \only<8>{\includegraphics[width=0.80\textwidth]{tiling8.pdf}}
+    \end{flushleft}
 \end{frame}
 
 \begin{frame}\frametitle{Comunicação}
