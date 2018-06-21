@@ -360,6 +360,34 @@
     \end{lstlisting}
 \end{frame}
 
+
+\begin{frame}[fragile]
+    \frametitle{\textit{Framework} PSkel}
+    \begin{lstlisting}[style=highlight, gobble=4]
+        __parallel__ void
+        stencilKernel(Array2D<float> A, Array2D<float> B,
+        Mask2D<int> mask, struct Arguments args,
+        int x, int y){
+            B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) +
+            A(x+1,y) + A(x-1,y));
+        }
+
+        void main(){
+            /* ... */
+            Array2D<float> input(A,M,N);
+            Array2D<float> output(B,M,N);
+            int neighbors = {{0,1}, {-1,0}, {1,0}, {-1,0}};
+            Mask2D<int> mask(4, neighbors);
+            struct Arguments args(alpha, beta);
+            /* ... */
+            Stencil2D<Array2D<float>, Mask2D<int>, Arguments>
+            jacobi(A,B,args);
+            jacobi.runIterative(device::GPU, timesteps, 1.0);
+            /* ... */
+        }
+    \end{lstlisting}
+\end{frame}
+
 \subsection{MPPA-256}
 \begin{frame}\frametitle{MPPA-256}
     \textbf{Características}
@@ -411,12 +439,11 @@
 \end{frame}
 
 
-\section{Proposta}
 \begin{frame}\frametitle{Proposta}
     \textbf{Objetivos Específicos}
     \begin{itemize}
         \item {Definir uma estratégia de distribuição de dados entre os \textit{clusters} do MPPA-256}
-        \item {Propor e implementar técnicas que permitam reduzir os custos de coomunicação na NoC}
+        \item {Propor e implementar técnicas que permitam reduzir os custos de comunicação na NoC}
         \item {Adaptar as principais classes e abstrações existentes no PSkel para o processador MPPA-256}
         \item {Realizar uma análise de desempenho e energia sobre a solução proposta}
         \item {Realizar comparações de desempenho e consumo de energia com um processador \textit{multicore} atual}
@@ -468,6 +495,7 @@
 % \item {Suporte a aplicações estêncil iterativas}
 % \item {Particionamento flexível dos dados entre os \textit{clusters} (\textit{tiles} de dimensão arbitrária)}
 
+\section{Implementação}
 \begin{frame}\frametitle{Implementação}
     \begin{itemize}
         \item {Modelo mestre/trabalhador}
@@ -702,17 +730,17 @@
         \bibliography{bibliografia}}
 \end{frame}
 
-\section{Extra}
-\begin{frame}\frametitle{Extra}
-\begin{figure}[t]
-  \begin{minipage}[b]{0.9\textwidth}
-	\centering
-    % \caption{\textit{tiling} 2D.}
-    \includegraphics[height=5cm]{figs/tile.pdf} \\
-    % Fonte:~\cite{rocha17}
-	\label{fig:block2d}
-  \end{minipage}
-\end{figure}
-\end{frame}
+% \section{Extra}
+% \begin{frame}\frametitle{Extra}
+% \begin{figure}[t]
+%   \begin{minipage}[b]{0.9\textwidth}
+% 	\centering
+%     % \caption{\textit{tiling} 2D.}
+%     \includegraphics[height=5cm]{figs/tile.pdf} \\
+%     % Fonte:~\cite{rocha17}
+% 	\label{fig:block2d}
+%   \end{minipage}
+% \end{figure}
+% \end{frame}
 
 \end{document}
