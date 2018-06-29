@@ -27,7 +27,7 @@
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 
-\documentclass{ufscThesis}
+\documentclass{include/ufscThesis}
 	% -- opções da classe memoir --
 	% 12pt,				% tamanho da fonte
 	% openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
@@ -66,6 +66,7 @@
 \usepackage{adjustbox}
 \usepackage{pdfpages}
 \usepackage[labelsep=endash]{caption}
+\usepackage{subfigure}
 % pacotes adicionados
 % \usepackage{amsmath}
 % \usepackage{amssymb,amsfonts,amsthm}
@@ -110,7 +111,7 @@
 % \newglossarystyle{dotglos}{%
 %     \setglossarystyle{list}%
 %     \renewcommand*{\glossentry}[2]{%
-%     \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]
+%     \item[\glsentryitem{##2}\glstarget{##1}{\glossentryname{##1}}]
 %         \ifglshassymbol{##1}{[\glossentrysymbol{##1}]\quad}{}%
 %         \glossentrydesc{##1}%
 %         \unskip\leaders\hbox to 2.9mm{\hss.}\hfill##2}%
@@ -432,12 +433,12 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 
 % \glsresetall
 
-\input{cap1}
-\input{cap2}
-\input{cap3}
-\input{cap4}
-\input{cap5}
-\input{cap6}
+\input{chapters/cap1}
+\input{chapters/cap2}
+\input{chapters/cap3}
+\input{chapters/cap4}
+\input{chapters/cap5}
+\input{chapters/cap6}
 
 % ----------------------------------------------------------
 % Finaliza a parte no bookmark do PDF
@@ -476,9 +477,13 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
 
 
 \anexo
+\chapter{Implementação com o PSkel-MPPA}
+\label{Anex:Implementacao}
+\input{appendix/implementation/appendixImpl}
+
 \chapter{Artigo científico}
 
-\includepdf[pages=-]{artigo/main}
+\includepdf[pages=-]{paper/main}
 %\input{cap7}
 %---------------------------------------------------------------------
 % INDICE REMISSIVO
@@ -499,14 +504,13 @@ em até 1.45x apesar de apresentar uma perda de desempenho de até 3.3x.
     commentstyle=\color{green}\ttfamily,
     morecomment=[l][\color{magenta}]{\#}
 }
-\anexo
 \chapter{Código Fonte}
 
-\lstinputlisting[language=C++, label=l1,caption=PSkelArray.h]{./anexos/PSkelArray.h}
-\lstinputlisting[language=C++, label=l2,caption=PSkelArray.hpp]{./anexos/PSkelArray.hpp}
-\lstinputlisting[language=C++, label=l3,caption=PSkelStencil.h]{./anexos/PSkelStencil.h}
-\lstinputlisting[language=C++, label=l4,caption=PSkelStencil.hpp]{./anexos/PSkelStencil.hpp}
-\lstinputlisting[language=C++, label=l5,caption=interface\_mppa.h]{./anexos/interface_mppa.h}
-\lstinputlisting[language=C++, label=l6,caption=interface\_mppa.c]{./anexos/interface_mppa.c}
+\lstinputlisting[language=C++, label=l1,caption=PSkelArray.h]{./appendix/code/PSkelArray.h}
+\lstinputlisting[language=C++, label=l2,caption=PSkelArray.hpp]{./appendix/code/PSkelArray.hpp}
+\lstinputlisting[language=C++, label=l3,caption=PSkelStencil.h]{./appendix/code/PSkelStencil.h}
+\lstinputlisting[language=C++, label=l4,caption=PSkelStencil.hpp]{./appendix/code/PSkelStencil.hpp}
+\lstinputlisting[language=C++, label=l5,caption=interface\_mppa.h]{./appendix/code/interface_mppa.h}
+\lstinputlisting[language=C++, label=l6,caption=interface\_mppa.c]{./appendix/code/interface_mppa.c}
 
 \end{document}

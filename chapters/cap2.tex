@@ -72,18 +72,18 @@ forma, o barramento se torna o gargalo do sistema.
 
 A solução é utilizar \textit{caches} nas \cpus, possibilitando que requisições
 de leitura sejam satisfeitas pela \textit{cache}, diminuindo a quantidade de
-comunicações. Desta forma, é possível adicionar mais \cpus no barramento devido a baixa
+comunicações. Desta forma, é possível adicionar mais \cpus no barramento devido à baixa
 quantidade de tráfego. \textit{Caches} possuem protocolos de coerência para
 manter a consistência do sistema. Quando uma \cpu
 efetua uma escrita sobre uma palavra, todas as \textit{caches} que possuem essa
 palavra serão notificadas. Uma \textit{cache} com uma cópia modificada, isto é,
 diferente do dado presente na memória, deve escrever essa cópia diretamente na
 memória. Caso uma cópia exata do dado na memória esteja presente na
-\textit{cache}, ela pode ser descartada fazendo com que a \cpu acesse
+\textit{cache}, ela pode ser descartada, fazendo com que a \cpu acesse
 diretamente a memória.
 
-Além disso, é possível inserir mais níveis de \textit{cache} nas \cpus
-diminuindo o tráfego, e retirando a necessidade de mais acessos à memória
+Além disso, é possível inserir mais níveis de \textit{cache} nas \cpus,
+diminuindo o tráfego e retirando a necessidade de mais acessos à memória
 principal. Contudo, devido ao limite arquitetural, uma quantidade muito grande
 de \textit{caches} é inviável. Além disso, um tamanho muito grande para
 \textit{caches} torna o seu acesso muito lento, prejudicando o desempenho do
@@ -93,9 +93,9 @@ Sistemas multiprocessados \numa são diferentes de sistemas \uma, como mencionad
 anteriormente, devido ao acesso à memória remota ser mais lento que à memória
 local. A Figura~\ref{fig:numa} apresenta a arquitetura desse sistema, onde
 existem nós interconectados por uma rede, e cada nó possui uma \cpu e um bloco
-de memória. A \cpu de cada nó pode possuir uma \textit{cache}, possibilitando
-uma redução no tempo de acesso a um dado localizado em uma memória remota, esse
-sistema é denominado de \ccnuma. Por outro lado, um sistema sem \textit{cache} é
+de memória. A \cpu de cada nó pode possuir uma \textit{cache}, denominada
+\ccnuma, que possibilita uma redução no tempo de acesso a um dado localizado em
+uma memória remota. Por outro lado, um sistema sem \textit{cache} é
 denominado \ncnuma.
 
 \begin{figure}[t]
@@ -121,7 +121,7 @@ dedicados a atividades bem específicas, tais como decodificadores de áudio e v
 criptográficos, entre outros. Além dos processadores, esses sistemas também incluem diferentes tipos
 de interface de rede e de \es no mesmo \textit{chip}.
 
-Quando a quantidade de \textit{cores} é grande, isto é, dezenas até milhares de
+Quando a quantidade de \textit{cores} é grande, isto é, dezenas ou milhares de
 \textit{cores}, o \textit{chip} pode ser classificado como \textit{manycore}.
 Contudo, o limite para classificar um \textit{chip} em \textit{manycore} ou
 \textit{multicore} é flexível~\cite{Tanenbaum2015}.
@@ -268,7 +268,7 @@ possuem redes de interconexão de alto desempenho (alta largura de banda e baixa
 
 A comunicação em um multicomputador é feita por meio de troca de mensagens.
 Processos localizados em diferentes \cpus se comunicam por meio de mecanismos básicos
-disponibilizadas pelo \so. Esses mecanismos básicos do \so são utilizados como base para implementação
+disponibilizados pelo \so. Esses mecanismos básicos do \so são utilizados como base para implementação
 de bibliotecas de comunicação que implementam, pelo menos, duas primitivas básicas: \textit{send} e \textit{receive}.
 A primitiva \textit{send} envia uma mensagem para um processo, o que é determinado pelos
 parâmetros de entrada da mesma. A primitiva \textit{receive} é responsável pelo recebimento

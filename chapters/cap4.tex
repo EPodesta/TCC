@@ -19,14 +19,21 @@ seus códigos originais.
 % \todo[inline]{Destacar o que consiste a proposta: 1) que classes serão alteradas? 2) como será feita a comunicação dos dados? 3) será feito uso de técnicas para divisão dos tiles? quais? 4) será dado foco somente para desempenho? ou consumo de energia também? Os resultados obtidos serão comparados com quais outras arquiteturas?}
 
 
+% \begin{figure}[t]
+% 	\centering
+%     \caption{Esquemático ilustrando a implementação.}
+%     \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPA.pdf} \\
+%     Fonte: Desenvolvido pelo autor.
+%     \label{fig:visaoGeral}
+% \end{figure}
+
 \begin{figure}[t]
-	\centering
-    \caption{Esquemático ilustrando a implementação.}
-    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPA.pdf} \\
-    Fonte: Desenvolvido pelo autor.
+    \centering
+    \caption{Esquemático ilustrando a implementação mais aprofundada da proposta.}
+    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
+
     \label{fig:visaoGeral}
 \end{figure}
-
 
 
 A Figura~\ref{fig:visaoGeral} ilustra, de forma simplificada, a adaptação
@@ -100,7 +107,78 @@ final da computação de todas as iterações.
     \label{fig:tiling}
 \end{figure}
 
+% A Figura~\cite{fig:tilingA} ilustra o funcionamento da técnica de
+% \textit{tiling} trapezoidal em etapas e de forma simplificada. Mais
+% precisamente, o processo mestre terá uma matriz de entrada $A$
+% (Figura~\cite{fig:tilingA} (a)) com vários \textit{tiles}. Dentre os
+% \textit{tiles}, o processo mestre selecionará, por exemplo, o \textit{tile} do canto inferior
+% esquerdo, como apresentado pela Figura~\cite{fig:tilingA} (b). Sobre esse
+% \textit{tile} principal será adicionado uma \textit{ghost zone}, caracterizando
+% um \textit{tile} aumentado (Figuras~\ref{fig:tilingA} (c) e (d)). O
+% \textit{tile} aumentado será enviado para o processo trabalhador, onde serão
+% realizadas
 
+% \begin{figure}[!h]
+    % \centering
+    % \caption{Esquemático ilustrando a técnica de \textit{tiling} em etapas.}
+    % \flushleft
+    % \begin{subfigure}[b]{.5\textwidth}
+        % \begin{center}
+    % \includegraphics[width=\textwidth]{figs/tilingStages.pdf}\\
+        % \captionsetup{justification=centering}
+        % \caption*{(a)}
+        % \end{center}
+    % \end{subfigure}
+    % \hspace{2.5cm}
+    % \begin{minipage}[b]{0.1\textwidth}
+    % \includegraphics[width=4\textwidth]{figs/tiling2.pdf} \\
+    % \end{minipage}
+    % \hspace{2.5cm}
+    % % \hfill
+    % \begin{minipage}[b]{0.1\textwidth}
+    % \includegraphics[width=4\textwidth]{figs/tiling3.pdf} \\
+    % \end{minipage}
+    % \\
+    %
+    % % \hfill
+    % \begin{minipage}[b]{0.1\textwidth}
+    % \includegraphics[width=4\textwidth]{figs/tiling4.pdf} \\
+    % \end{minipage}
+    % \hspace{2.5cm}
+    % \begin{minipage}[b]{0.1\textwidth}
+    % \flushleft
+    % \includegraphics[width=4\textwidth]{figs/tiling7.pdf} \\
+    % \end{minipage}
+    % \hspace{2.5cm}
+    % \begin{minipage}[b]{0.1\textwidth}
+    % \flushleft
+    % \includegraphics[width=4\textwidth]{figs/tiling8.pdf} \\
+    % \end{minipage}
+    % \\
+
+
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling3.pdf} \\
+    % \end{subfigure}
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling4.pdf} \\
+    % \end{subfigure}
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling5.pdf} \\
+    % \end{subfigure}
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling6.pdf} \\
+    % \end{subfigure}
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling7.pdf} \\
+    % \end{subfigure}
+    % \begin{subfigure}
+    % \includegraphics[width=0.6\textwidth]{figs/tiling8.pdf} \\
+    % \end{subfigure}
+    % \centering
+    % Fonte:~\cite{meng11}.
+    % \label{fig:tilingA}
+% \end{figure}
 
 A seguir, a técnica será ilustrada mais profundamente
 por meio de definições formais. Seja $A$ uma matriz de dados 2D, com dimensões
@@ -225,7 +303,11 @@ comunicações e sincronizações realizadas.
 O processo de execução de uma aplicação no PSkel-MPPA segue a descrição na
 Seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
 processo e como foi realizada a comunicação no \mppa. O código da implementação
-é aberto e pode ser acessado pelo seguinte link: \url{https://github.com/pskel/pskel/tree/mppaWidth}.
+é aberto e pode ser acessado pelo seguinte link:
+\url{https://github.com/pskel/pskel/tree/mppaWidth}. Por fim, o
+anexo~\ref{Anex:Implementacao} ilustra como o desenvolvedor deverá utilizar as
+estruturas e funções do \fw \pskel para implementar uma aplicação paralela no
+\mppa.
 
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
@@ -320,17 +402,17 @@ meio de portais de comunicação inicializados em cada processo. A
 Seção~\ref{sec:comunicacao} descreve mais profundamente as características da
 comunicação na implementação.
 
-A Figura~\ref{fig:visaoGeralMestre} ilustra o esquemático atualizado da visão geral
-da proposta considerando as características do processo mestre.
+% A Figura~\ref{fig:visaoGeralMestre} ilustra o esquemático atualizado da visão geral
+% da proposta considerando as características do processo mestre.
 
 
-\begin{figure}[!h]
-	\centering
-    \caption{Esquemático ilustrando a implementação mais aprofundada do processo mestre.}
-    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPAMestre.pdf} \\
-    Fonte: Desenvolvido pelo autor.
-    \label{fig:visaoGeralMestre}
-\end{figure}
+% \begin{figure}[!h]
+% 	\centering
+%     \caption{Esquemático ilustrando a implementação mais aprofundada do processo mestre.}
+%     \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPAMestre.pdf} \\
+%     Fonte: Desenvolvido pelo autor.
+%     \label{fig:visaoGeralMestre}
+% \end{figure}
 
 
 
@@ -420,16 +502,9 @@ trabalhador transparentes ao usuário.
 \end{lstlisting}
 \end{figure}
 
-A Figura~\ref{fig:visaoGeralTrabalhador} ilustra a visão geral da implementação
-atualizada com as características do processo trabalhador.
+% A Figura~\ref{fig:visaoGeralTrabalhador} ilustra a visão geral da implementação
+% atualizada com as características do processo trabalhador.
 
-\begin{figure}[t]
-	\centering
-    \caption{Esquemático ilustrando a implementação mais aprofundada do processo trabalhador.}
-    \includegraphics[width=\textwidth, height=!]{figs/visaoGeralPSKELMPPATrabalhador.pdf} \\
-    Fonte: Desenvolvido pelo autor.
-    \label{fig:visaoGeralTrabalhador}
-\end{figure}
 
 
 \subsection{Comunicação}

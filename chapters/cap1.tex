@@ -13,8 +13,8 @@ Arquiteturas utilizadas na área de \hpc empregam processadores \textit{multicor
 processamento de uma imensa quantidade de dados em menos tempo. Supercomputadores e
 \textit{clusters} de computadores são utilizados para tornar a computação de
 aplicações ou dados tratável do ponto de vista computacional. Essas arquiteturas
-são utilizadas em aplicações científicas ou, mais atualmente, em áreas de Banco
-de Dados, devido aos problemas com \textit{Big Data}. Normalmente, arquiteturas
+são utilizadas em aplicações científicas ou, mais atualmente, no processamento
+de grandes volumes de dados em aplicações de \textit{Big Data}. Normalmente, arquiteturas
 \hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
 Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{multicore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
@@ -66,10 +66,10 @@ duas variáveis não é proporcional.
 
 
 Por essa razão, o estudo de técnicas que melhorem a eficiência energética em
-plataformas \hpc está se tornando muito importante.  Recentemente, uma nova 
+plataformas \hpc está se tornando muito importante.  Recentemente, uma nova
 classe de processadores \textit{manycore} de baixa potência, tais como, o Sunway
 SW26010~\cite{sunway:2016}, Mellanox TILE-Gx~\cite{Valero:2012} e Kalray
-\mppa~\cite{Castro-IA3:2013} foram desenvolvidos. Esses processadores possuem
+\mppa~\cite{Castro-IA3:2013}, foi desenvolvida. Esses processadores possuem
 centenas de núcleos de processamento capazes de lidar com paralelismo de dados e
 tarefas com baixo consumo de energia.
 
@@ -86,8 +86,8 @@ comunicando.
 %Explicar as dificuldades.
 
 O \mppa possui 256 núcleos distribuídos em 16 \textit{clusters}, denominados
-\pes, e 4 subsistemas de \es. O ambiente do \mppa é heterogêneo, sendo utilizado
-entre os \textit{clusters} e subsistemas uma comunicação via \noc, e
+\pes, e 4 subsistemas de \es. O ambiente do \mppa é heterogêneo, sendo
+utilizada, entre os \textit{clusters} e subsistemas, uma comunicação via \noc e
 dentro de cada \textit{cluster} são utilizadas comunicações diretas entre
 \pes, por meio de memória compartilhada. As principais dificuldades do
 desenvolvimento de aplicações para o \mppa são resumidas a seguir:
@@ -167,6 +167,11 @@ As contribuições principais deste trabalho foram publicadas em diferentes even
 Abaixo são apresentados os artigos publicados:
 
 \begin{itemize}
+    \item PODESTA JUNIOR, E. ; MARQUES, B. ; CASTRO, M. \textbf{Energy Efficient
+            Stencil Computations on the Low-Power Manycore MPPA-256 Processor}.
+        In: Conferência Européia Internacional de Computação Paralela e
+        Distribuída (EURO-PAR), 2018, Turin, Itália.
+
 	\item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO, MÁRCIO ; GOES, L. F. W. \textbf{Execução Energeticamente Eficiente de Aplicações Estêncil com o Processador Manycore MPPA-256}. In: Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD), 2017, Campinas. Anais do Simpósio em Sistemas Computacionais de Alto Desempenho (WSCAD). Porto Alegre: SBC, 2017. v. 1. p. 52-63.
 
 	\item PODESTA JUNIOR, E. ; PEREIRA, A. D. ; ROCHA, R. C. O. ; CASTRO, M. ; GOES, L. F. W. \textbf{Uma Implementação do Framework PSkel com Suporte a Aplicações Estêncil Iterativas para o Processador MPPA-256}. In: Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS), 2017, Ijuí. Anais da Escola Regional de Alto Desempenho do Estado do Rio Grande do Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação, 2017. v. 1. p. 395-398.

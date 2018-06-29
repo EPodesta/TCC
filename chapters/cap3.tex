@@ -23,7 +23,7 @@ de baixa potência \emph{Myriad2}. Esse processador possui uma arquitetura
 heterogênea, tendo como alvo dispositivos com limites em questão de energia.
 O \fw \emph{SkePU} provê uma interface de programação para esqueletos paralelos
 como o \textit{map}, \textit{reduce}, e \textit{stencil}, com suporte para
-diferentes \textit{back-ends}, incluindo processadores \textit{multicores} e \gpus.
+diferentes \textit{back-ends}, incluindo processadores \textit{multicore} e \gpus.
 
 %------Trabalho relacionado sobre técnicas de tiling sobre o padrão estêncil.
 %------Deixar para mencionar sobre trabalhos relacionados à isso.
@@ -75,8 +75,10 @@ energética em relação a um processador \textit{multicore} de propósito geral
 o Intel Xeon W5590, e em relação a uma \gpu NVIDIA Tesla C2070.
 
 Mais especificamente, \emph{Francesquini}~\etal~\cite{Castro-IA3-JPDC:2014} analisaram
-três diferentes classes de aplicações (CPU-\textit{bound}, \textit{memory-bound}
-e híbrida) usando plataformas paralelas, como o \mppa, e um multiprocessador \numa de
+três diferentes classes de aplicações (CPU-\textit{bound}\footnote{O desempenho
+    da aplicação é limitado pela velocidade da CPU.},
+\textit{memory-bound}\footnote{O desempenho da aplicação é limitado pela quantidade de memória disponível e velocidade de acesso à memória.}
+e híbrida\footnote{Aplicação com características CPU-\textit{bound} e \textit{memory-bound}}.) usando plataformas paralelas, como o \mppa, e um multiprocessador \numa de
 192 núcleos e 24 nós. Mostrou-se que arquiteturas \textit{manycore} podem ser muito
 competitivas, mesmo se a aplicação é, naturalmente, irregular. Os resultados mostraram
 que o \mppa pode obter um desempenho maior (e um consumo de energia menor) que um
@@ -87,6 +89,23 @@ em relação ao \mppa, apesar de apresentar também um maior consumo de energia.
 Entre as plataformas avaliadas, o \mppa apresentou a melhor eficiência
 energética, reduzindo a energia consumida em aplicações \cpu{}-\textit{bound},
 híbridas e \textit{memory-bound} em 6.9x, 6.5x e 3.8x, respectivamente.
+
+\section{Discussão}
+
+Similar ao \fw \emph{SkePU}, o \pskel fornece suporte à aplicações
+paralelas baseadas no padrão estêncil em ambientes heterogêneos CPU-GPU.
+Contudo, o \pskel não oferece suporte à processadores
+\textit{manycore}. Além disso, com base nos estudos sobre processadores
+\textit{manycore}, pode-se perceber que o processador \mppa possui um consumo
+energético superior em relação à processadores \textit{multicores}. O \mppa
+apresenta dificuldades que podem ser solucionadas com técnicas de
+\textit{tiling}, como mostrado em~\cite{lutz13}.
+Desta forma, a adaptação do \fw \pskel para um
+processador de baixo consumo de energia e alto desempenho, como o \mppa, é
+interessante para caracterizar um novo estudo sobre a utilização de \fws em
+ambientes heterogêneos. Por fim, estudos sobre técnicas de \textit{tiling} se
+tornam importantes na proposta apresentada, devido à capacidade limitada de
+memória no \mppa.
 
 % Trabalhos recentes que propuseram APIs e ambientes de execução para
 % \emph{manycores}. Em~\cite{TSHMEM:2013}, os autores propuseram uma adaptação
