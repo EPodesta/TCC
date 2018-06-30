@@ -1,0 +1,46 @@
+
+* Minha filiação atual não é da UFSC. É "Univ. Grenoble Alpes, Inria, CNRS,
+* Grenoble INP, LIG".
+* O que seria "imensa quantidade de dados"?
+* O que significa "aumentar os núcleos continuamente"? Aumentar em número?
+* Tamanho? Complexidade? Desempenho?
+* "potência máxima aceitável para supercomputadores Exascale" já está sendo
+* considerada como até 30MW.
+* Vários termos usados em inglês poderiam ser traduzidos para o português. Isso
+* até melhoraria a legibilidade do texto. Exemplos seriam comunicação
+* interprocessos e esqueletos. Além disso, seria bom uniformizar o uso desses
+* termos pelo texto.
+* O que é um "ambiente importante"?
+* "Atualmente, aceleradores com uma grande quantidade cores estão surgindo, como
+* o Xeon Phi da Intel com
+60 cores." - isso já existe desde 2013, acho que não conta como surgindo mais ;)
+* Ao falar de topologias de rede, seria bom explicar o que é o diâmetro da rede.
+* O que seria "boa portabilidade, um bom desempenho e escalabilidade"?
+* O código 4 está sem o 'A(x,y)' do Jacobi. Seria bom ter códigos equivalentes
+* no Código 3 e no Código 4.
+* O "processador NUMA" ao fim dos trabalhos relacionados é um sistema todo NUMA,
+* não um processador.
+* Dada a definição apresentada na Seção 4.2, seria interessante adicionar ali o
+* cálculo do sobrecusto de cálculo para um dado t', w', h' e r.
+* Talvez não seja o caso de ficar chamando de 'valores incorretos' os valores da
+* ghost zone que vão ficando desatualizados conforme o cálculo. 'valores
+* desatualizados' me parece um termo mais natural.
+* Faltam detalhes da plataforma experimental. Sugiro reler "Scientific
+* Benchmarking of Parallel Computing Systems: Twelve ways to tell the masses
+* when reporting performance results".
+* "Esse comportamento é devido ao processo de construção de um tile alargado,
+* onde é necessário realizar
+manualmente cálculos de offsets, e envios prévios de dados de controle ao
+processo trabalhador." - mais explicações precisam ser dadas aqui para realmente
+ficar claro o que acontece.
+* A medição de energia para o sistema com processador Intel inclui apenas a
+* energia do processador ou de outros componentes também? Isto não está claro no
+* texto.
+* Dado que as últimas modificações no repositório são de setembro do ano
+* passado, por que não chegaste a fazer o software prefetching?
+* O documento está com dois "Anexo A"
+* Correções: "utilizando-se diversas", "grande quantidade cores", "contendo cada
+* cluster, 16 PEs e 1 RM", "pelo processo o mestre", "As dificuldades na
+* computação paralela tem", "NVDIA", "energia de até 13 vezes menor", "Devido as
+* operações", "tiles à outro", "irredutívelmente", "o novo valor de ui,j é
+* obtida", "em relação à apenas um" )

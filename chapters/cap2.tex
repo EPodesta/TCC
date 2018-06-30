@@ -110,7 +110,7 @@ Com o desenvolvimento de novas tecnologias, o tamanho
 dos transistores diminuiu significativamente, se tornando possível inserir um
 grande número de transistores em um único \textit{chip}.
 Com o aumento da quantidade de transistores, um \textit{chip} pode ter, por
-exemplo, várias \cpus, denominadas \textit{cores}, caracterizando um
+exemplo, várias \cpus (núcleos), caracterizando um
 \textit{chip} \textit{multicore}.
 Geralmente chamados de \cmps, os \textit{multicores} são semelhantes aos multiprocessadores
 tradicionais, contudo, devido à proximidade de conexão entre \cpus, falhas em um
@@ -121,26 +121,26 @@ dedicados a atividades bem específicas, tais como decodificadores de áudio e v
 criptográficos, entre outros. Além dos processadores, esses sistemas também incluem diferentes tipos
 de interface de rede e de \es no mesmo \textit{chip}.
 
-Quando a quantidade de \textit{cores} é grande, isto é, dezenas ou milhares de
-\textit{cores}, o \textit{chip} pode ser classificado como \textit{manycore}.
+Quando a quantidade de núcleos é grande, isto é, dezenas ou milhares de
+núcleos, o \textit{chip} pode ser classificado como \textit{manycore}.
 Contudo, o limite para classificar um \textit{chip} em \textit{manycore} ou
 \textit{multicore} é flexível~\cite{Tanenbaum2015}.
-Atualmente, aceleradores com uma grande quantidade \textit{cores} estão
-surgindo, como o Xeon Phi da Intel com 60 \textit{cores}.
+% Atualmente, aceleradores com uma grande quantidade núcleos estão
+% surgindo, como o Xeon Phi da Intel com 60 núcleos.
 
-Com vários \textit{cores} em um único \textit{chip} problemas de coerência de
+Com vários núcleos em um único \textit{chip} problemas de coerência de
 \textit{cache} começam a surgir. Mais especificamente, com o aumento no número
-de \textit{cores}, o custo sobre o protocolo de coerência vai crescer até que
-aumentar o número de \textit{cores} não auxiliará mais o desempenho, pois o sistema
+de núcleos, o custo sobre o protocolo de coerência vai crescer até que
+aumentar o número de núcleos não auxiliará mais o desempenho, pois o sistema
 estará gastando muito tempo mantendo as \textit{caches} consistentes.
 
 
 Atualmente, sistemas computacionais comuns apresentam uma \gpu, onde temos
-milhares de \textit{cores} disponíveis. \gpus utilizam esses \textit{cores},
+milhares de núcleos disponíveis. \gpus utilizam esses núcleos,
 essencialmente, para a solução de cálculos, focando menos em questões de
 \textit{cache} e lógica de controle. Desta forma, elas são utilizadas em
 pequenas computações que podem ser paralelizadas. Contudo, a programação para
-\gpus é difícil, pois os seus \textit{cores} fazem a execução da mesma instrução
+\gpus é difícil, pois os seus núcleos fazem a execução da mesma instrução
 com diferentes partes do dado, isto é, são máquinas \simd. Esse modelo de
 programação é interessante para abordar o paralelismo de dados, contudo, o
 desenvolvedor pode se deparar com dificuldades durante o desenvolvimento.
@@ -148,7 +148,7 @@ Desta forma, linguagens de programação, como CUDA e \opencl,
 abstraem o desenvolvimento de aplicações para esses processadores.
 
 O \mppa é um processador \textit{manycore} diferente dos apresentados acima,
-pois os seus \textit{cores} são conectados atraves de uma \noc. Mais detalhes
+pois os seus núcleos são conectados atraves de uma \noc. Mais detalhes
 sobre o \mppa serão apresentados posteriormente na Seção~\ref{sec:mppa}, tendo
 em vista que ele possui também características relacionadas a multicomputadores.
 
@@ -245,6 +245,10 @@ A Figura~\ref{fig:topologia}e ilustra uma topologia tridimensional, e a
 Figura~\ref{fig:topologia}f ilustra um cubo tetradimensional. Topologias
 $n$ dimensionais são utilizadas para diminuir o atraso de comunicação entre nós,
 pois o diâmetro da rede cresce linearmente de acordo com a dimensionalidade.
+Mais precisamente, o diâmetro da rede é o número mínimo de nós que o
+pacote precisa cruzar antes de chegar ao destino mais distante possível. Desta
+forma, topologias $n$ dimensionais permitem que o diâmetro da rede seja maior,
+utilizando mais conexões entre nós e reduzindo o atraso de comunicação.
 Devido a essa propriedade, topologias $n$ dimensionais são utilizadas em
 vários sistemas.
 
@@ -259,7 +263,7 @@ vários sistemas.
 
 %Cow Now
 Geralmente, multicomputadores podem ser construídos com computadores pessoais
-comuns interconectados por uma \textit{interface} de rede para trabalharem em
+comuns interconectados por uma interface de rede para trabalharem em
 conjunto. Organizações de multicomputadores deste tipo são denominadas de \now. Devido à sua
 simplicidade, esse sistema não é focado em ganho de desempenho. Por outro lado, \cow
 são constituídos de computadores interconectados sem teclado, monitor e \textit{mouse} contendo cada
@@ -299,7 +303,7 @@ Os núcleos de processamento do \mppa são denominados \pes.
 Além dos \pes, o processador possui 32 núcleos dedicados à gerência de recursos
 denominados  \rmans. \pes e \rmans são distribuídos
 fisicamente no \textit{chip} em 16 \textit{clusters} e 4 subsistemas de \es,
-contendo cada \textit{cluster}, 16 \pes e 1 \rman. Além dos \textit{clusters}, o
+onde cada \textit{cluster} contém 16 \pes e 1 \rman. Além dos \textit{clusters}, o
 \mppa possui 4 subsistemas de \es contendo, cada um, 4 \rmans. Toda a comunicação
 entre \textit{clusters} e/ou subsistemas de \es é feita através de uma \noc
 \textit{torus} 2D. A arquitetura do \mppa pode ser vista na
@@ -384,10 +388,9 @@ no processador \mppa.
 
 Para evitar uma programação de baixo nível sobre um sistema multiprocessado, são
 utilizadas \apis para o desenvolvimento de aplicações, como o OpenMP. O OpenMP
-é um modelo de programação baseado em memória compartilhada, e apresenta boa
-portabilidade, um bom desempenho e escalabilidade. Devido à abstração que a \api
-fornece, o desenvolvimento de aplicações para o ambiente multiprocessado é
-facilitado, permitindo paralelização de aplicações com variáveis de ambiente e
+é um modelo de programação baseado em memória compartilhada e provê uma maior
+facilidade no desenvolvimento de aplicações para o ambiente multiprocessado,
+permitindo a paralelização de aplicações com variáveis de ambiente e
 diretivas de compilação.
 
 O OpenMP utiliza o modelo \textit{fork-join}, onde a execução inicia com uma
@@ -420,9 +423,9 @@ cópia privada da variável. Desta forma, as modificações sobre elas serão fe
 \textit{thread}.
 
 As diretivas do OpenMP, além de determinar regiões paralelas, possibilitam
-paralelizar \textit{loops} de maneira automática, onde as iterações
-do \textit{loop} são distribuídas, de forma automática e flexível, sobre as
-\textit{threads} da região paralela. A paralelização das iterações do \textit{loop} é mostrada na linha 6 do
+paralelizar laços de maneira automática, onde as iterações
+do laço são distribuídas, de forma automática e flexível, sobre as
+\textit{threads} da região paralela. A paralelização das iterações do laço é mostrada na linha 6 do
 Código~\ref{cod:exemplo-openmp} com uso da cláusula \texttt{for}. Além disso, operações de redução podem ser
 utilizadas ao fim de uma região paralela, aplicando sobre uma variável a
 operação especificada. Ao final da região paralela, o resultado é atribuído a uma variável compartilhada. A redução
@@ -655,22 +658,24 @@ mensagem de um processo para todos os outros processos do sistema de forma otimi
 % }
 
 O \mppa possui uma arquitetura interessante que permite a execução de aplicações paralelas
-que seguem um modelo \textit{mestre/escravo}. Nesse modelo, o processo \textit{mestre} é responsável
-pela coordenação e pela divisão das tarefas entre os processos \textit{escravos}. Os processos \textit{escravos},
+que seguem um modelo mestre/trabalhador. Nesse modelo, o processo mestre é responsável
+pela coordenação e pela divisão das tarefas entre os processos
+trabalhadores. Os processos trabalhadores,
 por outro lado, são responsáveis por receber tarefas e computá-las, devolvendo os resultados para o processo
 mestre. No \mppa, o processo mestre é executado em um \rman no subsistema de
-\es, e é responsável por inicializar os processos escravos. Cada processo escravo
+\es, e é responsável por inicializar os processos trabalhadores. Cada processo trabalhador
 é executado em um \textit{cluster} distinto, podendo criar até 16 \textit{threads} \posix, uma para cada \pe.
 
-A Figura~\ref{fig:MPPAIPCTutorial} ilustra o funcionamento do modelo mestre/escravo
+A Figura~\ref{fig:MPPAIPCTutorial} ilustra o funcionamento do modelo mestre/trabalhador
 no \mppa. O processo mestre será responsável por iniciar os
 \textit{clusters} por meio da função \texttt{MPPA\_Spawn()}.
 O \mppa não possui suporte para o \mpi, desta forma, os processos mestre e
-escravos utilizam objetos de comunicação, como portais e filas, de
+trabalhadores utilizam objetos de comunicação, como portais e filas, de
 uma \api proprietária de baixo nível do \mppa, similar à \posix \ipc.
 
-Cada processo escravo possui um espaço de endereçamento distinto, desta forma,
-são utilizados portais para efetuar a comunicação entre o mestre e os escravos, e entre escravos. Os
+Cada processo trabalhador possui um espaço de endereçamento distinto, desta forma,
+são utilizados portais para efetuar a comunicação entre o mestre e os
+trabalhadores, e entre trabalhadores. Os
 portais efetuam escrita e leitura remota, onde um processo deve criar um portal
 com uma classificação, denominada \textit{tag}, e relacionar o portal com um
 espaço de endereçamento para realizar a comunicação.
@@ -684,18 +689,19 @@ endereçamento em que o dado será armazenado.
 
 \begin{figure}
 	\centering
-	\caption{Esquemático do modelo mestre/escravo no \mppa.}
+	\caption{Esquemático do modelo mestre/trabalhador no \mppa.}
 	\includegraphics[width=0.5\textwidth]{figs/MPPAIPCTutorial.pdf} \\
     Fonte: Manual do \mppa.
 	\label{fig:MPPAIPCTutorial}
 \end{figure}
 
 Um programa para o \mppa é composto por, pelo menos, dois arquivos principais:
-um deles conterá o código a ser executado pelo processo o mestre e outro conterá o código
-a ser executado por cada processo escravo. Esses arquivos são compilados separadamente,
-gerando dois arquivos binários (um para o processo mestre e outro para os processos escravos).
-O binário dos escravos é utilizado como argumento de entrada da função \texttt{MPPA\_Spawn()}
-descrita anteriormente durante a criação dos processos escravos.
+um deles conterá o código a ser executado pelo processo mestre e outro conterá o código
+a ser executado por cada processo trabalhador. Esses arquivos são compilados separadamente,
+gerando dois arquivos binários (um para o processo mestre e outro para os
+processos trabalhadores).
+O binário dos trabalhadores é utilizado como argumento de entrada da função \texttt{MPPA\_Spawn()}
+descrita anteriormente durante a criação dos processos trabalhadores.
 
 Trabalhos anteriores mostraram que desenvolver aplicações paralelas otimizadas
 para o \mppa é um grande desafio~\cite{Castro-IA3-JPDC:2014} devido a alguns
@@ -731,7 +737,7 @@ de um \pe quando necessário.
 \section{O Padrão \textit{Stencil}}
 \label{sec:stencil}
 
-As dificuldades na computação paralela tem um grande impacto no desenvolvimento de aplicações. Com o
+As dificuldades na computação paralela proporcionam um grande impacto no desenvolvimento de aplicações. Com o
 desenvolvimento de aplicações paralelas, começou-se a notar um padrão entre
 elas. Com isso, foram criados os padrões paralelos para simplificar o
 desenvolvimento de código.
@@ -739,7 +745,7 @@ desenvolvimento de código.
 % London: Pitman; 1989.}
 % McCool MD. Structured parallel programming with deterministic patterns. Proceedings of the 2Nd USENIX Conference on Hot Topics in Parallelism, HotPar'10, USENIX Association, Berkeley, CA, 2010; 5–5.
 Para uma maior abstração e redução da complexidade dos padrões, foram propostos
-esqueletos paralelos (\textit{skeletons}). Na programação paralela com esqueletos, o esqueleto é responsável por
+esqueletos paralelos. Na programação paralela com esqueletos, o esqueleto é responsável por
 gerenciar o controle de tarefas e dados, retirando essa responsabilidade do
 desenvolvedor. Desta forma, é possível simplificar grande parte do
 desenvolvimento de aplicações paralelas e auxiliar em outras funções que podem
@@ -784,7 +790,8 @@ utilizados na computação. A máscara é aplicada sobre $A$ para determinar o v
 célula da matriz de saída ($B$). No exemplo da Figura~\ref{fig:stencil}, o
 valor de cada célula da matriz de saída é determinado em função dos
 valores de cada uma das células vizinhas adjacentes da matriz de entrada. Esse processo é realizado
-para todas as células da matriz de entrada, produzindo uma matriz de saída contendo o resultado da computação \stencil. Além disso, o padrão possibilita a computação
+para todas as células da matriz de entrada, produzindo uma matriz de saída
+contendo o resultado da computação \stencil. Além disso, o padrão possibilita a computação
 iterativa, isto é, ao final de uma iteração, a matriz de saída será
 considerada como a matriz de entrada para a próxima iteração,
 caracterizando uma nova iteração da computação.
@@ -813,30 +820,30 @@ enquanto o \fw se encarrega de gerar código executável para as diferentes
 plataformas paralelas e realizar todo o gerenciamento de memória e transferência
 de dados entre dispositivos de forma transparente~\cite{pereira15}. Mais
 especificamente, o \pskel traduz as abstrações em código C++ de baixo nível,
-compatível com Intel TBB e NVDIA CUDA.
+compatível com Intel TBB e NVIDIA CUDA.
 
 A \api do PSkel possibilita a definição de \textit{templates} para a manipulação
 de estruturas $n$-dimensionais, denominadas \texttt{Array} (1 dimensão),
 \texttt{Array2D} (2 dimensões) e \texttt{Array3D} (3 dimensões). Além disso, o
-\fw provê abstrações para a definição da vizinhança do \stencil (\texttt{Mask})
+\fw provê abstrações para a definição da vizinhança do \stencil (máscara)
 e o \textit{kernel} da computação \stencil (\texttt{stencilKernel()}). O
 \texttt{stencilKernel()} é um método a ser implementado pelo usuário que
 descreve, especificamente, a computação que será executada para cada célula do
-\texttt{Array} de entrada com base nos valores de sua vizinhança (\texttt{Mask}).
+\texttt{Array} de entrada com base nos valores de sua vizinhança (máscara).
 
 Desta forma, o desenvolvedor deverá seguir os seguintes passos para desenvolver
 uma aplicação \stencil com \pskel:
 
 \begin{enumerate}
 	\item Identificar a dimensão do problema, construindo estruturas de acordo com
-	os \textit{containers} especificados pelo \fw;
+	os recipientes especificados pelo \fw;
 
 	\item Definir o método \texttt{stencilKernel()} que descreve a computação executada
 	sobre os elementos da máscara e do \texttt{Array} de entrada;
 
 	\item Instanciar um ou mais objetos \texttt{Stencil} para gerenciar os encapsulamentos,
 	alocação de memória e chamadas para efetuar a computação determinada pelo método
-	\texttt{stencilKernel()}. Mais especificamente, os \textit{containers} são estruturas que
+	\texttt{stencilKernel()}. Mais especificamente, os recipientes são estruturas que
 	armazenam \texttt{Arrays} para leitura/escrita de dados. Eles são responsáveis por
 	gerenciar a alocação de memória na \cpu e \gpu de maneira transparente.
 
@@ -851,7 +858,7 @@ uma aplicação \stencil com \pskel:
 % \includegraphics[width=0.3\columnwidth]{figs/tile.pdf}
 % \caption{ Diagrama do \textit{tiling} 2D. Um \textit{tile} lógico (linha interna sólida) é contido dentro do Array
 %     2D (linha externa pontilhada) com \textit{offsets} verticais e horizontais dado por $j  h^\prime$
-%     e $i  w^\prime$. Computar $t^\prime$ consecutivas iterações estêncil no \textit{tile} requer um aumento no
+%     e $i  w^\prime$. Computar $t^\prime$ consecutivas iterações stencil no \textit{tile} requer um aumento no
 %     \textit{tile} lógico com uma \textit{ghost zone} (área entre a linha interna sólida e a linha externa sólida), que é constituída
 %     de regiões \textit{halo} (área entre a linha interna sólida e a linha interna pontilhada).}
 % \label{fig:gputile}
@@ -867,7 +874,7 @@ uma aplicação \stencil com \pskel:
 	__parallel__ void
 	stencilKernel(Array2D<float> A, Array2D<float> B, Mask2D<int> mask,
 								struct Arguments args, int x, int y){
-		B(x,y) = args.alpha * (A(x,y+1) + A(x,y-1) + A(x+1,y)
+		B(x,y) = args.alpha * (A(x,y) + A(x,y+1) + A(x,y-1) + A(x+1,y)
                            + A(x-1,y));
 	}
 
@@ -890,7 +897,7 @@ uma aplicação \stencil com \pskel:
 \end{figure}
 
 Em uma aplicação \stencil iterativa, cada iteração utiliza a máscara de
-vizinhança (\texttt{Mask}) sobre o \texttt{Array} de entrada para determinar o
+vizinhança sobre o \texttt{Array} de entrada para determinar o
 valor de cada célula do \texttt{Array} de saída. No exemplo da
 Figura~\ref{fig:stencil}, o valor de cada célula do \texttt{Array} de saída é
 determinado em função dos valores de cada uma das células vizinhas adjacentes.
@@ -906,7 +913,7 @@ As estruturas para efetuar a computação, como o \texttt{Array} de entrada (\te
 O formato da vizinhança é especificado na linha 12, sendo guardado na variável \texttt{neighbors}.
 Então, a máscara é construída na linha 13 com base na vizinhança definida anteriormente.
 Estruturas como \texttt{Array2D}, \texttt{Mask2D}, são exemplos dos
-\textit{containers} disponibilizados pelo \fw. A classe de \textit{runtime} é
+recipientes disponibilizados pelo \fw. A classe de \textit{runtime} é
 determinada pela estrutura \texttt{Stencil2D} (linha 16), onde ao efetuar a chamada para
 função \texttt{runIterative()} (linha 18), a execução da computação irá iniciar.
 
@@ -914,7 +921,7 @@ função \texttt{runIterative()} (linha 18), a execução da computação irá i
 
 É possível notar que o \textit{kernel} da computação \stencil (linha 4) fica mais simplificado em relação ao
 código original do Jacobi mostrado anteriormente (Código~\ref{cod:exemplo-stencil}), pois as iterações da aplicação
-(\texttt{tsteps}) e os \textit{loops} de computação sobre as matrizes ficam implícitos, sendo
+(\texttt{tsteps}) e os laços de computação sobre as matrizes ficam implícitos, sendo
 gerenciados pelo \fw. Os elementos das matrizes são determinados pelos
 parâmetros \texttt{x} e \texttt{y} da função \texttt{stencilKernel()}. Além disso, o coeficiente
 da aplicação Jacobi é passado como parâmetro por uma \texttt{struct} denominada

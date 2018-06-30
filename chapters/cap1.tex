@@ -10,15 +10,20 @@ forma, as indústrias começaram a investir em outros meios para aumentar o
 desempenho de arquiteturas, como, por exemplo, os processadores \textit{multicore}.
 
 Arquiteturas utilizadas na área de \hpc empregam processadores \textit{multicore} para atingir um
-processamento de uma imensa quantidade de dados em menos tempo. Supercomputadores e
+processamento de uma imensa quantidade de dados em menos tempo. Mais especificamente,
+aplicações com uma grande quantidade de operações, como aplicações para
+previsões metereológicas ou processamento de imagens, são exemplos onde temos
+uma grande quantidade de dados. Operações com imagens grandes, por exemplo,
+podem levar muito tempo para finalizar, pois há uma grande quantidade de
+elementos que devem ser processados. Desta forma, supercomputadores e
 \textit{clusters} de computadores são utilizados para tornar a computação de
 aplicações ou dados tratável do ponto de vista computacional. Essas arquiteturas
 são utilizadas em aplicações científicas ou, mais atualmente, no processamento
 de grandes volumes de dados em aplicações de \textit{Big Data}. Normalmente, arquiteturas
 \hpc são compostas por processadores do tipo \cpu{} e aceleradores, tais como \gpu.
-Atualmente, os núcleos (\textit{cores}) de arquiteturas \textit{multicore}
+Atualmente, o número de núcleos (\textit{cores}) em arquiteturas \textit{multicore}
 aumentam continuamente. A Figura~\ref{fig:graphCores} mostra o número total de
-\textit{cores} do supercomputador em primeiro lugar no \textit{ranking} do
+núcleos do supercomputador em primeiro lugar no \textit{ranking} do
 TOP500\footnote{\url{http://top500.org}}, confirmando esse comportamento.
 % \todo[inline]{Adicionar comentário sobre imagem de \textit{cores}}
 
@@ -52,8 +57,10 @@ desempenho de forma escalável nestas plataformas.
 Essa preocupação com o aumento de energia é ressaltada pelo relatório emitido
 pelo Departamento de Defesa do Governo dos Estados Unidos (DARPA/IPTO)
 ~\cite{Kogge2008}. O relatório ressalta que a potência máxima aceitável para supercomputadores
-\textit{Exascale} (10$^{18}$ \flops) seria de 20 MW, isto é, com
-essas características, um supercomputador deveria possuir uma eficiência energética de 50 GFlops/W.
+\textit{Exascale} (10$^{18}$ \flops) seria de 20 MW\footnote{Atualmente, a
+    potência máxima está sendo considerada em até 30 MW}, isto é, com
+essas características, um supercomputador deveria possuir uma eficiência
+energética de 50 GFlops.
 Por outro lado, atualmente, os supercomputadores mais energicamente eficientes
 possuem uma eficiência energética de no máximo $17$ GFlops/W, como pode ser observado nos dados extraídos do \textit{ranking}
 Green500\footnote{\url{https://www.top500.org/green500/}} mostrados na Figura~\ref{fig:graphEnergy}.
@@ -108,17 +115,17 @@ com as \textit{caches} dos demais PEs, sendo necessário atualizar a \textit{cac
 \end{itemize}
 
 Uma possível solução para os problemas apresentados anteriormente é a utilização de padrões
-paralelos ou \textit{skeletons}~\cite{cole-skeleton:2004}. \textit{Skeletons}
+paralelos ou esqueletos~\cite{cole-skeleton:2004}. Esqueletos
 são modelos de programação paralela de alto nível de abstração. Esses modelos fornecem
 vantagens para o desenvolvedor, escondendo a complexidade de aplicações
-paralelas e distribuídas. Os \textit{Skeletons} especificam, mais precisamente,
+paralelas e distribuídas. Os esqueletos especificam, mais precisamente,
 os padrões de acesso de dados e comunicação. Desta forma, eles possibilitam aos
 desenvolvedores focarem apenas nos algoritmos, ao invés da comunicação,
 sincronização de tarefas e escalonamento, que são gerenciados de forma
-transparente pelo \fw que implementa um \textit{skeleton}.
-Entre os diversos \textit{skeletons} existentes (\textit{map}, \textit{reduce},
-\textit{pipeline} e \textit{scan}), o padrão \stencil é o mais
-utilizado em ambientes importantes, como física quântica, previsão do tempo e
+transparente pelo \fw que implementa um esqueleto.
+Entre os diversos esqueletos existentes (\textit{map}, \textit{reduce},
+\textit{pipeline} e \textit{scan}), o padrão \stencil é
+utilizado em ambientes industriais e acadêmicos, como física quântica, previsão do tempo e
 processamento de imagens~\cite{gonzalez06,holewinski12}.
 
 %Explicar Stencil? Imagens?
@@ -130,7 +137,7 @@ utilização de um \fw pode facilitar o desenvolvimento de aplicações para
 ambientes onerosos, como ambientes \textit{manycore}.
 
 Muitos \fws foram propostos para o auxílio no desenvolvimento de aplicações paralelas do
-padrão \stencil, como o
+padrão estêncil, como o
 PSkel~\cite{pereira15}, SkePU~\cite{enmyren10} e SkelCL~\cite{steuwer11}. Em
 particular, o PSkel é um \fw que fornece uma abstração em alto nível para o
 desenvolvimento em ambientes heterogêneos CPU-GPU, enquanto particiona tarefas e
@@ -157,7 +164,7 @@ no \mppa sem nenhuma necessidade de alteração de código.
 	\item Propor e implementar técnicas que permitam reduzir os custos de comunicação na \noc;
 	\item Adaptar as principais classes e abstrações existentes no \pskel para o processador \mppa;
 	\item Realizar uma análise do desempenho e do consumo de energia da solução proposta para o \mppa
-	utilizando-se diversas aplicações \stencil já implementadas no \pskel;
+	utilizando diversas aplicações estêncil já implementadas no \pskel;
 	\item Realizar comparações de desempenho e consumo de energia com um processador \textit{multicore} atual.
 \end{itemize}
 

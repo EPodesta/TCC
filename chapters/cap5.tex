@@ -2,8 +2,12 @@
 \label{cha:experimentos}
 
 Neste capítulo é avaliado o desempenho e o consumo energético de aplicações
-\stencil do \pskel quando executadas no \mppa e em um processador Intel Xeon
-E5-2640 v4 com 10 núcleos de 2.4GHz e 64GB de \ram (Broadwell). As medições de energia no \mppa
+\stencil do \pskel quando executadas no \mppa e em um sistema \numa com dois
+nós. Mais especificamente, o sistema contém duas \cpu{s} Intel Xeon
+E5-2640 v4 com 10 núcleos de 2.4GHz, onde cada núcleo possui 2 \textit{threads}, e 64GB DDR4-1600 de \ram com uma largura de
+banda máxima de 68.3 GB/s. O processador Intel Xeon é baseado na
+microarquitetura Broadwell com uma interconexão \qpi de 8 GT/s e uma potência
+média de 90 W. As medições de energia no \mppa
 foram feitas considerando todos os \textit{clusters}, a memória, os subsistemas
 de \es e a \noc, onde foram coletadas por meio dos sensores de potência e
 energia disponíveis no \mppa. Como o \mppa possui características intrínsecas do
@@ -11,7 +15,8 @@ próprio processador que garantem uma baixa variabilidade entre as execuções, 
 realizadas somente 5 repetições de cada experimento, computando-se a média
 aritmética dos valores. Todos os experimentos no \mppa consideraram 16
 \pes por \textit{cluster}. Por outro lado, as medições de energia e de tempo de execução no
-processador Intel foram feitas com auxílio do \rapl através da biblioteca PAPI~\cite{papi12}.
+sistema \numa consideraram apenas um nó e foram feitas com auxílio do \rapl através da biblioteca
+PAPI~\cite{papi12}, considerando a memória e todos os núcleos.
 Em cada experimento foram utilizadas 10 \textit{threads} sem uso de
 \textit{hyperthreading}. Os resultados mostram a média aritmética de 30
 execuções. Por fim, todos os resultados mostraram um desvio padrão menor que
@@ -24,7 +29,7 @@ uma quantidade de 10 iterações internas para cada \textit{cluster}, garantindo
 que a quantidade de memória utilizada fosse menor do que 2 MB (tamanho da memória
 local do \textit{cluster}). Além disso,
 para os experimentos terem uma quantidade significativa de sincronizações sobre
-a execução de cada aplicação, foi adotado 30 iterações para cada aplicação.
+a execução de cada aplicação, foram utilizadas 30 iterações para cada aplicação.
 
 \section{Aplicações \stencil}
 \label{cha:aplicacoes}
@@ -32,20 +37,19 @@ a execução de cada aplicação, foi adotado 30 iterações para cada aplicaç�
 Para a realização dos experimentos foram utilizadas as seguintes aplicações \stencil:
 
 \begin{description}
-	\item[\textbf{Fur}] Modela a formação de padrões sobre a pele de animais\footnote{{http://ccl.northwestern.edu/netlogo/models/Fur}}. Nessa aplicação, a pele do animal é modelada por uma \textit{array} bidimensional de células de pigmento que podem estar em um dos dois estados: colorida ou não-colorida. As células coloridas secretam ativadores e inibidores. Ativadores fazem uma célula central se tornar colorida; inibidores, por outro lado, fazem uma célula central se tornar não colorida.
-A diferença entre as potências dos ativadores e inibidores é responsável por decidir a coloração da célula central, onde mais ativadores resulta em uma célula colorida e mais inibidores resulta em uma célula não colorida. Nos casos em que as potências dos ativadores e inibidores forem iguais, a cor da célula permanece inalterada. A máscara contém células adjacentes à célula central e seu tamanho é parametrizável. Neste trabalho foi utilizado $2$ vizinhos adjacentes em cada direção.
+	\item[\textbf{Fur}] Modela a formação de padrões sobre a pele de animais\footnote{{http://ccl.northwestern.edu/netlogo/models/Fur}}. Nessa aplicação, a pele do animal é modelada por uma matriz bidimensional de células de pigmento que podem estar em um dos dois estados: colorida ou não-colorida. As células coloridas secretam ativadores e inibidores. Ativadores fazem uma célula central se tornar colorida; inibidores, por outro lado, fazem uma célula central se tornar não colorida.  A diferença entre as potências dos ativadores e inibidores é responsável por decidir a coloração da célula central, onde mais ativadores resulta em uma célula colorida e mais inibidores resulta em uma célula não colorida. Nos casos em que as potências dos ativadores e inibidores forem iguais, a cor da célula permanece inalterada. A máscara contém células adjacentes à célula central e seu tamanho é parametrizável. Neste trabalho foram utilizados $2$ vizinhos adjacentes em cada direção.
 
 	\item[\textbf{Jacobi}] Método iterativo para resolver sistemas de equações lineares~\cite{demmel97}.
-O método converge garantidamente se a matriz de entrada é restrita ou irredutívelmente dominante diagonalmente, i.e., $|u_{i,i}| > \sum_{j\neq i}{|u_{i,j}|}$, para todo $i$.
+O método converge garantidamente se a matriz de entrada é restrita ou irredutivelmente dominante diagonalmente, i.e., $|u_{i,i}| > \sum_{j\neq i}{|u_{i,j}|}$, para todo $i$.
 A Equação~\ref{eq:JacobiPoisson} define a computação em cada passo do método iterativo de Jacobi para resolver a equação discreta elíptica de Poisson~\cite{demmel97}. A solução aproximada é computada discretizando o problema na matriz em pontos espaçados de forma equivalente por $n\times n$.\\
  \begin{equation}
  u'_{i,j} = \frac{u_{i\pm1,j} + u_{i,j\pm1} + h^2f_{i,j}}{4}
  \label{eq:JacobiPoisson}
  \end{equation}
- A cada passo, o novo valor de $u_{i,j}$ é obtida fazendo a média $h^2f_{i,j}$ dos seus vizinhos, onde $h = \frac{1}{n+1}$ e $f_{i,j} = f(ih,jh)$,
+ A cada passo, o novo valor de $u_{i,j}$ é obtido fazendo a média $h^2f_{i,j}$ dos seus vizinhos, onde $h = \frac{1}{n+1}$ e $f_{i,j} = f(ih,jh)$,
  para uma dada função $f$.
 
-	\item[\textbf{GoL}] Autômato celular que implementa o Jogo da Vida de Conway \cite{gardner70}. O autômato é representado por um \textit{array} bidimensional, onde cada elemento representa um indivíduo vivo ou um indivíduo morto. A máscara do \stencil, a qual determina a interação entre o indivíduo e seus vizinhos, considera as $8$ células vizinhas adjacentes à célula central. Dependendo dos valores dos vizinhos, o elemento pode modificar seu estado entre vivo e morto.\\
+	\item[\textbf{GoL}] Autômato celular que implementa o Jogo da Vida de Conway \cite{gardner70}. O autômato é representado por uma matriz bidimensional, onde cada elemento representa um indivíduo vivo ou um indivíduo morto. A máscara do \stencil, a qual determina a interação entre o indivíduo e seus vizinhos, considera as $8$ células vizinhas adjacentes à célula central. Dependendo dos valores dos vizinhos, o elemento pode modificar seu estado entre vivo e morto.\\
 
 \end{description}
 
@@ -79,7 +83,7 @@ O primeiro experimento tem por objetivo verificar o impacto do tamanho dos
 Figuras~\ref{fig:timeBox} e \ref{fig:energyBox} mostram, respectivamente, os
 tempos de execução e consumo de energia de três aplicações \stencil, variando-se
 o tamanho do \texttt{Array2D} de entrada (de $2048^2$ até $12288^2$) e os
-tamanhos do \textit{tile} (de $32^2$ até $128^2$). \textit{Arrays} de entrada
+tamanhos do \textit{tile} (de $32^2$ até $128^2$). Matrizes de entrada
 maiores que $12288^2$ e \textit{tiles} maiores que $128^2$ extrapolam às
 memórias \lpddr e dos \textit{clusters}, respectivamente.
 
@@ -157,8 +161,15 @@ aplicações obtido no \mppa foi  $3.30$x, $2.83$x e $2.69$x maior que no Intel
 Xeon, respectivamente. O experimento mostrou que o \mppa possui
 um menor desempenho em relação ao processador da Intel. Esse comportamento é
 devido ao processo de construção de um \textit{tile} alargado, onde é necessário
-realizar manualmente cálculos de \textit{offsets}, e envios prévios de dados de
-controle ao processo trabalhador.
+realizar manualmente cálculos de deslocamentos e criação do \textit{tile}
+aumentado. Mais precisamente, em situações onde o número
+de \textit{tiles} é maior que a quantidade de \textit{clusters}, o processo
+mestre irá enviar os \textit{tiles} em mais de uma etapa. Em cada etapa será
+realizado o cálculo de deslocamentos, a criação do \textit{tile} aumentado e,
+em seguida, será realizado o envio para apenas um \textit{cluster}. Desta forma,
+\textit{clusters} ficam ociosos durante o tempo em que o mestre efetua
+esse processo, prejudicando o desempenho. Além disso, esse comportamento é
+percebido, também, em execuções com apenas uma iteração, isto é, apenas uma etapa.
 
 %\todo[inline]{Por que o tempo ficou pior do que no Intel? Faltou explicar isso.}
 

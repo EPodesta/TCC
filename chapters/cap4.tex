@@ -187,10 +187,10 @@ Utilizando \textit{tiles} de dimensões ($w'$, $h'$), é possível obter
 $\lceil\frac{w}{w^\prime}\rceil\lceil\frac{h}{h^\prime}\rceil$ \textit{tiles}
 sobre $A$. Seja $A_{i,j}$ um \textit{tile} seguindo as definições descritas,
 onde $0 \leq i < \lceil\frac{w}{w^\prime}\rceil$ e $0\leq j <
-\lceil\frac{h}{h^\prime}\rceil$. $A_{i,j}$ possui um \textit{offset} $(i
+\lceil\frac{h}{h^\prime}\rceil$. $A_{i,j}$ possui um deslocamento $(i
 w^\prime, j h^\prime)$ relativo ao canto superior esquerdo de $A$ e
 $\textrm{dim}(A_{i,j}) = (\min\{w^\prime, w-i w^\prime\}, \min\{h^\prime, h-j
-h^\prime\})$. O \textit{offset} é um índice de deslocamento necessário para
+h^\prime\})$. O deslocamento é um índice necessário para
 acessar os elementos de um \textit{tile}.
 
 \begin{figure}[t]
@@ -205,20 +205,20 @@ acessar os elementos de um \textit{tile}.
 
 A Figura~\ref{fig:block2d} ilustra a técnica de \textit{tiling} trapezoidal. Um
 \textit{tile} lógico (linha sólida interna) é contido em uma matriz de dados 2D
-(linha pontilhada externa) com \textit{offsets} verticais e horizontais dados
+(linha pontilhada externa) com deslocamentos verticais e horizontais dados
 por $jh^\prime$ e $iw^\prime$. Se $t$ iterações de uma aplicação \stencil
 precisam ser realizadas, é possível computar $t^\prime$ iterações consecutivas
 sobre $A_{i,j}$ ($t^\prime \in \left[1,t\right]$) sem a necessidade de nenhuma
 troca de dados entre \textit{tiles} adjacentes, isto é, $t^\prime$ iterações
 internas. Para realizar iterações consecutivas é necessário utilizar um
 \textit{tile} lógico ($A_{i,j}$) alargado com uma \textit{ghost zone} (área
-entre a linha sólida interna e a linha sólida externa) que possui uma
-\textit{halo region} (área entre a linha sólida interna e a linha pontilhada
+entre a linha sólida interna e a linha sólida externa) que possui uma região
+\textit{halo} (área entre a linha sólida interna e a linha pontilhada
 interna). Seja $r$ o maior deslocamento necessário sobre a vizinhança de um
 elemento, determinado pela máscara \stencil. A área com alcance $r$ que contém a
-vizinhança é denominada \textit{halo region}. O número de \textit{halo regions}
+vizinhança é denominada região \textit{halo}. O número de regiões \textit{halo}
 que compõem a \textit{ghost zone} é proporcional à $t^\prime$. Desta forma, o
-\textit{tile} alargado $A^\ast_{i,j}$ possui um \textit{offset} $(\max\{iw^\prime -
+\textit{tile} alargado $A^\ast_{i,j}$ possui um deslocamento $(\max\{iw^\prime -
 rt^\prime, 0\}, \max\{jh^\prime - rt^\prime, 0\})$ relativo à $A$.
 
 Após a computação das $t^\prime$ iterações consecutivas,
@@ -228,16 +228,16 @@ sincronizações serão responsáveis por atualizar a matriz de entrada de forma
 global.
 
 Devido às dependências de vizinhança presentes na computação \stencil, cada
-iteração sobre o \textit{tile} alargado adiciona valores incorretos na
+iteração sobre o \textit{tile} alargado adiciona valores desatualizados na
 \textit{ghost zone}. A Figura~\ref{fig:errorPropagation} ilustra como que os
-valores incorretos se propagam sobre o \textit{tile} alargado. Ao realizar as
+valores desatualizados se propagam sobre o \textit{tile} alargado. Ao realizar as
 iterações, a área útil da \textit{ghost zone} diminui proporcionalmente ao
 número de iterações realizadas. Após $t^\prime$ iterações consecutivas, o
 \textit{tile} lógico será a região sem erros e sem valores redundantes. Desta
 forma, quanto maior for a quantidade de iterações consecutivas, a \textit{ghost
     zone} será maior e, consequentemente, maior a quantidade de computações
 redundantes para computar corretamente o \textit{tile} lógico. Portanto, existe
-um \textit{trade-off} entre o custo de computação redundante e o número de
+uma troca entre o custo de computação redundante e o número de
 comunicações e sincronizações realizadas.
 %na \noc durante o processamento de computações
 %\stencil iterativas no \mppa.
@@ -372,14 +372,14 @@ trapezoidal são necessários cálculos para determinar variáveis que são
 modificadas dinamicamente, como, por exemplo, endereços de memória da
 \textit{ghost zone} e a posição do \textit{tile} lógico na matriz de entrada.
 Mais precisamente, esses cálculos serão realizados para fornecer os
-\textit{offsets} necessários para a função \texttt{tiling} da classe
+deslocamentos necessários para a função \texttt{tiling} da classe
 \texttt{StencilTiling}. Essa função é responsável por retornar os endereços de
 memória corretos de cada \textit{tile} alargado. Desta forma, para determinar
 precisamente os endereços de memória de cada \textit{tile} alargado são
 necessários alguns fatores: i) parâmetros definidos pelo usuário, como o tamanho
 dos dados de entrada, tamanho dos \textit{tiles} lógicos e o número de
 iterações; ii) parâmetros do \textit{kernel} \stencil, como o tamanho da
-máscara; e iii) os \textit{offsets} do \textit{tile} lógico em relação à matriz de
+máscara; e iii) os deslocamentos do \textit{tile} lógico em relação à matriz de
 entrada. Por fim, o processo mestre espera os processos trabalhadores finalizarem a
 execução para, então, agrupar os \textit{tiles} resultantes em um único \texttt{Array2D}
 de saída. Caso existam mais iterações, será necessário armazenar os resultados
@@ -393,7 +393,7 @@ internas pelos processos trabalhadores, será necessário uma sincronização en
 o processo mestre e os processos trabalhadores. Essa sincronização permitirá que
 o processo mestre atualize uma matriz auxiliar com resultados temporários,
 utilizando-a como base para os novos envios de \textit{tiles} alargados em uma
-nova iteração externa. Com isso, é possível remover valores incorretos
+nova iteração externa. Com isso, é possível remover valores desatualizados
 calculados dentro da \textit{ghost zone} e atualizar os dados para todos os
 processos trabalhadores, eliminando problemas de dependência.
 
@@ -421,7 +421,7 @@ Os processos trabalhadores serão responsáveis pela
 execução do \textit{kernel} da computação \stencil. Em resumo, cada processo
 trabalhador executa os seguintes passos: i) recebe o \textit{tile} alargado do processo mestre;
 ii) computa as iterações internas sobre o \textit{tile} alargado; iii) realiza o
-cálculo de \textit{offsets} para determinar o espaço de endereçamento do
+cálculo de deslocamentos para determinar o espaço de endereçamento do
 \textit{tile} lógico; e iv) envia o \textit{tile} resultante ao processo mestre. Após cada \textit{tile}
 alargado atribuído ao processo trabalhador ser computado, todos os processos
 trabalhadores precisam sincronizar em uma barreira. Para cumprir esse objetivo,
@@ -435,10 +435,10 @@ OpenMP, a qual instanciará 16 \textit{threads} (uma para cada \pe do \textit{cl
 Desta forma, é possível realizar a computação de maneira paralela em
 cada \textit{cluster}. Será realizada a computação do \textit{tile} alargado por
 $t^\prime$ iterações internas. Após todas as iterações serem realizadas, o
-processo trabalhador terá que efetuar cálculos, com \textit{offsets} enviados
+processo trabalhador terá que efetuar cálculos, com deslocamentos enviados
 pelo processo mestre, para determinar o endereço de memória do \textit{tile}
 lógico dentro do \textit{tile} alargado. Essa ação deve ser realizada para
-filtar os valores incorretos provenientes da computação do \textit{tile}
+filtar os valores desatualizados provenientes da computação do \textit{tile}
 alargado. Por fim, o processo trabalhador irá enviar o \textit{tile} lógico para o
 processo mestre. Ao completar o envio, os processos trabalhadores terão que
 sincronizar com o processo mestre e outros processos trabalhadores por meio de
@@ -461,12 +461,12 @@ Seção~\ref{sec:comunicacao}.
 O Código~\ref{cod:jacobiTrabalhador} mostra a definição do processo trabalhador
 no \mppa. Este processo será responsável por descrever o \textit{kernel} da
 computação e, também, as estruturas de dados de forma similar ao processo mestre.
-Devido aos valores de \textit{offsets} e variáveis importantes para a computação
+Devido aos valores de deslocamentos e variáveis importantes para a computação
 do \textit{kernel} serem geradas dinamicamente, o processo trabalhador precisa
 receber do processo mestre, além do \textit{tile} alargado, variáveis
 responsáveis por controlar a comunicação. Dentre elas, temos variáveis indicando
 as dimensões do \textit{tile} a ser recebido, número de iterações totais e
-\textit{offsets} para auxiliar a comunicação. Por fim, as ações de recebimento,
+deslocamentos para auxiliar a comunicação. Por fim, as ações de recebimento,
 computação e envio de \textit{tiles} foram encapsuladas pela função
 \texttt{runMPPA()}, tornando todas as fases descritas para o processo
 trabalhador transparentes ao usuário.
@@ -517,7 +517,7 @@ portais de escrita e leitura são vinculados a ele de maneira transparente. Por 
 processo trabalhador irá criar estruturas \texttt{Array2D} temporárias para
 receber o \textit{tile} alargado.
 
-Devido as operações sobre \textit{tiles} e matrizes serem realizadas sobre
+Devido às operações sobre \textit{tiles} e matrizes serem realizadas sobre
 endereços de memória, quando o processo mestre ou trabalhador deseja enviar um
 dado, é necessário que ele se apresente contíguo na memória. Caso contrário,
 dados incorretos podem ser enviados devido à posição deles na memória. Mais
@@ -529,7 +529,7 @@ proporcionalmente com o seu tamanho e desperdiça memória. Desta forma, com o
 objetivo de evitar cópias locais de dados, utiliza-se o conceito de
 \textit{strides}. Cada stride é uma parte contígua do \texttt{Array} original,
 sendo determinado por deslocamentos (\textit{offsets}) especificados durante a
-execução. Os \textit{offsets} são dinâmicos e dependem dos \textit{tiles} sendo
+execução. Os deslocamentos são dinâmicos e dependem dos \textit{tiles} sendo
 computados. Essas informações são conhecidas pelo processo mestre
 por meio da utilização da classe \texttt{StencilTiling}. Por outro lado, o
 processo trabalhador recebe essas informações do processo mestre.
@@ -562,7 +562,7 @@ contabilizar, também, a área útil do \textit{tile}. Ao realizar todos os
 saltos, o método irá enviar diretamente, via portal, os dados especificados
 pelo endereço inicial do \textit{tile} e pelos saltos na memória com a área útil
 especificada. Com isso, é possível enviar de forma contígua e direta os
-\textit{tiles} à outro processo, sem a necessidade de cópias locais.
+\textit{tiles} a outro processo, sem a necessidade de cópias locais.
 
 Por outro lado, o processo trabalhador precisa enviar apenas o \textit{tile}
 lógico. Desta forma, o endereço inicial para envio não será modificado, contudo

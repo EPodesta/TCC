@@ -418,7 +418,7 @@ problema na matriz em pontos espaçados de forma equivalente por $n\times n$.\\
  u'_{i,j} = \frac{u_{i\pm1,j} + u_{i,j\pm1} + h^2f_{i,j}}{4}
  \label{eq:JacobiPoisson}
  \end{equation}
- A cada passo, o novo valor de $u_{i,j}$ é obtida fazendo a média $h^2f_{i,j}$ dos seus vizinhos, onde $h = \frac{1}{n+1}$ e $f_{i,j} = f(ih,jh)$,
+ A cada passo, o novo valor de $u_{i,j}$ é obtido fazendo a média $h^2f_{i,j}$ dos seus vizinhos, onde $h = \frac{1}{n+1}$ e $f_{i,j} = f(ih,jh)$,
  para uma dada função $f$.
 
 \textbf{GoL:} autômato celular que implementa o Jogo da Vida de Conway
@@ -556,7 +556,7 @@ principalmente, à redução do sobrecusto de comunicações e sincronizações 
 
 A aplicação \textit{Fur} apresentou os melhores resultados de escalabilidade
 dentre as 3 aplicações estudas, obtendo um \textit{speedup} de $14$x em relação
-à apenas um \textit{cluster}. Analisando experimentos executados sobre a
+à execução com apenas um \textit{cluster}. Analisando experimentos executados sobre a
 adaptação pôde-se perceber uma relação entre a quantidade de computação
 realizada pelo \textit{kernel} da aplicação e o \textit{speedup} obtido. Por
 fim, experimentos comparativos entre o \mppa e o processador Intel Broadwell
