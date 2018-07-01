@@ -93,19 +93,20 @@ híbridas e \textit{memory-bound} em 6.9x, 6.5x e 3.8x, respectivamente.
 \section{Discussão}
 
 Similar ao \fw \emph{SkePU}, o \pskel fornece suporte à aplicações
-paralelas baseadas no padrão estêncil em ambientes heterogêneos CPU-GPU.
+paralelas baseadas no padrão \stencil em ambientes heterogêneos CPU-GPU.
 Contudo, o \pskel não oferece suporte à processadores
 \textit{manycore}. Além disso, com base nos estudos sobre processadores
 \textit{manycore}, pode-se perceber que o processador \mppa possui um consumo
-energético superior em relação aos processadores \textit{multicores}. O \mppa
-apresenta dificuldades que podem ser solucionadas com técnicas de
-\textit{tiling}, como mostrado em~\cite{lutz13}.
+energético inferior em relação aos processadores \textit{multicores}. O \mppa
+apresenta limitações de memória que podem ser solucionadas com técnicas de
+\textit{tiling}, como mostrado por~\emph{Lutz}~\cite{lutz13}. Mesmo
+\emph{Thorarensen}~\etal~\cite{thoraransen16} apresentando uma proposta similar,
+a arquitetura do \mppa é diferente do processador \emph{Myriad2}, apresentando
+características e dificuldades de desenvolvimento diferentes.
 Desta forma, a adaptação do \fw \pskel para um
 processador de baixo consumo de energia e alto desempenho, como o \mppa, é
 interessante para caracterizar um novo estudo sobre a utilização de \fws em
-ambientes heterogêneos. Por fim, estudos sobre técnicas de \textit{tiling} se
-tornam importantes na proposta apresentada, devido à capacidade limitada de
-memória no \mppa.
+ambientes heterogêneos utilizando técnicas de \textit{tiling}.
 
 % Trabalhos recentes que propuseram APIs e ambientes de execução para
 % \emph{manycores}. Em~\cite{TSHMEM:2013}, os autores propuseram uma adaptação

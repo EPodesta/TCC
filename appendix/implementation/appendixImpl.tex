@@ -6,12 +6,12 @@ desenvolvedor terá que implementar a função \texttt{main} com as estruturas
 principais. Primeiramente, o desenvolvedor irá declarar matrizes de
 entrada e saída com as abstrações provenientes do \fw (linhas 4 e 5), onde $A$ é
 a matriz de entrada, $M$ e $N$ são as dimensões de largura e altura
-respectivamente. Para especificar a máscara da computação, o desenvolvedor deve determinar quais
-vizinhos serão utilizados de forma genérica, por meio de posições relativas à
+respectivamente e $B$ é a matriz de saída. Para especificar a máscara da computação, o desenvolvedor deve determinar quais
+vizinhos serão utilizados, de forma genérica, por meio de posições relativas à
 célula central (linhas 6). Mais especificamente, a Figura~\ref{fig:stencilA} ilustra uma
-possível configuração de vizinhos, onde temos as posições: \texttt{pos(-1,0)}
-para a célula à esquerda, \texttt{pos(0,1)} para a célula superior,
-\texttt{pos(0,-1)} para a célula inferior e \texttt{pos(1,0)} para a célula à
+possível configuração de vizinhos, onde temos as posições: \texttt{{-1,0}}
+para a célula à esquerda, \texttt{{0,1}} para a célula superior,
+\texttt{{0,-1}} para a célula inferior e \texttt{{1,0}} para a célula à
 direita. Após a caracterização dos vizinhos, será definida a máscara da
 computação por meio da abstração proveniente do \fw (linha 7). A estrutura
 \texttt{Arguments} (linha 8) será responsável por enviar ao \textit{Kernel} da
@@ -23,7 +23,7 @@ estrutura, o desenvolvedor irá determinar as matrizes de entrada e saída
 
 \begin{figure}[!h]
     \centering
-    \caption{Esquemático ilustrando possíveis vizinhos em uma computação estêncil.}
+    \caption{Esquemático ilustrando possíveis vizinhos em uma computação \stencil.}
     \includegraphics[width=3cm]{figs/vizinhosAnexo.pdf} \\
     Fonte: Desenvolvido pelo autor.
     \label{fig:stencilA}
@@ -31,7 +31,7 @@ estrutura, o desenvolvedor irá determinar as matrizes de entrada e saída
 
 \begin{figure}[!h]
     \begin{lstlisting}[
-        caption=Exemplo em pseudo código de uma aplicação genérica no processo mestre.,
+        caption=Exemplo de código de uma aplicação genérica no processo mestre.,
         label=cod:jacobiMestreA,
         ]
   int main(int argc, char **argv) {
@@ -39,7 +39,7 @@ estrutura, o desenvolvedor irá determinar as matrizes de entrada e saída
 
       Array2D<float> inputTile(A, M, N);
       Array2D<float> outputTile(B, M, N);
-      int neighbors = {pos(x,y), pos(x,y), ...};
+      int neighbors = {{x,y}, {x,y}, ...};
       Mask2D<int> mask(neighbors.size(), neighbors);
       struct Arguments args(alpha);
 
@@ -54,13 +54,13 @@ estrutura, o desenvolvedor irá determinar as matrizes de entrada e saída
 \end{figure}
 \begin{figure}[!h]
     \begin{lstlisting}[
-        caption=Exemplo em pseudo código de uma aplicação genérica no processo trabalhador.,
+        caption=Exemplo de código de uma aplicação genérica no processo trabalhador.,
         label=cod:jacobiTrabalhadorA,
         ]
   __parallel__ void
   stencilKernel(Array2D<float> A, Array2D<float> B, Mask2D<int> mask,
   struct Arguments args, int x, int y){
-      B(x,y) = Kernel determinado pelo desenvolvedor
+      B(x,y) = /* Kernel determinado pelo desenvolvedor */
   }
 
   int main(int argc, char **argv) {
@@ -68,7 +68,7 @@ estrutura, o desenvolvedor irá determinar as matrizes de entrada e saída
 
       Array2D<float> inputTile(A, M, N);
       Array2D<float> outputTile(B, M, N);
-      int neighbors = {pos(x,y), pos(x,y), ...};
+      int neighbors = {{x,y}, {x,y}, ...};
       Mask2D<int> mask(neighbors.size(), neighbors);
       struct Arguments args(alpha);
 
@@ -95,9 +95,11 @@ Para o processo trabalhador, o desenvolvedor terá que implementar a função \t
 de forma similar ao processo mestre. Ao final das declarações para preparar as
 estruturas, o desenvolvedor irá chamar o método de execução para o \mppa,
 denominado \texttt{runMPPA}, passando o identificador do \textit{cluster}, o número de \textit{threads},
-número de \textit{tiles} passados pelo processo mestre e o número de iterações
-(linhas 18 e 19).
-Por fim, o desenvolvedor terá que implementar a computação da aplicação, isto é,
+número de \textit{tiles} que serão passados pelo processo mestre e o número de iterações
+(linhas 18 e 19). As informações sobre o número de \textit{tiles}, largura ($M$),
+altura ($N$), identificador do \textit{cluster}, número de \textit{threads} e
+iterações são enviadas pelo processo mestre e obtidos pelos argumentos
+da função \texttt{main}. Por fim, o desenvolvedor terá que implementar a computação da aplicação, isto é,
 o \textit{Kernel} estêncil da aplicação (linhas 1-5). O \textit{Kernel}, geralmente, utiliza
 elementos da matriz de entrada ($A$), realiza operações sobre esse elemento de
 acordo com os vizinhos caracterizados pela máscara da computação e atribui o
