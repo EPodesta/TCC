@@ -18,7 +18,7 @@
 
 \sloppy
 
-\title{Execução Energeticamente Eficiente de Aplicações Estêncil com o Processador \textit{Manycore} MPPA-256}
+\title{Execução Energeticamente Eficiente de Aplicações \textit{Stencil} com o Processador \textit{Manycore} MPPA-256}
 
 \author{Emmanuel Podestá Jr.\inst{1}, Alyson D. Pereira\inst{1}, Rodrigo C. O. Rocha\inst{2},\\Márcio Castro\inst{1}, Luís F. W. Góes\inst{2}}
 
@@ -37,8 +37,9 @@
 
 \newcommand{\pskel}{PSkel\xspace}
 \newcommand{\mppa}{MPPA-256\xspace}
+\newcommand{\stencil}{\textit{stencil}\xspace}
 
-\linespread{0.91}
+\linespread{0.9}
 
 \begin{document}
 
@@ -46,19 +47,19 @@
 
 \begin{abstract}
 In this paper is proposed an adaptation for the framework PSkel to the low-power
-manycore processor \mppa. The framework simplifies iterative stencil
+manycore processor \mppa. The framework simplifies iterative \stencil
 applications development to the \mppa, hiding implementation details from the
 developer. The results on \mppa showed an energy consumption reduction on
-iterative stencil applications up to 1.45x in comparison to the multicore
+iterative \stencil applications up to 1.45x in comparison to the multicore
 processor Intel Broadwell.
 \end{abstract}
 
 \begin{resumo}
 Neste artigo é proposta uma adaptação do framework PSkel para o processador
 \textit{manycore} de baixa potência \mppa. O \fw permite simplificar o
-desenvolvimento de aplicações estêncil iterativas para o \mppa, escondendo do
+desenvolvimento de aplicações \stencil iterativas para o \mppa, escondendo do
 desenvolvedor detalhes de implementação. Os resultados obtidos no \mppa
-mostraram uma redução do consumo de energia de aplicações estêncil iterativas de
+mostraram uma redução do consumo de energia de aplicações \stencil iterativas de
 até 1.45x em comparação com um processador \textit{multicore} Intel Broadwell.
 \end{resumo}
 
@@ -99,22 +100,22 @@ desafiadora~\cite{Varghese14,Castro-PARCO:2016,Castro-SBAC-PAD:2014}.
 
 Existem diversos padrões paralelos para simplificar o desenvolvimento de
 aplicações paralelas. Dentre eles (e.g., \textit{map}, \textit{reduce},
-\textit{pipeline} e \textit{scan}), o padrão estêncil tem sido muito utilizado
+\textit{pipeline} e \textit{scan}), o padrão \stencil tem sido muito utilizado
 em várias áreas importantes, como física quântica, previsão do tempo e
 processamento de imagens~\cite{gonzalez06,holewinski12,lutz13}. No padrão
-estêncil, para cada elemento de uma estrutura $n$-dimensional de entrada é
+\stencil, para cada elemento de uma estrutura $n$-dimensional de entrada é
 computado um novo valor para o respectivo elemento em uma estrutura
 $n$-dimensional de saída, utilizando-se como base os valores dos elementos
 vizinhos ao elemento de entrada. A quantidade de vizinhos e a computação a ser
 realizada em cada elemento é definida por uma função (ou \textit{kernel})
-estêncil. Em aplicações estêncil iterativas, os valores produzidos na estrutura
+\stencil. Em aplicações \stencil iterativas, os valores produzidos na estrutura
 $n$-dimensional de saída em uma iteração $i$ são utilizados como entrada da
 iteração $i+1$.
 
 Alguns \fws foram propostos para o desenvolvimento de aplicações paralelas com
-base no padrão estêncil, tais como SkelCL~\cite{steuwer11},
+base no padrão \stencil, tais como SkelCL~\cite{steuwer11},
 SkePU~\cite{enmyren10} e PSkel~\cite{pereira15}. Em especial, o \fw PSkel provê
-uma abstração de alto nível para o desenvolvimento de aplicações estêncil em
+uma abstração de alto nível para o desenvolvimento de aplicações \stencil em
 ambientes heterogêneos compostos por processadores \textit{multicore} e
 \textit{Graphical Processing Units} (GPUs). Todavia, nenhum desses \fws possui
 suporte para processadores \textit{manycore} de baixo potência de energia
@@ -122,13 +123,13 @@ emergentes tais como o \mppa.
 
 Portanto, nesse artigo é proposta uma adaptação completa do \fw \pskel para o
 processador \mppa, a qual permite simplificar significativamente o
-desenvolvimento de aplicações estêncil nesse processador. A adaptação permite
+desenvolvimento de aplicações \stencil nesse processador. A adaptação permite
 eliminar as dificuldades de desenvolvimento intrínsecas do processador, fazendo
 com que as aplicações já implementadas em \pskel possam ser executadas no \mppa
 sem a necessidade de nenhuma modificação em seus códigos. Os resultados obtidos
 mostram que o \mppa apresenta uma melhor eficiência energética que um
 processador Intel Broadwell com 10 núcleos físicos ao executar três aplicações
-estêncil implementadas no \pskel.
+\stencil implementadas no \pskel.
 
 O restante deste artigo está organizado da seguinte forma. A
 Seção~\ref{sec:fundamentacao} apresenta os principais conceitos do processador
@@ -171,8 +172,8 @@ conectado a uma memória externa \lpddr de 2 GB.
 	\centering
 	\subfigure[fig:mppaOverall][\mppa.]{\includegraphics[width=0.43\textwidth]{figs/mppa-overview.pdf}}
 	\qquad
-	\subfigure[fig:stencil][O padrão estêncil.]{\includegraphics[width=0.4\textwidth]{figs/stencilComputation.pdf}}
-    \caption{Visão geral do \mppa (esquerda) e uma ilustração do padrão estêncil oferecido pelo \pskel (direita).}
+	\subfigure[fig:stencil][O padrão \stencil.]{\includegraphics[width=0.4\textwidth]{figs/stencilComputation.pdf}}
+    \caption{Visão geral do \mppa (esquerda) e uma ilustração do padrão \stencil oferecido pelo \pskel (direita).}
     \label{fig:config}
 \end{figure}
 
@@ -195,22 +196,22 @@ atualizar a \textit{cache} de um \pe em determinados casos.
 \subsection{PSkel}
 \label{subsec:pskel}
 
-O \pskel é um \fw de programação em alto nível para o padrão estêncil, baseado
+O \pskel é um \fw de programação em alto nível para o padrão \stencil, baseado
 nos conceitos de esqueletos paralelos, que oferece suporte para execução
 paralela em ambientes heterogêneos incluindo CPU e GPU.  Utilizando uma única
 interface de programação escrita em C++, o usuário é responsável apenas por
-definir o \textit{kernel} principal da computação estêncil, enquanto o \fw se
+definir o \textit{kernel} principal da computação \stencil, enquanto o \fw se
 encarrega de gerar código executável para as diferentes plataformas paralelas,
 realizando de maneira transparente todo o gerenciamento de memória e
 transferência de dados entre dispositivos~\cite{pereira15}.
 
-A Figura~\ref{fig:config}b ilustra o funcionamento da computação estêncil em
+A Figura~\ref{fig:config}b ilustra o funcionamento da computação \stencil em
 aplicações iterativas. Em cada iteração, uma máscara de vizinhança é utilizada
 na matriz de entrada para determinar o valor de cada célula da matriz de saída.
 Nesse exemplo, o valor de cada célula da matriz de saída é determinado em função
 dos valores das células vizinhas em todas as direções. Esse processo é realizado
 para todos os pontos da matriz de entrada, produzindo uma matriz saída da
-computação estêncil. Ao final de uma iteração, a matriz de saída será
+computação \stencil. Ao final de uma iteração, a matriz de saída será
 considerada como sendo a matriz de entrada da próxima iteração, gerando assim
 uma nova matriz de saída ao final da próxima iteração.
 
@@ -218,21 +219,22 @@ uma nova matriz de saída ao final da próxima iteração.
 \label{sec:pskelMPPA}
 
 A adaptação do \fw \pskel para o processador \mppa proposta neste artigo segue
-um modelo mestre/escravo. Um processo mestre é executado no subsistema de E/S
+um modelo mestre/trabalhador. Um processo mestre é executado no subsistema de E/S
 conectado à memória \lpddr de 2 GB, sendo responsável por alocar o
-\texttt{Array} de entrada e por distribuir os dados entre os processos escravos.
-Em cada \textit{cluster} é instanciado um único processo escravo que é
+\texttt{Array} de entrada e por distribuir os dados entre os processos
+trabalhadores.
+Em cada \textit{cluster} é instanciado um único processo trabalhador que é
 responsável por gerenciar a computação no seu \textit{cluster}. Devido às
 limitações de memória dos \textit{clusters} (apenas 2~MB por \textit{cluster}),
 o processo mestre deve subdividir o \texttt{Array} de entrada em blocos
 denominados \textit{tiles} e, então, gerenciar as comunicações dos mesmos com os
-processos escravos.
+processos trabalhadores.
 
 O processo mestre particiona o \texttt{Array} de entrada com dimensão $n$ em $b$
 blocos, onde $b$ é o número de \textit{clusters} utilizados na computação.
 Então, cada bloco é particionado em \textit{tiles} de tamanho fixo definidos
-pelo usuário. Quando são feitas computações estêncil sobre o \textit{tile},
-dependências de vizinhança, inerentes ao padrão paralelo do estêncil, precisam
+pelo usuário. Quando são feitas computações \stencil sobre o \textit{tile},
+dependências de vizinhança, inerentes ao padrão paralelo do \stencil, precisam
 ser consideradas durante o particionamento dos dados. Uma das principais
 soluções para satisfazer essas dependências é via blocos sobrepostos, resultando
 em dados redundantes e computação por
@@ -243,7 +245,7 @@ será analisado posteriormente na Seção~\ref{sec:resultados}.
 
 
 %\todo[inline]{A definição fala em um Array3D mas a figura mostra um Array2D. Não seria melhor falar de Array2D na definição?}
-%Portanto, foi implementada uma técnica de \textit{tiling} trapezoidal no \fw \pskel. Para ilustrar e detalhar como essa técnica de \textit{tiling} pode ser aplicada na computação estêncil, utilizamos a definição a seguir. Seja $A$ um \texttt{Array3D}, com dimensões $\textrm{dim}(A)  =  (w,  h,  d)$, onde $w$,  $h$,  e  $d$ são, respectivamente, a largura, altura e profundidade. Utilizando \textit{tiles} de dimensões $(w^\prime, h^\prime, d^\prime)$ produz $\lceil\frac{w}{w^\prime}\rceil\lceil\frac{h}{h^\prime}\rceil\lceil\frac{d}{d^\prime}\rceil$ \textit{tiles} possíveis de $A$. Seja $A_{i,j,k}$ um \textit{tile}, onde
+%Portanto, foi implementada uma técnica de \textit{tiling} trapezoidal no \fw \pskel. Para ilustrar e detalhar como essa técnica de \textit{tiling} pode ser aplicada na computação stencil, utilizamos a definição a seguir. Seja $A$ um \texttt{Array3D}, com dimensões $\textrm{dim}(A)  =  (w,  h,  d)$, onde $w$,  $h$,  e  $d$ são, respectivamente, a largura, altura e profundidade. Utilizando \textit{tiles} de dimensões $(w^\prime, h^\prime, d^\prime)$ produz $\lceil\frac{w}{w^\prime}\rceil\lceil\frac{h}{h^\prime}\rceil\lceil\frac{d}{d^\prime}\rceil$ \textit{tiles} possíveis de $A$. Seja $A_{i,j,k}$ um \textit{tile}, onde
 %$0\leq i < \lceil\frac{w}{ w^\prime}\rceil$,
 %$0\leq j < \lceil\frac{h}{ h^\prime}\rceil$, e
 %$0\leq k < \lceil\frac{d}{ d^\prime}\rceil$.
@@ -255,7 +257,7 @@ será analisado posteriormente na Seção~\ref{sec:resultados}.
 
 Portanto, foi implementada uma técnica de \textit{tiling} trapezoidal. Para
 ilustrar e detalhar como essa técnica de \textit{tiling} pode ser aplicada na
-computação estêncil, utilizamos a definição a seguir. Seja $A$ um
+computação \stencil, utilizamos a definição a seguir. Seja $A$ um
 \texttt{Array2D}, com dimensões $\textrm{dim}(A)  =  (w,  h)$, onde $w$ e  $h$
 são, respectivamente, a largura e a altura. Utilizando \textit{tiles} de
 dimensões $(w^\prime, h^\prime)$ produz
@@ -274,21 +276,21 @@ Essa técnica pode ser facilmente estendida para mais dimensões.
 \includegraphics[width=0.3\columnwidth]{figs/tile.pdf}
 \caption{ Diagrama do \textit{tiling} 2D. Um \textit{tile} lógico (linha interna sólida) é contido dentro do Array
     2D (linha externa pontilhada) com \textit{offsets} verticais e horizontais dado por $j  h^\prime$
-    e $i  w^\prime$. Computar $t^\prime$ consecutivas iterações estêncil no \textit{tile} requer um aumento no
+    e $i  w^\prime$. Computar $t^\prime$ consecutivas iterações \stencil no \textit{tile} requer um aumento no
     \textit{tile} lógico com uma \textit{ghost zone} (área entre a linha interna sólida e a linha externa sólida), que é constituída
     de regiões \textit{halo} (área entre a linha interna sólida e a linha interna pontilhada).}
 \label{fig:gputile}
 %\vspace{-4em}
 \end{figure}
 
-Aplicar um estêncil em $A$ envolve aplicar a função de vizinhança (máscara)
+Aplicar um \stencil em $A$ envolve aplicar a função de vizinhança (máscara)
 contendo o deslocamento de cada vizinho de um dado elemento central. Por causa
-da dependência entre vizinhos, para computar a função estêncil, de acordo com as
+da dependência entre vizinhos, para computar a função \stencil, de acordo com as
 limitações necessárias pelos \textit{tiles}, se torna necessário obter valores
 de \textit{tiles} adjacentes. Seja $r$ o \textit{range} da máscara de vizinhos,
 i.e., $r$ é o deslocamento mais distante necessário para a vizinhança definida
 pela máscara. A área de $r$ envolvendo a vizinhança é denominada região
-\textit{halo}. Se a função estêncil é aplicada iterativamente sobre $A$, para
+\textit{halo}. Se a função \stencil é aplicada iterativamente sobre $A$, para
 $t$ iterações, a dependência da vizinhança entre os \textit{tiles} limita o
 número de iterações que podem ser computadas consecutivamente sem a necessidade
 de realizar comunicações entre \textit{tiles}.
@@ -300,15 +302,15 @@ processamento, utiliza-se o conceito de comunicação por \textit{strides}. Cada
 \textit{stride} é uma parte contígua do \texttt{Array} original, sendo
 determinado por deslocamentos (\textit{offsets}) especificados durante a
 execução. Então, cada \textit{stride} é enviado para o \texttt{Array} de entrada
-em um processo escravo na posição determinada de acordo com o tamanho dos
+em um processo trabalhador na posição determinada de acordo com o tamanho dos
 \textit{tiles} e do \texttt{Array} original. O método de \textit{strides}
 possibilita a definição de algumas variáveis para o gerenciamento do
 \texttt{Array}, sendo a mais importante os \textit{offsets} que serão
 utilizados. A partir deles, o método irá efetuar a comunicação de maneira direta
 para o\texttt{Array} destino. Como dito anteriormente, a utilização de
 \textit{tiles} aumentados permite reduzir a quantidade de comunicações
-necessárias entre os processos mestre e escravos. Fazendo o aumento dos
-\textit{tiles} em uma dimensão temporal, os processos escravos podem executar
+necessárias entre os processos mestre e trabalhadores. Fazendo o aumento dos
+\textit{tiles} em uma dimensão temporal, os processos trabalhadores podem executar
 múltiplas iterações sem a necessidade de comunicação ou sincronização com o
 processo mestre.
 
@@ -323,25 +325,25 @@ O escalonamento dos \textit{tiles} nos \textit{clusters} é feito de maneira
 circular (\textit{round-robin}). Devido a isso, alguns \textit{clusters} podem
 receber mais \textit{tiles} que outros, dependendo do número de \textit{tiles} e
 \textit{clusters} usados na computação. Toda a comunicação entre o mestre e os
-escravos é feita utilizando-se a \api de comunicação assíncrona oferecida pelo
-processador \mppa. A comunicação com cada processo escravo é feita de forma
+trabalhadores é feita utilizando-se a \api de comunicação assíncrona oferecida pelo
+processador \mppa. A comunicação com cada processo trabalhador é feita de forma
 individual, mapeando diretamente áreas contíguas de memória de seus respectivos
 \textit{tiles}. Além disso, a implementação atual permite a execução de
-aplicações estêncil iterativas. Nesse caso, o escalonamento dos \textit{tiles} e
+aplicações \stencil iterativas. Nesse caso, o escalonamento dos \textit{tiles} e
 a computação dos mesmos pelos \textit{clusters} é repetida a cada iteração da
 aplicação.
 
-Cada processo escravo realiza a computação do \textit{tile} recebido no
-\textit{cluster} utilizando o \textit{kernel} de computação estêncil definido
+Cada processo trabalhador realiza a computação do \textit{tile} recebido no
+\textit{cluster} utilizando o \textit{kernel} de computação \stencil definido
 pelo usuário. A paralelização da computação dentro do \textit{cluster} é feita
 com auxílio da \api OpenMP. Em cada \textit{cluster} podem ser criadas até 16
 \textit{threads} (uma para cada \pe), onde cada uma é responsável por executar o
-\textit{kernel} estêncil em um subconjunto de elementos dos \textit{tiles}.
-Quando a computação do \textit{kernel} estêncil é finalizada, os \textit{tiles}
-resultantes são enviados pelos processos escravos para o processo mestre, onde
+\textit{kernel} \stencil em um subconjunto de elementos dos \textit{tiles}.
+Quando a computação do \textit{kernel} \stencil é finalizada, os \textit{tiles}
+resultantes são enviados pelos processos trabalhadores para o processo mestre, onde
 são agrupados em um único \texttt{Array}, constituindo o resultado final da
-computação estêncil em uma iteração. Tendo em vista que os \textit{tiles} são
-regiões contíguas na memória, processos escravos precisam gerenciar os
+computação \stencil em uma iteração. Tendo em vista que os \textit{tiles} são
+regiões contíguas na memória, processos trabalhadores precisam gerenciar os
 \textit{offsets} de dados para escrevê-los nas posições corretas no
 \texttt{Array} no processo mestre. Esse gerenciamento é efetuado pela \api do
 \mppa, mais especificamente, pelo método de \textit{strides} mencionado
@@ -359,7 +361,7 @@ fonte.
 \label{sec:resultados}
 
 Nesta seção será avaliado o desempenho e o consumo energético de aplicações
-estêncil do \pskel quando executadas no \mppa e em um processador Intel Xeon
+\stencil do \pskel quando executadas no \mppa e em um processador Intel Xeon
 E5-2640 v4 com 10 núcleos de 2.4GHz (Broadwell). As medições de energia no \mppa
 foram feitas considerando todos os \textit{clusters}, a memória, os subsistemas
 de E/S e a NoC, onde foram coletadas por meio dos sensores de potência e energia
@@ -383,15 +385,15 @@ o \textit{tile}, precisamos aumentar o \textit{tile} lógico, formando um
 \textit{tile} aumentado que será enviado para o \textit{cluster}. Desta forma,
 devido às limitações de memória em cada \textit{cluster}, ao ser especificado
 uma quantidade muito grande de iterações, o \textit{tile} aumentado enviado para
-o escravo pode ser maior que o limite de memória de cada \textit{cluster}.
+o trabalhador pode ser maior que o limite de memória de cada \textit{cluster}.
 Portanto, foi fixado uma quantidade de 10 iterações sobre cada \textit{tile}.
 Além disso, para os experimentos terem uma quantidade significativa de
-sincronizações sobre aplicações estêncil iterativas, foi adotado 30 iterações
+sincronizações sobre aplicações \stencil iterativas, foi adotado 30 iterações
 para cada aplicação.
 
-\subsection{Aplicações Estêncil}
+\subsection{Aplicações \textit{Stencil}}
 
-Para a realização dos experimentos foram utilizadas as seguintes aplicações estêncil:
+Para a realização dos experimentos foram utilizadas as seguintes aplicações \stencil:
 
 \textbf{Fur:} modela a formação de padrões sobre a pele de
 animais\footnote{{http://ccl.northwestern.edu/netlogo/models/Fur}}. Nessa
@@ -424,7 +426,7 @@ problema na matriz em pontos espaçados de forma equivalente por $n\times n$.\\
 \textbf{GoL:} autômato celular que implementa o Jogo da Vida de Conway
 \cite{gardner70}. O autômato é representado por um \textit{array} bidimensional,
 onde cada elemento representa um indivíduo vivo ou um indivíduo morto. A máscara
-do estêncil, a qual determina a interação entre o indivíduo e seus vizinhos,
+do \stencil, a qual determina a interação entre o indivíduo e seus vizinhos,
 considera as $8$ células vizinhas adjacentes à célula central. Dependendo dos
 valores dos vizinhos, o elemento pode modificar seu estado entre vivo e
 morto.\\
@@ -456,7 +458,7 @@ morto.\\
 O primeiro experimento tem por objetivo verificar o impacto do tamanho dos
 \textit{tiles} no desempenho e consumo energético das aplicações. As
 Figuras~\ref{fig:timeBox} e \ref{fig:energyBox} mostram, respectivamente, os
-tempos de execução e consumo de energia de três aplicações estêncil, variando-se
+tempos de execução e consumo de energia de três aplicações \stencil, variando-se
 o tamanho do \texttt{Array2D} de entrada (de $2048^2$ até $12288^2$) e os
 tamanhos do \textit{tile} (de $32^2$ até $128^2$). \textit{Arrays} de entrada
 maiores que $12288^2$ e \textit{tiles} maiores que $128^2$ extrapolam às
@@ -465,7 +467,7 @@ memórias \lpddr e dos \textit{clusters}, respectivamente.
 Pode-se perceber uma redução no tempo de execução à medida em que se aumenta o
 tamanho do \textit{tile} (Figura~\ref{fig:timeBox}), pois há menos
 sincronizações e comunicações de \textit{tiles} entre os processos mestre e
-escravos. O comportamento das aplicações é similar, sendo diferenciado apenas
+trabalhadores. O comportamento das aplicações é similar, sendo diferenciado apenas
 pela grandeza dos tempos de execução.
 A Figura~\ref{fig:energyBox} apresenta um comportamento similar para o consumo
 de energia, pois o tempo de execução reduz com o aumento do tamanho do
@@ -492,7 +494,7 @@ diretamente relacionado com a quantidade de operações realizadas pelo
 necessidade de comunicações no \mppa, o tempo total de execução de uma aplicação
 passa a ser composto pela soma do tempo de comunicação com o tempo de
 computação. Para um dado \textit{tile} $t$ de tamanho fixo, o tempo necessário
-para realizar comunicações de $t$ entre mestre e escravo será constante. Por
+para realizar comunicações de $t$ entre mestre e trabalhador será constante. Por
 outro lado, quanto maior o número de operações (computações) feitas em $t$ pelo
 \textit{kernel} da aplicação, maior será o paralelismo a ser explorado. Nesse
 caso, o tempo de computação será proporcionalmente maior que o tempo de
@@ -544,10 +546,10 @@ Xeon, respectivamente.
 \label{sec:conclusao}
 
 Neste artigo foi proposta uma adaptação de um \textit{framework} para
-desenvolvimento de aplicações estêncil iterativas, denominado \pskel, para
+desenvolvimento de aplicações \stencil iterativas, denominado \pskel, para
 processador \mppa. A solução proposta permite esconder detalhes de baixo nível
 do \mppa, simplificando significativamente o desenvolvimento de aplicações
-estêncil nesse processador. Os resultados mostraram que a solução proposta
+\stencil nesse processador. Os resultados mostraram que a solução proposta
 apresenta boa escalabilidade. Além disso, foi observado uma redução
 significativa no tempo de execução e no consumo de energia das aplicações no
 \mppa ao se utilizar a técnica de \textit{tiling} trapezoidal. Isso se deve,

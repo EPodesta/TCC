@@ -4,7 +4,9 @@
 Neste capítulo é avaliado o desempenho e o consumo energético de aplicações
 \stencil do \pskel quando executadas no \mppa e em um sistema \numa com dois
 nós. Mais especificamente, o sistema contém duas \cpu{s} Intel Xeon
-E5-2640 v4 com 10 núcleos de 2.4GHz, onde cada núcleo possui 2 \textit{threads}, e 64GB DDR4-1600 de \ram com uma largura de
+E5-2640 v4 com 10 núcleos de 2.4 GHz, onde cada núcleo possui 2
+\textit{threads}. Além disso, o processador possui
+64 GB de \ram DDR4-1600 e uma largura de
 banda máxima de 68.3 GB/s. O processador Intel Xeon é baseado na
 microarquitetura Broadwell com uma interconexão \qpi de 8 GT/s e uma potência
 média de 90 W. As medições de energia no \mppa
@@ -15,9 +17,8 @@ próprio processador que garantem uma baixa variabilidade entre as execuções, 
 realizadas somente 5 repetições de cada experimento, computando-se a média
 aritmética dos valores. Todos os experimentos no \mppa consideraram 16
 \pes por \textit{cluster}. Por outro lado, as medições de energia e de tempo de execução no
-sistema \numa consideraram apenas um nó e foram feitas com auxílio do \rapl através da biblioteca
-PAPI~\cite{papi12}, considerando a memória e todos os núcleos.
-Em cada experimento foram utilizadas 10 \textit{threads} sem uso de
+sistema \numa consideraram a memória e os núcleos de apenas um nó e foram feitas com auxílio do \rapl através da biblioteca
+PAPI~\cite{papi12}. Em cada experimento foram utilizadas 10 \textit{threads} sem uso de
 \textit{hyperthreading}. Os resultados mostram a média aritmética de 30
 execuções. Por fim, todos os resultados mostraram um desvio padrão menor que
 $1$\%.
@@ -90,7 +91,7 @@ memórias \lpddr e dos \textit{clusters}, respectivamente.
 Pode-se perceber uma redução no tempo de execução à medida em que se aumenta o
 tamanho do \textit{tile} (Figura~\ref{fig:timeBox}), pois há menos
 sincronizações e comunicações de \textit{tiles} entre os processos mestre e
-escravos. O comportamento das aplicações é similar, sendo diferenciado apenas
+trabalhadores. O comportamento das aplicações é similar, sendo diferenciado apenas
 pela grandeza dos tempos de execução.
 A Figura~\ref{fig:energyBox} apresenta um comportamento similar para o consumo
 de energia, pois o tempo de execução reduz com o aumento do tamanho do
@@ -161,7 +162,7 @@ aplicações obtido no \mppa foi  $3.30$x, $2.83$x e $2.69$x maior que no Intel
 Xeon, respectivamente. O experimento mostrou que o \mppa possui
 um menor desempenho em relação ao processador da Intel. Esse comportamento é
 devido ao processo de construção de um \textit{tile} alargado, onde é necessário
-realizar manualmente cálculos de deslocamentos e criação do \textit{tile}
+realizar manualmente cálculos de deslocamentos e a criação do \textit{tile}
 aumentado. Mais precisamente, em situações onde o número
 de \textit{tiles} é maior que a quantidade de \textit{clusters}, o processo
 mestre irá enviar os \textit{tiles} em mais de uma etapa. Em cada etapa será

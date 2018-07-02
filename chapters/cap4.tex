@@ -2,7 +2,10 @@
 \label{cha:proposta}
 
 Esta seção apresenta as ideias fundamentais da proposta e implementação
-da adaptação do \fw \pskel para o processador \mppa.
+da adaptação do \fw \pskel para o processador \mppa. O
+anexo~\ref{Anex:Implementacao} ilustra como o desenvolvedor deverá utilizar as
+estruturas e funções da adaptação para implementar uma aplicação paralela no
+\mppa.
 
 \section{Visão Geral}
 
@@ -304,11 +307,7 @@ O processo de execução de uma aplicação no PSkel-MPPA segue a descrição na
 Seção~\ref{sec:prog-mppa}. A seguir serão apresentadas as funções de cada
 processo e como foi realizada a comunicação no \mppa. O código da implementação
 é aberto e pode ser acessado pelo seguinte link:
-\url{https://github.com/pskel/pskel/tree/mppaWidth}. Por fim, o
-anexo~\ref{Anex:Implementacao} ilustra como o desenvolvedor deverá utilizar as
-estruturas e funções do \fw \pskel para implementar uma aplicação paralela no
-\mppa.
-
+\url{https://github.com/pskel/pskel/tree/mppaWidth}.
 \subsection{Processo Mestre}
 O processo mestre, executando sobre o subsistema de \es, será responsável por
 alocar na memória \lpddr os seguintes dados: (i) os dados de entrada e saída; (ii) a máscara do \stencil a ser utilizada para a computação; e
